@@ -1,0 +1,15 @@
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\bin\Debug\net8.0\EventsService.Aplicacion.deps.json
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\bin\Debug\net8.0\EventsService.Aplicacion.dll
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\bin\Debug\net8.0\EventsService.Aplicacion.pdb
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\bin\Debug\net8.0\EventsService.Dominio.dll
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\bin\Debug\net8.0\EventsService.Dominio.pdb
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\obj\Debug\net8.0\EventsService.Aplicacion.csproj.AssemblyReference.cache
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\obj\Debug\net8.0\EventsService.Aplicacion.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\obj\Debug\net8.0\EventsService.Aplicacion.AssemblyInfoInputs.cache
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\obj\Debug\net8.0\EventsService.Aplicacion.AssemblyInfo.cs
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\obj\Debug\net8.0\EventsService.Aplicacion.csproj.CoreCompileInputs.cache
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\obj\Debug\net8.0\EventsSe.30F0326A.Up2Date
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\obj\Debug\net8.0\EventsService.Aplicacion.dll
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\obj\Debug\net8.0\refint\EventsService.Aplicacion.dll
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\obj\Debug\net8.0\EventsService.Aplicacion.pdb
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Aplicacion\obj\Debug\net8.0\ref\EventsService.Aplicacion.dll

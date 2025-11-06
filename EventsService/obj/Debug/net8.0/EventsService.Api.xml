@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EventsService.Api</name>
+    </assembly>
+    <members>
+        <member name="M:EventsService.Api.Controllers.AsientosController.Crear(System.Guid,System.Guid,EventsService.Aplicacion.DTOs.Asiento.CrearAsientoDto,System.Threading.CancellationToken)">
+            <summary>Crea un asiento en la zona indicada del evento.</summary>
+            <param name="eventId">Id del evento</param>
+            <param name="zonaId">Id de la zona</param>
+            <param name="dto">Datos del asiento a crear</param>
+            <remarks>
+            Lanza <c>DomainException</c> cuando los datos son inválidos y <c>NotFoundException</c> si la zona no existe.
+            </remarks>
+            <response code="201">Asiento creado</response>
+            <response code="404">Evento/Zona no existe</response>
+            <response code="422">Validación de dominio fallida</response>
+        </member>
+        <member name="M:EventsService.Api.Controllers.AsientosController.ObtenerPorId(System.Guid,System.Guid,System.Guid,System.Threading.CancellationToken)">
+            <summary>Obtiene un asiento por Id dentro de la zona.</summary>
+            <param name="eventId">Id del evento</param>
+            <param name="zonaId">Id de la zona</param>
+            <param name="asientoId">Id del asiento</param>
+            <response code="200">Asiento encontrado</response>
+            <response code="404">No existe evento/zona/asiento</response>
+        </member>
+        <member name="M:EventsService.Api.Controllers.AsientosController.Listar(System.Guid,System.Guid,System.Threading.CancellationToken)">
+            <summary>Lista los asientos de una zona.</summary>
+            <param name="eventId">Id del evento</param>
+            <param name="zonaId">Id de la zona</param>
+            <response code="200">Listado de asientos</response>
+            <response code="404">Zona no existe</response>
+        </member>
+        <member name="M:EventsService.Api.Controllers.AsientosController.Actualizar(System.Guid,System.Guid,System.Guid,EventsService.Aplicacion.DTOs.Asiento.ActualizarAsientoDto,System.Threading.CancellationToken)">
+            <summary>Actualiza datos de un asiento.</summary>
+            <param name="eventId">Id del evento</param>
+            <param name="zonaId">Id de la zona</param>
+            <param name="asientoId">Id del asiento</param>
+            <param name="dto">Label/Estado/Meta</param>
+            <remarks>
+            Lanza <c>NotFoundException</c> si no existe y <c>DomainException</c> ante reglas inválidas.
+            </remarks>
+            <response code="204">Actualizado</response>
+            <response code="404">No existe</response>
+            <response code="422">Reglas de dominio inválidas</response>
+        </member>
+        <member name="M:EventsService.Api.Controllers.AsientosController.Eliminar(System.Guid,System.Guid,System.Guid,System.Threading.CancellationToken)">
+            <summary>Elimina un asiento.</summary>
+            <param name="eventId">Id del evento</param>
+            <param name="zonaId">Id de la zona</param>
+            <param name="asientoId">Id del asiento</param>
+            <response code="204">Eliminado</response>
+            <response code="404">No existe</response>
+        </member>
+        <member name="M:EventsService.Api.Controllers.EventsController.CreateEvent(EventsService.Api.DTOs.CreateEventRequest,System.Threading.CancellationToken)">
+            <summary>Crea un evento.</summary>
+            <param name="req">Datos del evento a crear.</param>
+            <remarks>
+            Si hay reglas inválidas se lanzará <c>DomainException</c>.
+            </remarks>
+            <response code="201">Evento creado.</response>
+            <response code="422">Reglas de dominio inválidas.</response>
+        </member>
+        <member name="M:EventsService.Api.Controllers.EventsController.GetEventById(System.Guid,System.Threading.CancellationToken)">
+            <summary>Obtiene un evento por su Id.</summary>
+            <param name="id">Id del evento.</param>
+            <response code="200">Evento encontrado.</response>
+            <response code="404">No existe el evento.</response>
+        </member>
+        <member name="M:EventsService.Api.Controllers.EventsController.GetAll(System.Threading.CancellationToken)">
+            <summary>Lista todos los eventos.</summary>
+            <response code="200">Listado de eventos.</response>
+        </member>
+        <member name="M:EventsService.Api.Controllers.EventsController.Update(System.Guid,EventsService.Api.DTOs.UpdateEventRequest,System.Threading.CancellationToken)">
+            <summary>Modifica un evento.</summary>
+            <param name="id">Id del evento.</param>
+            <param name="req">Campos a actualizar.</param>
+            <remarks>
+            Lanza <c>NotFoundException</c> si el evento no existe y <c>DomainException</c> ante reglas inválidas.
+            </remarks>
+            <response code="204">Actualizado.</response>
+            <response code="404">No existe.</response>
+            <response code="422">Reglas de dominio inválidas.</response>
+        </member>
+        <member name="M:EventsService.Api.Controllers.EventsController.Delete(System.Guid,System.Threading.CancellationToken)">
+            <summary>Elimina un evento.</summary>
+            <param name="id">Id del evento.</param>
+            <response code="204">Eliminado.</response>
+            <response code="404">No existe.</response>
+        </member>
+        <member name="M:EventsService.Api.Controllers.ZonasEventoController.CrearZona(System.Guid,EventsService.Aplicacion.Commands.Zonas.CrearZonaEvento.CreateZonaEventoCommand,System.Threading.CancellationToken)">
+            <summary>Crea una zona dentro de un evento y, si aplica, genera asientos.</summary>
+            <param name="eventId">Id del evento.</param>
+            <param name="body">Payload de creación de zona.</param>
+            <response code="201">Zona creada.</response>
+            <response code="422">Reglas de dominio inválidas.</response>
+        </member>
+        <member name="M:EventsService.Api.Controllers.ZonasEventoController.ObtenerZona(System.Guid,System.Guid,System.Boolean,System.Threading.CancellationToken)">
+            <summary>Obtiene una zona específica del evento.</summary>
+            <param name="eventId">Id del evento.</param>
+            <param name="zonaId">Id de la zona.</param>
+            <param name="includeSeats">Incluye asientos en la respuesta.</param>
+            <response code="200">Zona encontrada.</response>
+            <response code="404">No existe la zona o el evento.</response>
+        </member>
+        <member name="M:EventsService.Api.Controllers.ZonasEventoController.ListarZonas(System.Guid,System.String,System.String,System.String,System.Boolean,System.Threading.CancellationToken)">
+            <summary>Lista todas las zonas del evento.</summary>
+            <param name="eventId">Id del evento.</param>
+            <param name="tipo">Filtro por tipo.</param>
+            <param name="estado">Filtro por estado.</param>
+            <param name="search">Búsqueda textual.</param>
+            <param name="includeSeats">Incluye asientos en cada zona.</param>
+            <response code="200">Listado de zonas.</response>
+        </member>
+        <member name="M:EventsService.Api.Controllers.ZonasEventoController.ModificarZona(System.Guid,System.Guid,EventsService.Aplicacion.Commands.Zonas.ModificarZonaEvento.ModificarZonaEventoCommnand,System.Threading.CancellationToken)">
+            <summary>Modifica parcialmente una zona.</summary>
+            <param name="eventId">Id del evento.</param>
+            <param name="zonaId">Id de la zona.</param>
+            <param name="body">Campos a modificar.</param>
+            <response code="204">Actualizada.</response>
+            <response code="404">No existe.</response>
+            <response code="422">Reglas de dominio inválidas.</response>
+        </member>
+        <member name="M:EventsService.Api.Controllers.ZonasEventoController.EliminarZona(System.Guid,System.Guid,System.Threading.CancellationToken)">
+            <summary>Elimina una zona del evento.</summary>
+            <param name="eventId">Id del evento.</param>
+            <param name="zonaId">Id de la zona.</param>
+            <response code="204">Eliminada.</response>
+            <response code="404">No existe.</response>
+        </member>
+        <member name="M:Api.Controllers.EscenariosController.Create(EventsService.Api.Contracs.Escenario.EscenarioCreateRequest,System.Threading.CancellationToken)">
+            <summary>Crea un Escenario.</summary>
+        </member>
+        <member name="M:Api.Controllers.EscenariosController.Update(System.String,EventsService.Api.Contracs.Escenario.EscenarioUpdateRequest,System.Threading.CancellationToken)">
+            <summary>Actualiza un Escenario.</summary>
+        </member>
+        <member name="M:Api.Controllers.EscenariosController.Delete(System.String,System.Threading.CancellationToken)">
+            <summary>Elimina (o borra) un Escenario.</summary>
+        </member>
+        <member name="M:Api.Controllers.EscenariosController.GetById(System.String,System.Threading.CancellationToken)">
+            <summary>Obtiene un Escenario por Id.</summary>
+        </member>
+        <member name="M:Api.Controllers.EscenariosController.Search(System.String,System.String,System.Nullable{System.Boolean},System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>Busca/pagina Escenarios.</summary>
+        </member>
+    </members>
+</doc>

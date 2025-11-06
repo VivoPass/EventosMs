@@ -1,0 +1,1675 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "EventsService API",
+    "description": "Microservicio de eventos (zonas, asientos, escenarios).",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/eventos/{eventId}/zonas/{zonaId}/asientos": {
+      "post": {
+        "tags": [
+          "Asientos"
+        ],
+        "summary": "Crea un asiento en la zona indicada del evento.",
+        "description": "Lanza `DomainException` cuando los datos son inválidos y `NotFoundException` si la zona no existe.",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Id del evento",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "zonaId",
+            "in": "path",
+            "description": "Id de la zona",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Datos del asiento a crear",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearAsientoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearAsientoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearAsientoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Asiento creado",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          },
+          "404": {
+            "description": "Evento/Zona no existe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validación de dominio fallida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Asientos"
+        ],
+        "summary": "Lista los asientos de una zona.",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Id del evento",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "zonaId",
+            "in": "path",
+            "description": "Id de la zona",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado de asientos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AsientoDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Zona no existe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eventos/{eventId}/zonas/{zonaId}/asientos/{asientoId}": {
+      "get": {
+        "tags": [
+          "Asientos"
+        ],
+        "summary": "Obtiene un asiento por Id dentro de la zona.",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Id del evento",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "zonaId",
+            "in": "path",
+            "description": "Id de la zona",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "asientoId",
+            "in": "path",
+            "description": "Id del asiento",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asiento encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsientoDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe evento/zona/asiento",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Asientos"
+        ],
+        "summary": "Actualiza datos de un asiento.",
+        "description": "Lanza `NotFoundException` si no existe y `DomainException` ante reglas inválidas.",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Id del evento",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "zonaId",
+            "in": "path",
+            "description": "Id de la zona",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "asientoId",
+            "in": "path",
+            "description": "Id del asiento",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Label/Estado/Meta",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarAsientoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarAsientoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarAsientoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Actualizado"
+          },
+          "404": {
+            "description": "No existe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Reglas de dominio inválidas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Asientos"
+        ],
+        "summary": "Elimina un asiento.",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Id del evento",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "zonaId",
+            "in": "path",
+            "description": "Id de la zona",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "asientoId",
+            "in": "path",
+            "description": "Id del asiento",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Eliminado"
+          },
+          "404": {
+            "description": "No existe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/escenarios": {
+      "post": {
+        "tags": [
+          "Escenarios"
+        ],
+        "summary": "Crea un Escenario.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EscenarioCreateRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EscenarioCreateRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EscenarioCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Escenarios"
+        ],
+        "summary": "Busca/pagina Escenarios.",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ciudad",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "activo",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/EscenarioResponsePagedResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EscenarioResponsePagedResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EscenarioResponsePagedResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/escenarios/{id}": {
+      "put": {
+        "tags": [
+          "Escenarios"
+        ],
+        "summary": "Actualiza un Escenario.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EscenarioUpdateRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EscenarioUpdateRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EscenarioUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Escenarios"
+        ],
+        "summary": "Elimina (o borra) un Escenario.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Escenarios"
+        ],
+        "summary": "Obtiene un Escenario por Id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/EscenarioResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EscenarioResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EscenarioResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/events": {
+      "post": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Crea un evento.",
+        "description": "Si hay reglas inválidas se lanzará `DomainException`.",
+        "requestBody": {
+          "description": "Datos del evento a crear.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEventRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEventRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Evento creado.",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          },
+          "422": {
+            "description": "Reglas de dominio inválidas.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Lista todos los eventos.",
+        "responses": {
+          "200": {
+            "description": "Listado de eventos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/events/{id}": {
+      "get": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Obtiene un evento por su Id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id del evento.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Evento encontrado.",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe el evento.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Modifica un evento.",
+        "description": "Lanza `NotFoundException` si el evento no existe y `DomainException` ante reglas inválidas.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id del evento.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos a actualizar.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEventRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEventRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Actualizado."
+          },
+          "404": {
+            "description": "No existe.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Reglas de dominio inválidas.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Elimina un evento.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id del evento.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Eliminado."
+          },
+          "404": {
+            "description": "No existe.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WeatherForecast": {
+      "get": {
+        "tags": [
+          "WeatherForecast"
+        ],
+        "operationId": "GetWeatherForecast",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eventos/{eventId}/zonas": {
+      "post": {
+        "tags": [
+          "ZonasEvento"
+        ],
+        "summary": "Crea una zona dentro de un evento y, si aplica, genera asientos.",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Id del evento.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Payload de creación de zona.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateZonaEventoCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateZonaEventoCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateZonaEventoCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Zona creada.",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          },
+          "422": {
+            "description": "Reglas de dominio inválidas.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "ZonasEvento"
+        ],
+        "summary": "Lista todas las zonas del evento.",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Id del evento.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "tipo",
+            "in": "query",
+            "description": "Filtro por tipo.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "estado",
+            "in": "query",
+            "description": "Filtro por estado.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Búsqueda textual.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "includeSeats",
+            "in": "query",
+            "description": "Incluye asientos en cada zona.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado de zonas.",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eventos/{eventId}/zonas/{zonaId}": {
+      "get": {
+        "tags": [
+          "ZonasEvento"
+        ],
+        "summary": "Obtiene una zona específica del evento.",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Id del evento.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "zonaId",
+            "in": "path",
+            "description": "Id de la zona.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "includeSeats",
+            "in": "query",
+            "description": "Incluye asientos en la respuesta.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Zona encontrada.",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe la zona o el evento.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "ZonasEvento"
+        ],
+        "summary": "Modifica parcialmente una zona.",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Id del evento.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "zonaId",
+            "in": "path",
+            "description": "Id de la zona.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos a modificar.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModificarZonaEventoCommnand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModificarZonaEventoCommnand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModificarZonaEventoCommnand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Actualizada."
+          },
+          "404": {
+            "description": "No existe.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Reglas de dominio inválidas.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ZonasEvento"
+        ],
+        "summary": "Elimina una zona del evento.",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Id del evento.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "zonaId",
+            "in": "path",
+            "description": "Id de la zona.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Eliminada."
+          },
+          "404": {
+            "description": "No existe.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ActualizarAsientoDto": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "meta": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AsientoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "filaIndex": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "colIndex": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CrearAsientoDto": {
+        "type": "object",
+        "properties": {
+          "filaIndex": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "colIndex": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "meta": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateEventRequest": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoriaId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "escenarioId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "inicio": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fin": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "aforoMaximo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "lugar": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateZonaEventoCommand": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "escenarioId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "capacidad": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numeracion": {
+            "$ref": "#/components/schemas/Numeracion"
+          },
+          "precio": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "grid": {
+            "$ref": "#/components/schemas/GridRef"
+          },
+          "autogenerarAsientos": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EscenarioCreateRequest": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "ubicacion": {
+            "type": "string",
+            "nullable": true
+          },
+          "ciudad": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "pais": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EscenarioResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "ubicacion": {
+            "type": "string",
+            "nullable": true
+          },
+          "ciudad": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "pais": {
+            "type": "string",
+            "nullable": true
+          },
+          "capacidadTotal": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "activo": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EscenarioResponsePagedResult": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EscenarioResponse"
+            },
+            "nullable": true
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EscenarioUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "ubicacion": {
+            "type": "string",
+            "nullable": true
+          },
+          "ciudad": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "pais": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GridRef": {
+        "type": "object",
+        "properties": {
+          "startRow": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startCol": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rowSpan": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "colSpan": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ModificarZonaEventoCommnand": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "zonaId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "precio": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "grid": {
+            "$ref": "#/components/schemas/GridRef"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Numeracion": {
+        "type": "object",
+        "properties": {
+          "modo": {
+            "type": "string",
+            "nullable": true
+          },
+          "filas": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "columnas": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "prefijoFila": {
+            "type": "string",
+            "nullable": true
+          },
+          "prefijoAsiento": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "UpdateEventRequest": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoriaId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "escenarioId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "inicio": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "fin": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "aforoMaximo": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "tipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "lugar": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WeatherForecast": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "temperatureC": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "temperatureF": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
