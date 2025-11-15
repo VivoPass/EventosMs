@@ -24,5 +24,18 @@ public class Evento
     public string? Tipo { get; set; }
     public string? Lugar { get; set; }
     public string? Descripcion { get; set; }
+
+    public string? ImagenUrl { get; private set; }
+    public string? FolletoUrl { get; private set; }
+
+    public void AsignarImagen(string url)
+    {
+        ImagenUrl = url;
+    }
+
+    public void AsignarFolleto(string url)
+    {
+        FolletoUrl = url;
+    }
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
 }

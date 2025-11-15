@@ -1,4 +1,5 @@
-﻿using EventsService.Dominio.Interfaces;
+﻿using EventsService.Dominio.Entidades;
+using EventsService.Dominio.Interfaces;
 using EventsService.Infrastructura.mongo;
 using MongoDB.Bson;
 using MongoDB.Driver;

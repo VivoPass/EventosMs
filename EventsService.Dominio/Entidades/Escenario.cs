@@ -1,6 +1,9 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
+namespace EventsService.Dominio.Entidades;
+
+
 public class Escenario
 {
     //[BsonId]
@@ -41,3 +44,4 @@ public class Escenario
     public int GridCols { get; set; } = 20;
 
 }
+

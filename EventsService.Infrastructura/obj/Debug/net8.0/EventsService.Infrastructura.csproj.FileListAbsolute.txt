@@ -13,3 +13,4 @@ C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Infras
 C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Infrastructura\obj\Debug\net8.0\refint\EventsService.Infrastructura.dll
 C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Infrastructura\obj\Debug\net8.0\EventsService.Infrastructura.pdb
 C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Infrastructura\obj\Debug\net8.0\ref\EventsService.Infrastructura.dll
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Infrastructura\obj\Debug\net8.0\EventsService.Infrastructura.sourcelink.json

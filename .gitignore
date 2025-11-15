@@ -1,0 +1,14 @@
+# Build output
+bin/
+obj/
+
+# Visual Studio / Rider / VS Code
+.vs/
+*.user
+*.DotSettings.user
+
+# Logs
+*.log
+
+# Cache
+**/node_modules/
