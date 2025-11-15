@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using EventsService.Dominio.Entidades;
 using EventsService.Dominio.Excepciones;
 using EventsService.Dominio.Interfaces;
 using MediatR;

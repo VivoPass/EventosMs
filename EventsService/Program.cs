@@ -1,4 +1,4 @@
-using EventsService.Aplicacion.Commands.CrearEvento;   // CreateEventCommand
+﻿using EventsService.Aplicacion.Commands.CrearEvento;   // CreateEventCommand
 using EventsService.Dominio.Interfaces;                 // IEventRepository, ICategoryRepository, IScenarioRepository
 //using EventsService.Infraestructura.Mongo;              // EventCollections
 using EventsService.Infraestructura.Repositories;       // EventRepositoryMongo, etc.
@@ -14,6 +14,7 @@ using EventsService.Aplicacion.Commands.Zonas.CrearZonaEvento;
 using EventsService.Infrastructura.Repositorios;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using EventsService.Infrastructura.Cloudinary;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,11 +64,13 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssembly(typeof(CreateEventCommand).Assembly);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateZonaEventoHandler).Assembly));
+// ---------------- Cloudinary ----------------
+builder.Services.AddInfrastructure(builder.Configuration);   // ← AQUÍ LO REGISTRAS
 
 BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
 var app = builder.Build();
 
-// ---------------- Crear �ndices m�nimos (sin depender de tus clases) ----------------
+// ---------------- Crear índices mínimos (sin depender de tus clases) ----------------
 app.Lifetime.ApplicationStarted.Register(async () =>
 {
     using var scope = app.Services.CreateScope();

@@ -11,7 +11,8 @@ using EventsService.Aplicacion.Commands.EliminarEscenario;
 using EventsService.Aplicacion.Commands.ModificarEscenario;
 using EventsService.Aplicacion.NewFolder;
 using EventsService.Aplicacion.Queries.ObtenerEscenario;
-using EventsService.Aplicacion.Queries.ObtenerEscenarios; // EscenarioDto
+using EventsService.Aplicacion.Queries.ObtenerEscenarios;
+using EventsService.Dominio.Excepciones; // EscenarioDto
 
 namespace Api.Controllers;
 
@@ -76,6 +77,7 @@ public class EscenariosController : ControllerBase
         CancellationToken ct)
     {
         var dto = await _mediator.Send(new ObtenerEscenarioQuery(id), ct);
+        if (dto is null) throw new NotFoundException("Escenario", id);
 
         var resp = new EscenarioResponse(
             dto.Id, dto.Nombre, dto.Descripcion, dto.Ubicacion,

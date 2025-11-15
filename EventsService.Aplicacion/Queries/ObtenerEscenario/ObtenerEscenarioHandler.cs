@@ -18,7 +18,7 @@ namespace EventsService.Aplicacion.Queries.ObtenerEscenario
         public async Task<EscenarioDto> Handle(ObtenerEscenarioQuery r, CancellationToken ct)
         {
             var e = await _repo.ObtenerEscenario(r.Id, ct)
-                    ?? throw new EventoException("Escenario no encontrado");
+                    ?? throw new NotFoundException("Escenario no encontrado", r.Id);
 
             return new EscenarioDto(e.Id, e.Nombre, e.Descripcion, e.Ubicacion, e.Ciudad, e.Estado, e.Pais,
                 e.CapacidadTotal, e.Activo);

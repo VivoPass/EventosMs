@@ -10,3 +10,4 @@ C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Domini
 C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Dominio\obj\Debug\net8.0\EventsService.Dominio.pdb
 C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Dominio\obj\Debug\net8.0\ref\EventsService.Dominio.dll
 C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Dominio\obj\Debug\net8.0\EventsService.Dominio.csproj.AssemblyReference.cache
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Dominio\obj\Debug\net8.0\EventsService.Dominio.sourcelink.json

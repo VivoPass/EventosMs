@@ -1,6 +1,7 @@
 ﻿using EventsService.Api.DTOs;
 using EventsService.Aplicacion.Commands.CrearEvento;
 using EventsService.Aplicacion.Commands.EliminarEvento;
+using EventsService.Aplicacion.Commands.Evento;
 using EventsService.Aplicacion.Commands.ModificarEvento;
 using EventsService.Aplicacion.Queries.ObtenerEvento;
 using EventsService.Aplicacion.Queries.ObtenerTodosEventos;
@@ -56,8 +57,8 @@ public class EventsController : ControllerBase
     {
         var result = await _mediator.Send(new GetEventByIdQuery(id), ct);
 
-        // Puente temporal si tu query aún puede devolver null:
-        if (result is null) throw new NotFoundException("Evento", id);
+        if (result is null)
+            return NotFound();  // ✅ este es el fix
 
         return Ok(result);
     }
@@ -121,5 +122,64 @@ public class EventsController : ControllerBase
         if (!ok) throw new NotFoundException("Evento", id);
 
         return NoContent();
+    }
+
+
+    /// <summary>
+    /// Sube una imagen para un evento y guarda la URL en el evento.
+    /// </summary>
+    [HttpPost("{id:guid}/imagen")]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> SubirImagen(
+        Guid id,
+        IFormFile file,
+        CancellationToken ct)
+    {
+        if (file is null || file.Length == 0)
+            return BadRequest("El archivo es inválido o está vacío.");
+
+        using var stream = file.OpenReadStream();
+
+        var url = await _mediator.Send(
+            new SubirImagenEventoCommand(
+                EventoId: id,
+                FileStream: stream,
+                FileName: file.FileName),
+            ct);
+
+        return Ok(new
+        {
+            EventoId = id,
+            ImagenUrl = url
+        });
+    }
+
+    /// <summary>
+    /// Sube un folleto (PDF u otro archivo) para un evento y guarda la URL en el evento.
+    /// </summary>
+    [HttpPost("{id:guid}/folleto")]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> SubirFolleto(
+        Guid id,
+        IFormFile file,
+        CancellationToken ct)
+    {
+        if (file is null || file.Length == 0)
+            return BadRequest("El archivo es inválido o está vacío.");
+
+        using var stream = file.OpenReadStream();
+
+        var url = await _mediator.Send(
+            new SubirFolletoEventoCommand(
+                EventoId: id,
+                FileStream: stream,
+                FileName: file.FileName),
+            ct);
+
+        return Ok(new
+        {
+            EventoId = id,
+            FolletoUrl = url
+        });
     }
 }

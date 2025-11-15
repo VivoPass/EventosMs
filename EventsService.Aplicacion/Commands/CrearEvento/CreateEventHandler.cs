@@ -26,7 +26,7 @@ namespace EventsService.Aplicacion.Commands.CrearEvento
             if (!await _scen.ExistsAsync(r.EscenarioId, ct))
                 throw new EventoException("El escenario no existe.");
 
-            var e = new Evento
+            var e = new Dominio.Entidades.Evento
             {
                 Id = Guid.NewGuid(),
                 Nombre = r.Nombre.Trim(),

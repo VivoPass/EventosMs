@@ -57,3 +57,14 @@ C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\obj\De
 C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\obj\Debug\net8.0\ref\EventsService.Api.dll
 C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\bin\Debug\net8.0\EventsService.Api.xml
 C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\obj\Debug\net8.0\EventsService.Api.xml
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\obj\Debug\net8.0\EventsService.Api.sourcelink.json
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\bin\Debug\net8.0\CloudinaryDotNet.dll
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\bin\Debug\net8.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService\bin\Debug\net8.0\Mongo2Go.dll
