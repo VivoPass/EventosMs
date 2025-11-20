@@ -69,8 +69,14 @@ namespace EventsService.Infrastructura.Repositorios
         /// </summary>
         public async Task<bool> AnyByZonaAsync(Guid eventId, Guid zonaEventoId, CancellationToken ct = default)
         {
-            return await _col.Find(x => x.EventId == eventId && x.ZonaEventoId == zonaEventoId)
-                             .AnyAsync(ct);
+            var filter = Builders<Asiento>.Filter.Where(x => x.EventId == eventId && x.ZonaEventoId == zonaEventoId);
+
+            var count = await _col.CountDocumentsAsync(
+                filter,
+                cancellationToken: ct
+            );
+
+            return count > 0;
         }
 
         public async Task<long> DeleteByZonaAsync(Guid eventId, Guid zonaEventoId, CancellationToken ct = default)

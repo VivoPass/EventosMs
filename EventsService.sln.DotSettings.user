@@ -15,7 +15,7 @@
     &lt;Project Location="C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Test" Presentation="&amp;lt;EventsService.Test&amp;gt;" /&gt;&#xD;
   &lt;/And&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e1ca5e0b_002D42ac_002D489b_002Db160_002D46b2c3b74be4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e1ca5e0b_002D42ac_002D489b_002Db160_002D46b2c3b74be4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Or&gt;&#xD;
     &lt;And&gt;&#xD;
       &lt;Namespace&gt;EventsService.Test.Api.Controllers&lt;/Namespace&gt;&#xD;

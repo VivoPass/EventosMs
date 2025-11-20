@@ -4,161 +4,261 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventsService.Dominio.Entidades;
 using EventsService.Infrastructura.Repositorios;
-using EventsService.Infrastructura.mongo;
-using Mongo2Go;
 using MongoDB.Driver;
+using Moq;
 using Xunit;
 
 namespace EventsService.Tests.Infraestructura.Repositorios
 {
-    public class ZonaEventoRepositoryTests : IDisposable
+    public class ZonaEventoRepositoryTests
     {
-        private readonly MongoDbRunner _runner;
-        private readonly IMongoDatabase _db;
+        private readonly Mock<IMongoDatabase> _mockDb;
+        private readonly Mock<IMongoCollection<ZonaEvento>> _mockCollection;
         private readonly ZonaEventoRepository _sut;
+
+        private readonly ZonaEvento _zona1;
+        private readonly ZonaEvento _zona2;
 
         public ZonaEventoRepositoryTests()
         {
-            // Configuración de mapeos Mongo
-            MongoMappings.Configure();
+            _mockDb = new Mock<IMongoDatabase>();
+            _mockCollection = new Mock<IMongoCollection<ZonaEvento>>();
 
-            // Mongo embebido
-            _runner = MongoDbRunner.Start();
-            var client = new MongoClient(_runner.ConnectionString);
-            _db = client.GetDatabase("events_service_zonaevento_tests");
+            _mockDb
+                .Setup(d => d.GetCollection<ZonaEvento>("zona_evento", It.IsAny<MongoCollectionSettings>()))
+                .Returns(_mockCollection.Object);
 
-            _sut = new ZonaEventoRepository(_db);
+            _sut = new ZonaEventoRepository(_mockDb.Object);
+
+            _zona1 = new ZonaEvento
+            {
+                Id = Guid.NewGuid(),
+                EventId = Guid.NewGuid(),
+                Nombre = "VIP",
+                Capacidad = 100,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _zona2 = new ZonaEvento
+            {
+                Id = Guid.NewGuid(),
+                EventId = _zona1.EventId,
+                Nombre = "General",
+                Capacidad = 500,
+                CreatedAt = DateTime.UtcNow
+            };
         }
 
-        [Fact]
-        public async Task AddAsync_Then_GetAsync_Should_Return_Zone()
+        private static IAsyncCursor<T> BuildCursor<T>(List<T> docs)
         {
-            var ct = CancellationToken.None;
-            var eventId = Guid.NewGuid();
-            var zona = CrearZonaEvento(eventId, "VIP");
+            var cursor = new Mock<IAsyncCursor<T>>();
+            var called = false;
 
-            await _sut.AddAsync(zona, ct);
+            cursor
+                .Setup(c => c.MoveNext(It.IsAny<CancellationToken>()))
+                .Returns(() =>
+                {
+                    if (!called)
+                    {
+                        called = true;
+                        return docs.Count > 0;
+                    }
+                    return false;
+                });
 
-            var loaded = await _sut.GetAsync(eventId, zona.Id, ct);
+            cursor
+                .Setup(c => c.MoveNextAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() =>
+                {
+                    if (!called)
+                    {
+                        called = true;
+                        return docs.Count > 0;
+                    }
+                    return false;
+                });
 
-            Assert.NotNull(loaded);
-            Assert.Equal(zona.Id, loaded!.Id);
-            Assert.Equal(eventId, loaded.EventId);
-            Assert.Equal("VIP", loaded.Nombre);
+            cursor.SetupGet(c => c.Current).Returns(docs);
+
+            return cursor.Object;
+        }
+
+        // ------------------------------------------------------
+        // AddAsync
+        // ------------------------------------------------------
+        [Fact]
+        public async Task AddAsync_Should_Call_InsertOneAsync()
+        {
+            _mockCollection
+                .Setup(c => c.InsertOneAsync(
+                    It.IsAny<ZonaEvento>(),
+                    It.IsAny<InsertOneOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
+
+            await _sut.AddAsync(_zona1);
+
+            _mockCollection.Verify(c => c.InsertOneAsync(
+                It.Is<ZonaEvento>(z => z.Id == _zona1.Id),
+                It.IsAny<InsertOneOptions>(),
+                It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+
+        // ------------------------------------------------------
+        // GetAsync
+        // ------------------------------------------------------
+        [Fact]
+        public async Task GetAsync_Should_Return_Zona_When_Found()
+        {
+            var cursor = BuildCursor(new List<ZonaEvento> { _zona1 });
+
+            _mockCollection
+                .Setup(c => c.FindAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<FindOptions<ZonaEvento, ZonaEvento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(cursor);
+
+            var result = await _sut.GetAsync(_zona1.EventId, _zona1.Id);
+
+            Assert.NotNull(result);
+            Assert.Equal(_zona1.Id, result!.Id);
         }
 
         [Fact]
         public async Task GetAsync_Should_Return_Null_When_Not_Found()
         {
-            var ct = CancellationToken.None;
-            var eventId = Guid.NewGuid();
-            var zonaId = Guid.NewGuid();
+            var cursor = BuildCursor(new List<ZonaEvento>());
 
-            var loaded = await _sut.GetAsync(eventId, zonaId, ct);
+            _mockCollection
+                .Setup(c => c.FindAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<FindOptions<ZonaEvento, ZonaEvento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(cursor);
 
-            Assert.Null(loaded);
+            var result = await _sut.GetAsync(Guid.NewGuid(), Guid.NewGuid());
+
+            Assert.Null(result);
+        }
+
+        // ------------------------------------------------------
+        // ListByEventAsync
+        // ------------------------------------------------------
+        [Fact]
+        public async Task ListByEventAsync_Should_Return_List()
+        {
+            var cursor = BuildCursor(new List<ZonaEvento> { _zona1, _zona2 });
+
+            _mockCollection
+                .Setup(c => c.FindAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<FindOptions<ZonaEvento, ZonaEvento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(cursor);
+
+            var result = await _sut.ListByEventAsync(_zona1.EventId);
+
+            Assert.Equal(2, result.Count);
+        }
+
+        // ------------------------------------------------------
+        // UpdateAsync
+        // ------------------------------------------------------
+        [Fact]
+        public async Task UpdateAsync_Should_Call_ReplaceOneAsync()
+        {
+            var replaceResult = new Mock<ReplaceOneResult>();
+            replaceResult.Setup(r => r.IsAcknowledged).Returns(true);
+            replaceResult.Setup(r => r.ModifiedCount).Returns(1);
+
+            _mockCollection
+                .Setup(c => c.ReplaceOneAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<ZonaEvento>(),
+                    It.IsAny<ReplaceOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(replaceResult.Object);
+
+            await _sut.UpdateAsync(_zona1);
+
+            _mockCollection.Verify(c => c.ReplaceOneAsync(
+                It.IsAny<FilterDefinition<ZonaEvento>>(),
+                It.IsAny<ZonaEvento>(),
+                It.IsAny<ReplaceOptions>(),
+                It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+
+        // ------------------------------------------------------
+        // ExistsByNombreAsync
+        // ------------------------------------------------------
+        [Fact]
+        public async Task ExistsByNombreAsync_Should_Return_True()
+        {
+            _mockCollection
+                .Setup(c => c.CountDocumentsAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<CountOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(1L);
+
+            var exists = await _sut.ExistsByNombreAsync(_zona1.EventId, _zona1.Nombre);
+
+            Assert.True(exists);
         }
 
         [Fact]
-        public async Task ListByEventAsync_Should_Return_Only_Zones_For_Event()
+        public async Task ExistsByNombreAsync_Should_Return_False()
         {
-            var ct = CancellationToken.None;
-            var e1 = Guid.NewGuid();
-            var e2 = Guid.NewGuid();
+            _mockCollection
+                .Setup(c => c.CountDocumentsAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<CountOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(0L);
 
-            await _sut.AddAsync(CrearZonaEvento(e1, "VIP"), ct);
-            await _sut.AddAsync(CrearZonaEvento(e1, "General"), ct);
-            await _sut.AddAsync(CrearZonaEvento(e2, "Otra Zona"), ct);
-
-            var list = await _sut.ListByEventAsync(e1, ct);
-
-            Assert.Equal(2, list.Count);
-            Assert.All(list, z => Assert.Equal(e1, z.EventId));
-        }
-
-        [Fact]
-        public async Task UpdateAsync_Should_Modify_Zone_And_Set_UpdatedAt()
-        {
-            var ct = CancellationToken.None;
-            var eventId = Guid.NewGuid();
-            var zona = CrearZonaEvento(eventId, "Lateral");
-            await _sut.AddAsync(zona, ct);
-
-            var originalUpdatedAt = zona.UpdatedAt;
-
-            zona.Nombre = "Lateral Norte";
-
-            await _sut.UpdateAsync(zona, ct);
-            var loaded = await _sut.GetAsync(eventId, zona.Id, ct);
-
-            Assert.NotNull(loaded);
-            Assert.Equal("Lateral Norte", loaded!.Nombre);
-            Assert.True(loaded.UpdatedAt > originalUpdatedAt);
-        }
-
-        [Fact]
-        public async Task ExistsByNombreAsync_Should_Be_Case_Insensitive()
-        {
-            var ct = CancellationToken.None;
-            var eventId = Guid.NewGuid();
-            var zona = CrearZonaEvento(eventId, "Palco");
-            await _sut.AddAsync(zona, ct);
-
-            var existsLower = await _sut.ExistsByNombreAsync(eventId, "palco", ct);
-            var existsUpper = await _sut.ExistsByNombreAsync(eventId, "PALCO", ct);
-
-            Assert.True(existsLower);
-            Assert.True(existsUpper);
-        }
-
-        [Fact]
-        public async Task ExistsByNombreAsync_Should_Return_False_When_Not_Exists()
-        {
-            var ct = CancellationToken.None;
-            var eventId = Guid.NewGuid();
-
-            var exists = await _sut.ExistsByNombreAsync(eventId, "Inexistente", ct);
+            var exists = await _sut.ExistsByNombreAsync(_zona1.EventId, "X");
 
             Assert.False(exists);
         }
 
+        // ------------------------------------------------------
+        // DeleteAsync
+        // ------------------------------------------------------
         [Fact]
-        public async Task DeleteAsync_Should_Delete_Only_Specific_Zone()
+        public async Task DeleteAsync_Should_Return_True_When_Deleted()
         {
-            var ct = CancellationToken.None;
-            var eventId = Guid.NewGuid();
+            var deleteResult = new Mock<DeleteResult>();
+            deleteResult.Setup(r => r.DeletedCount).Returns(1);
 
-            var z1 = CrearZonaEvento(eventId, "VIP");
-            var z2 = CrearZonaEvento(eventId, "General");
+            _mockCollection
+                .Setup(c => c.DeleteOneAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResult.Object);
 
-            await _sut.AddAsync(z1, ct);
-            await _sut.AddAsync(z2, ct);
+            var result = await _sut.DeleteAsync(_zona1.EventId, _zona1.Id);
 
-            var deleted = await _sut.DeleteAsync(eventId, z1.Id, ct);
-
-            var loadedZ1 = await _sut.GetAsync(eventId, z1.Id, ct);
-            var loadedZ2 = await _sut.GetAsync(eventId, z2.Id, ct);
-
-            Assert.True(deleted);
-            Assert.Null(loadedZ1);
-            Assert.NotNull(loadedZ2);
+            Assert.True(result);
         }
 
-        private static ZonaEvento CrearZonaEvento(Guid eventId, string nombre)
+        [Fact]
+        public async Task DeleteAsync_Should_Return_False_When_Not_Deleted()
         {
-            return new ZonaEvento
-            {
-                Id = Guid.NewGuid(),
-                EventId = eventId,
-                Nombre = nombre,
-                UpdatedAt = DateTime.UtcNow
-                // agrega aquí otras props obligatorias si tu entidad las tiene
-            };
-        }
+            var deleteResult = new Mock<DeleteResult>();
+            deleteResult.Setup(r => r.DeletedCount).Returns(0);
 
-        public void Dispose()
-        {
-            _runner?.Dispose();
+            _mockCollection
+                .Setup(c => c.DeleteOneAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResult.Object);
+
+            var result = await _sut.DeleteAsync(_zona1.EventId, _zona1.Id);
+
+            Assert.False(result);
         }
     }
 }

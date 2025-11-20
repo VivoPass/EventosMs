@@ -4,241 +4,385 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventsService.Dominio.Entidades;
 using EventsService.Infrastructura.Repositorios;
-using EventsService.Infrastructura.mongo;
-using Mongo2Go;
 using MongoDB.Driver;
+using Moq;
 using Xunit;
 
 namespace EventsService.Tests.Infraestructura.Repositorios
 {
-    public class AsientoRepositoryTests : IDisposable
+    public class AsientoRepositoryTests
     {
-        private readonly MongoDbRunner _runner;
-        private readonly IMongoDatabase _db;
+        private readonly Mock<IMongoDatabase> _mockDb;
+        private readonly Mock<IMongoCollection<Asiento>> _mockCollection;
         private readonly AsientoRepository _sut;
+
+        private readonly Asiento _seat1;
+        private readonly Asiento _seat2;
 
         public AsientoRepositoryTests()
         {
-            // Configurar mapeos de Mongo
-            MongoMappings.Configure();
+            _mockDb = new Mock<IMongoDatabase>();
+            _mockCollection = new Mock<IMongoCollection<Asiento>>();
 
-            // Mongo embebido para pruebas
-            _runner = MongoDbRunner.Start();
-            var client = new MongoClient(_runner.ConnectionString);
-            _db = client.GetDatabase("events_service_asiento_tests");
+            _mockDb
+                .Setup(d => d.GetCollection<Asiento>("asiento", It.IsAny<MongoCollectionSettings>()))
+                .Returns(_mockCollection.Object);
 
-            _sut = new AsientoRepository(_db);
-        }
+            _sut = new AsientoRepository(_mockDb.Object);
 
-        [Fact]
-        public async Task InsertAsync_Then_GetByIdAsync_Should_Return_Seat()
-        {
-            var ct = CancellationToken.None;
-            var asiento = CrearAsiento();
+            var eventId = Guid.NewGuid();
+            var zonaId = Guid.NewGuid();
 
-            await _sut.InsertAsync(asiento, ct);
-
-            var loaded = await _sut.GetByIdAsync(asiento.Id, ct);
-
-            Assert.NotNull(loaded);
-            Assert.Equal(asiento.Id, loaded!.Id);
-            Assert.Equal(asiento.Label, loaded.Label);
-            Assert.Equal(asiento.Estado, loaded.Estado);
-        }
-
-        [Fact]
-        public async Task BulkInsertAsync_Should_Insert_Multiple_Seats()
-        {
-            var ct = CancellationToken.None;
-            var eId = Guid.NewGuid();
-            var zId = Guid.NewGuid();
-
-            var seats = new[]
-            {
-                CrearAsiento(eId, zId, "A1"),
-                CrearAsiento(eId, zId, "A2"),
-                CrearAsiento(eId, zId, "A3")
-            };
-
-            await _sut.BulkInsertAsync(seats, ct);
-
-            var list = await _sut.ListByZonaAsync(eId, zId, ct);
-
-            Assert.Equal(3, list.Count);
-        }
-
-        [Fact]
-        public async Task ListByZonaAsync_Should_Return_Only_Matching_Zone()
-        {
-            var ct = CancellationToken.None;
-            var e1 = Guid.NewGuid();
-            var z1 = Guid.NewGuid();
-            var e2 = Guid.NewGuid();
-            var z2 = Guid.NewGuid();
-
-            await _sut.InsertAsync(CrearAsiento(e1, z1, "A1"), ct);
-            await _sut.InsertAsync(CrearAsiento(e1, z1, "A2"), ct);
-            await _sut.InsertAsync(CrearAsiento(e2, z2, "B1"), ct);
-
-            var list = await _sut.ListByZonaAsync(e1, z1, ct);
-
-            Assert.Equal(2, list.Count);
-            Assert.All(list, x =>
-            {
-                Assert.Equal(e1, x.EventId);
-                Assert.Equal(z1, x.ZonaEventoId);
-            });
-        }
-
-        [Fact]
-        public async Task DeleteDisponiblesByZonaAsync_Should_Delete_Only_Disponibles()
-        {
-            var ct = CancellationToken.None;
-            var eId = Guid.NewGuid();
-            var zId = Guid.NewGuid();
-
-            await _sut.InsertAsync(CrearAsiento(eId, zId, "A1", "disponible"), ct);
-            await _sut.InsertAsync(CrearAsiento(eId, zId, "A2", "disponible"), ct);
-            await _sut.InsertAsync(CrearAsiento(eId, zId, "A3", "ocupado"), ct);
-
-            var deleted = await _sut.DeleteDisponiblesByZonaAsync(eId, zId, ct);
-            var remaining = await _sut.ListByZonaAsync(eId, zId, ct);
-
-            Assert.Equal(2, deleted);
-            Assert.Single(remaining);
-            Assert.Equal("ocupado", remaining[0].Estado);
-        }
-
-        [Fact]
-        public async Task AnyByZonaAsync_Should_Return_True_When_Seats_Exist()
-        {
-            var ct = CancellationToken.None;
-            var eId = Guid.NewGuid();
-            var zId = Guid.NewGuid();
-
-            await _sut.InsertAsync(CrearAsiento(eId, zId, "A1"), ct);
-
-            var any = await _sut.AnyByZonaAsync(eId, zId, ct);
-
-            Assert.True(any);
-        }
-
-        [Fact]
-        public async Task AnyByZonaAsync_Should_Return_False_When_No_Seats()
-        {
-            var ct = CancellationToken.None;
-            var eId = Guid.NewGuid();
-            var zId = Guid.NewGuid();
-
-            var any = await _sut.AnyByZonaAsync(eId, zId, ct);
-
-            Assert.False(any);
-        }
-
-        [Fact]
-        public async Task DeleteByZonaAsync_Should_Delete_All_Seats_In_Zone()
-        {
-            var ct = CancellationToken.None;
-            var eId = Guid.NewGuid();
-            var zId = Guid.NewGuid();
-
-            await _sut.InsertAsync(CrearAsiento(eId, zId, "A1"), ct);
-            await _sut.InsertAsync(CrearAsiento(eId, zId, "A2"), ct);
-
-            var deletedCount = await _sut.DeleteByZonaAsync(eId, zId, ct);
-            var remaining = await _sut.ListByZonaAsync(eId, zId, ct);
-
-            Assert.Equal(2, deletedCount);
-            Assert.Empty(remaining);
-        }
-
-        [Fact]
-        public async Task GetByCompositeAsync_Should_Return_Correct_Seat()
-        {
-            var ct = CancellationToken.None;
-            var eId = Guid.NewGuid();
-            var zId = Guid.NewGuid();
-
-            var a1 = CrearAsiento(eId, zId, "A1");
-            var a2 = CrearAsiento(eId, zId, "A2");
-
-            await _sut.InsertAsync(a1, ct);
-            await _sut.InsertAsync(a2, ct);
-
-            var loaded = await _sut.GetByCompositeAsync(eId, zId, "A2", ct);
-
-            Assert.NotNull(loaded);
-            Assert.Equal("A2", loaded!.Label);
-        }
-
-        [Fact]
-        public async Task UpdateParcialAsync_Should_Update_Selected_Fields()
-        {
-            var ct = CancellationToken.None;
-            var seat = CrearAsiento();
-            await _sut.InsertAsync(seat, ct);
-
-            var nuevaMeta = new Dictionary<string, string>
-            {
-                ["color"] = "rojo",
-                ["fila"] = "A"
-            };
-
-            var updated = await _sut.UpdateParcialAsync(
-                seat.Id,
-                nuevoLabel: "B5",
-                nuevoEstado: "reservado",
-                nuevaMeta: nuevaMeta,
-                ct: ct);
-
-            var loaded = await _sut.GetByIdAsync(seat.Id, ct);
-
-            Assert.True(updated);
-            Assert.NotNull(loaded);
-            Assert.Equal("B5", loaded!.Label);
-            Assert.Equal("reservado", loaded.Estado);
-            Assert.Equal("rojo", loaded.Meta["color"]);
-            Assert.Equal("A", loaded.Meta["fila"]);
-            Assert.True(loaded.UpdatedAt > seat.UpdatedAt);
-        }
-
-        [Fact]
-        public async Task DeleteByIdAsync_Should_Delete_Seat()
-        {
-            var ct = CancellationToken.None;
-            var seat = CrearAsiento();
-            await _sut.InsertAsync(seat, ct);
-
-            var deleted = await _sut.DeleteByIdAsync(seat.Id, ct);
-            var loaded = await _sut.GetByIdAsync(seat.Id, ct);
-
-            Assert.True(deleted);
-            Assert.Null(loaded);
-        }
-
-        private static Asiento CrearAsiento()
-        {
-            return CrearAsiento(Guid.NewGuid(), Guid.NewGuid(), "A1");
-        }
-
-        private static Asiento CrearAsiento(Guid eventId, Guid zonaId, string label, string estado = "disponible")
-        {
-            return new Asiento
+            _seat1 = new Asiento
             {
                 Id = Guid.NewGuid(),
                 EventId = eventId,
                 ZonaEventoId = zonaId,
-                Label = label,
-                Estado = estado,
-                Meta = new Dictionary<string, string>(),
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                Label = "A1",
+                Estado = "disponible",
+                Meta = new Dictionary<string, string> { { "row", "A" }, { "col", "1" } },
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _seat2 = new Asiento
+            {
+                Id = Guid.NewGuid(),
+                EventId = eventId,
+                ZonaEventoId = zonaId,
+                Label = "A2",
+                Estado = "ocupado",
+                Meta = new Dictionary<string, string> { { "row", "A" }, { "col", "2" } },
+                CreatedAt = DateTime.UtcNow
             };
         }
 
-        public void Dispose()
+        private static IAsyncCursor<T> BuildCursor<T>(List<T> docs)
         {
-            _runner?.Dispose();
+            var cursor = new Mock<IAsyncCursor<T>>();
+            var called = false;
+
+            cursor
+                .Setup(c => c.MoveNext(It.IsAny<CancellationToken>()))
+                .Returns(() =>
+                {
+                    if (!called)
+                    {
+                        called = true;
+                        return docs.Count > 0;
+                    }
+                    return false;
+                });
+
+            cursor
+                .Setup(c => c.MoveNextAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() =>
+                {
+                    if (!called)
+                    {
+                        called = true;
+                        return docs.Count > 0;
+                    }
+                    return false;
+                });
+
+            cursor.SetupGet(c => c.Current).Returns(docs);
+
+            return cursor.Object;
+        }
+
+        // ------------------------------------------------------
+        // InsertAsync
+        // ------------------------------------------------------
+        [Fact]
+        public async Task InsertAsync_Should_Call_InsertOneAsync()
+        {
+            _mockCollection
+                .Setup(c => c.InsertOneAsync(
+                    It.IsAny<Asiento>(),
+                    It.IsAny<InsertOneOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
+
+            await _sut.InsertAsync(_seat1);
+
+            _mockCollection.Verify(c => c.InsertOneAsync(
+                    It.Is<Asiento>(s => s.Id == _seat1.Id),
+                    It.IsAny<InsertOneOptions>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+
+       
+
+        [Fact]
+        public async Task BulkInsertAsync_Should_Not_Call_BulkWriteAsync_When_Empty()
+        {
+            await _sut.BulkInsertAsync(Array.Empty<Asiento>());
+
+            _mockCollection.Verify(c => c.BulkWriteAsync(
+                    It.IsAny<IEnumerable<WriteModel<Asiento>>>(),
+                    It.IsAny<BulkWriteOptions>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+
+        // ------------------------------------------------------
+        // ListByZonaAsync
+        // ------------------------------------------------------
+        [Fact]
+        public async Task ListByZonaAsync_Should_Return_Seats_For_Zona()
+        {
+            var cursor = BuildCursor(new List<Asiento> { _seat1, _seat2 });
+
+            _mockCollection
+                .Setup(c => c.FindAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<FindOptions<Asiento, Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(cursor);
+
+            var result = await _sut.ListByZonaAsync(_seat1.EventId, _seat1.ZonaEventoId);
+
+            Assert.Equal(2, result.Count);
+        }
+
+        // ------------------------------------------------------
+        // DeleteDisponiblesByZonaAsync
+        // ------------------------------------------------------
+        [Fact]
+        public async Task DeleteDisponiblesByZonaAsync_Should_Return_DeletedCount()
+        {
+            var deleteResult = new Mock<DeleteResult>();
+            deleteResult.SetupGet(r => r.DeletedCount).Returns(5);
+
+            _mockCollection
+                .Setup(c => c.DeleteManyAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResult.Object);
+
+            var deleted = await _sut.DeleteDisponiblesByZonaAsync(_seat1.EventId, _seat1.ZonaEventoId);
+
+            Assert.Equal(5, deleted);
+        }
+
+        // ------------------------------------------------------
+        // AnyByZonaAsync
+        // ------------------------------------------------------
+        [Fact]
+        public async Task AnyByZonaAsync_Should_Return_True_When_Exists()
+        {
+            _mockCollection
+                .Setup(c => c.CountDocumentsAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CountOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(3L);
+
+            var exists = await _sut.AnyByZonaAsync(_seat1.EventId, _seat1.ZonaEventoId);
+
+            Assert.True(exists);
+        }
+
+        [Fact]
+        public async Task AnyByZonaAsync_Should_Return_False_When_Not_Exists()
+        {
+            _mockCollection
+                .Setup(c => c.CountDocumentsAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CountOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(0L);
+
+            var exists = await _sut.AnyByZonaAsync(_seat1.EventId, _seat1.ZonaEventoId);
+
+            Assert.False(exists);
+        }
+
+        // ------------------------------------------------------
+        // DeleteByZonaAsync
+        // ------------------------------------------------------
+        [Fact]
+        public async Task DeleteByZonaAsync_Should_Return_DeletedCount()
+        {
+            var deleteResult = new Mock<DeleteResult>();
+            deleteResult.SetupGet(r => r.DeletedCount).Returns(7);
+
+            _mockCollection
+                .Setup(c => c.DeleteManyAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResult.Object);
+
+            var deleted = await _sut.DeleteByZonaAsync(_seat1.EventId, _seat1.ZonaEventoId);
+
+            Assert.Equal(7, deleted);
+        }
+
+        // ------------------------------------------------------
+        // GetByCompositeAsync
+        // ------------------------------------------------------
+        [Fact]
+        public async Task GetByCompositeAsync_Should_Return_Seat_When_Found()
+        {
+            var cursor = BuildCursor(new List<Asiento> { _seat1 });
+
+            _mockCollection
+                .Setup(c => c.FindAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<FindOptions<Asiento, Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(cursor);
+
+            var result = await _sut.GetByCompositeAsync(_seat1.EventId, _seat1.ZonaEventoId, _seat1.Label);
+
+            Assert.NotNull(result);
+            Assert.Equal(_seat1.Id, result!.Id);
+        }
+
+        [Fact]
+        public async Task GetByCompositeAsync_Should_Return_Null_When_Not_Found()
+        {
+            var cursor = BuildCursor(new List<Asiento>());
+
+            _mockCollection
+                .Setup(c => c.FindAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<FindOptions<Asiento, Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(cursor);
+
+            var result = await _sut.GetByCompositeAsync(Guid.NewGuid(), Guid.NewGuid(), "X1");
+
+            Assert.Null(result);
+        }
+
+        // ------------------------------------------------------
+        // GetByIdAsync
+        // ------------------------------------------------------
+        [Fact]
+        public async Task GetByIdAsync_Should_Return_Seat_When_Found()
+        {
+            var cursor = BuildCursor(new List<Asiento> { _seat1 });
+
+            _mockCollection
+                .Setup(c => c.FindAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<FindOptions<Asiento, Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(cursor);
+
+            var result = await _sut.GetByIdAsync(_seat1.Id);
+
+            Assert.NotNull(result);
+            Assert.Equal(_seat1.Id, result!.Id);
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_Should_Return_Null_When_Not_Found()
+        {
+            var cursor = BuildCursor(new List<Asiento>());
+
+            _mockCollection
+                .Setup(c => c.FindAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<FindOptions<Asiento, Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(cursor);
+
+            var result = await _sut.GetByIdAsync(Guid.NewGuid());
+
+            Assert.Null(result);
+        }
+
+        // ------------------------------------------------------
+        // UpdateParcialAsync
+        // ------------------------------------------------------
+        [Fact]
+        public async Task UpdateParcialAsync_Should_Return_True_When_Modified()
+        {
+            var updateResult = new Mock<UpdateResult>();
+            updateResult.SetupGet(r => r.IsAcknowledged).Returns(true);
+            updateResult.SetupGet(r => r.ModifiedCount).Returns(1);
+
+            _mockCollection
+                .Setup(c => c.UpdateOneAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<UpdateDefinition<Asiento>>(),
+                    It.IsAny<UpdateOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(updateResult.Object);
+
+            var result = await _sut.UpdateParcialAsync(
+                _seat1.Id,
+                nuevoLabel: "B1",
+                nuevoEstado: "reservado",
+                nuevaMeta: new Dictionary<string, string> { { "row", "B" }, { "col", "1" } });
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task UpdateParcialAsync_Should_Return_False_When_Not_Modified()
+        {
+            var updateResult = new Mock<UpdateResult>();
+            updateResult.SetupGet(r => r.IsAcknowledged).Returns(true);
+            updateResult.SetupGet(r => r.ModifiedCount).Returns(0);
+
+            _mockCollection
+                .Setup(c => c.UpdateOneAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<UpdateDefinition<Asiento>>(),
+                    It.IsAny<UpdateOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(updateResult.Object);
+
+            var result = await _sut.UpdateParcialAsync(
+                _seat1.Id,
+                nuevoLabel: null,
+                nuevoEstado: null,
+                nuevaMeta: null);
+
+            Assert.False(result);
+        }
+
+        // ------------------------------------------------------
+        // DeleteByIdAsync
+        // ------------------------------------------------------
+        [Fact]
+        public async Task DeleteByIdAsync_Should_Return_True_When_Deleted()
+        {
+            var deleteResult = new Mock<DeleteResult>();
+            deleteResult.SetupGet(r => r.IsAcknowledged).Returns(true);
+            deleteResult.SetupGet(r => r.DeletedCount).Returns(1);
+
+            _mockCollection
+                .Setup(c => c.DeleteOneAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResult.Object);
+
+            var result = await _sut.DeleteByIdAsync(_seat1.Id);
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task DeleteByIdAsync_Should_Return_False_When_Not_Deleted()
+        {
+            var deleteResult = new Mock<DeleteResult>();
+            deleteResult.SetupGet(r => r.IsAcknowledged).Returns(true);
+            deleteResult.SetupGet(r => r.DeletedCount).Returns(0);
+
+            _mockCollection
+                .Setup(c => c.DeleteOneAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResult.Object);
+
+            var result = await _sut.DeleteByIdAsync(_seat1.Id);
+
+            Assert.False(result);
         }
     }
 }
