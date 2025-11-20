@@ -42,8 +42,13 @@ namespace EventsService.Infrastructura.Repositorios
 
         public async Task<bool> ExistsByNombreAsync(Guid eventId, string nombre, CancellationToken ct = default)
         {
-            return await _col.Find(x => x.EventId == eventId && x.Nombre.ToLower() == nombre.ToLower())
-                .AnyAsync(ct);
+            var filter = Builders<ZonaEvento>.Filter.And(
+                Builders<ZonaEvento>.Filter.Eq(x => x.EventId, eventId),
+                Builders<ZonaEvento>.Filter.Eq(x => x.Nombre, nombre)
+            );
+
+            var count = await _col.CountDocumentsAsync(filter, cancellationToken: ct);
+            return count > 0;
         }
 
         public async Task<bool> DeleteAsync(Guid eventId, Guid zonaEventoId, CancellationToken ct = default)

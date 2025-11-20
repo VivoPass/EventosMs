@@ -25,7 +25,17 @@ public sealed class ScenarioRepositoryMongo : IScenarioRepository
     }
 
     public async Task<bool> ExistsAsync(Guid id, CancellationToken ct)
-        => await _c.Escenarios.Find(x => x.Id == id).AnyAsync(ct);
+    {
+        var filter = Builders<Escenario>.Filter.Eq(x => x.Id, id);
+
+        var count = await _c.Escenarios.CountDocumentsAsync(
+            filter,
+            cancellationToken: ct
+        );
+
+        return count > 0;
+    }
+
 
     public async Task ModificarEscenario(string id, Escenario escenario, CancellationToken ct)
     {

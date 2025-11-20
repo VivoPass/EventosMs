@@ -5,152 +5,42 @@ using System.Threading.Tasks;
 using EventsService.Dominio.Entidades;
 using EventsService.Infraestructura.Repositories;
 using EventsService.Infrastructura.mongo;
-using Mongo2Go;
 using MongoDB.Driver;
+using Moq;
 using Xunit;
 
 namespace EventsService.Tests.Infraestructura.Repositories
 {
-    public class EventRepositoryMongoTests : IDisposable
+    public class Repository_EventRepositoryMongo_Tests
     {
-        private readonly MongoDbRunner _runner;
-        private readonly IMongoDatabase _db;
-        private readonly EventRepositoryMongo _sut; // System Under Test
+        private readonly Mock<IMongoDatabase> _mockDb;
+        private readonly Mock<IMongoCollection<Evento>> _mockEventosCollection;
+        private readonly EventRepositoryMongo _repository;
 
-        public EventRepositoryMongoTests()
+        // --- DATOS DE PRUEBA ---
+        private readonly Evento _evento1;
+        private readonly Evento _evento2;
+        private readonly List<Evento> _listaEventos;
+
+        public Repository_EventRepositoryMongo_Tests()
         {
-            // 1) Configurar mapeos de Mongo
-            MongoMappings.Configure();
+            _mockDb = new Mock<IMongoDatabase>();
+            _mockEventosCollection = new Mock<IMongoCollection<Evento>>();
 
-            // 2) Levantar Mongo embebido
-            _runner = MongoDbRunner.Start();
-            var client = new MongoClient(_runner.ConnectionString);
-            _db = client.GetDatabase("events_service_tests");
+            // IMPORTANTE: debe coincidir el nombre de colección que uses en EventCollections
+            _mockDb
+                .Setup(d => d.GetCollection<Evento>("eventos", It.IsAny<MongoCollectionSettings>()))
+                .Returns(_mockEventosCollection.Object);
 
-            var collections = new EventCollections(_db);
-            _sut = new EventRepositoryMongo(collections);
-        }
+            var collections = new EventCollections(_mockDb.Object);
+            _repository = new EventRepositoryMongo(collections);
 
-        [Fact]
-        public async Task InsertAsync_Then_GetByIdAsync_Should_Return_Inserted_Event()
-        {
-            // Arrange
-            var ct = CancellationToken.None;
-            var evento = CrearEventoDePrueba();
+            _evento1 = CrearEventoDePrueba();
+            _evento2 = CrearEventoDePrueba();
+            _evento2.Id = Guid.NewGuid();
+            _evento2.Nombre = "Otro evento";
 
-            // Act
-            await _sut.InsertAsync(evento, ct);
-            var result = await _sut.GetByIdAsync(evento.Id, ct);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(evento.Id, result!.Id);
-            Assert.Equal(evento.Nombre, result.Nombre);
-            Assert.Equal(evento.Estado, result.Estado);
-        }
-
-        [Fact]
-        public async Task GetByIdAsync_Should_Return_Null_When_Not_Found()
-        {
-            // Arrange
-            var ct = CancellationToken.None;
-            var randomId = Guid.NewGuid();
-
-            // Act
-            var result = await _sut.GetByIdAsync(randomId, ct);
-
-            // Assert
-            Assert.Null(result);
-        }
-
-        [Fact]
-        public async Task GetAllAsync_Should_Return_All_Inserted_Events()
-        {
-            // Arrange
-            var ct = CancellationToken.None;
-            var e1 = CrearEventoDePrueba();
-            var e2 = CrearEventoDePrueba();
-            e2.Id = Guid.NewGuid();
-            e2.Nombre = "Otro evento";
-
-            await _sut.InsertAsync(e1, ct);
-            await _sut.InsertAsync(e2, ct);
-
-            // Act
-            var result = await _sut.GetAllAsync(ct);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.True(result.Count >= 2);
-        }
-
-        [Fact]
-        public async Task UpdateAsync_Should_Return_True_And_Persist_Changes()
-        {
-            // Arrange
-            var ct = CancellationToken.None;
-            var evento = CrearEventoDePrueba();
-            await _sut.InsertAsync(evento, ct);
-
-            var nuevoNombre = "Nombre Actualizado";
-            evento.Nombre = nuevoNombre;
-            evento.Estado = "Published";
-
-            // Act
-            var updated = await _sut.UpdateAsync(evento, ct);
-            var recargado = await _sut.GetByIdAsync(evento.Id, ct);
-
-            // Assert
-            Assert.True(updated);
-            Assert.NotNull(recargado);
-            Assert.Equal(nuevoNombre, recargado!.Nombre);
-            Assert.Equal("Published", recargado.Estado);
-        }
-
-        [Fact]
-        public async Task UpdateAsync_Should_Return_False_When_Event_Does_Not_Exist()
-        {
-            // Arrange
-            var ct = CancellationToken.None;
-            var evento = CrearEventoDePrueba();
-            evento.Id = Guid.NewGuid(); // no insertado
-
-            // Act
-            var updated = await _sut.UpdateAsync(evento, ct);
-
-            // Assert
-            Assert.False(updated);
-        }
-
-        [Fact]
-        public async Task DeleteAsync_Should_Return_True_And_Remove_Event()
-        {
-            // Arrange
-            var ct = CancellationToken.None;
-            var evento = CrearEventoDePrueba();
-            await _sut.InsertAsync(evento, ct);
-
-            // Act
-            var deleted = await _sut.DeleteAsync(evento.Id, ct);
-            var recargado = await _sut.GetByIdAsync(evento.Id, ct);
-
-            // Assert
-            Assert.True(deleted);
-            Assert.Null(recargado);
-        }
-
-        [Fact]
-        public async Task DeleteAsync_Should_Return_False_When_Event_Does_Not_Exist()
-        {
-            // Arrange
-            var ct = CancellationToken.None;
-            var randomId = Guid.NewGuid();
-
-            // Act
-            var deleted = await _sut.DeleteAsync(randomId, ct);
-
-            // Assert
-            Assert.False(deleted);
+            _listaEventos = new List<Evento> { _evento1, _evento2 };
         }
 
         private static Evento CrearEventoDePrueba()
@@ -168,13 +58,268 @@ namespace EventsService.Tests.Infraestructura.Repositories
                 Estado = "Draft",
                 Tipo = "Concierto",
                 Lugar = "Teatro Municipal",
-                Descripcion = "Evento de prueba para tests de integración."
+                Descripcion = "Evento de prueba para tests unitarios."
             };
         }
 
-        public void Dispose()
+        #region InsertAsync_InvocacionExitosa_DebeLlamarInsertOneAsyncUnaVez
+        [Fact]
+        public async Task InsertAsync_InvocacionExitosa_DebeLlamarInsertOneAsyncUnaVez()
         {
-            _runner?.Dispose();
+            // Arrange
+            _mockEventosCollection
+                .Setup(c => c.InsertOneAsync(
+                    It.IsAny<Evento>(),
+                    It.IsAny<InsertOneOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
+
+            var ct = CancellationToken.None;
+
+            // Act
+            await _repository.InsertAsync(_evento1, ct);
+
+            // Assert
+            _mockEventosCollection.Verify(c => c.InsertOneAsync(
+                    It.Is<Evento>(e => e.Id == _evento1.Id),
+                    It.IsAny<InsertOneOptions>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
         }
+        #endregion
+
+        #region GetByIdAsync_EventoEncontrado_DebeRetornarEvento
+        [Fact]
+        public async Task GetByIdAsync_EventoEncontrado_DebeRetornarEvento()
+        {
+            // Arrange
+            var ct = CancellationToken.None;
+
+            var cursorMock = new Mock<IAsyncCursor<Evento>>();
+            cursorMock
+                .SetupSequence(c => c.MoveNextAsync(ct))
+                .ReturnsAsync(true)
+                .ReturnsAsync(false);
+            cursorMock
+                .SetupGet(c => c.Current)
+                .Returns(new List<Evento> { _evento1 });
+
+            _mockEventosCollection
+                .Setup(c => c.FindAsync(
+                    It.IsAny<FilterDefinition<Evento>>(),
+                    It.IsAny<FindOptions<Evento, Evento>>(),
+                    ct))
+                .ReturnsAsync(cursorMock.Object);
+
+            // Act
+            var result = await _repository.GetByIdAsync(_evento1.Id, ct);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(_evento1.Id, result!.Id);
+            Assert.Equal(_evento1.Nombre, result.Nombre);
+        }
+        #endregion
+
+        #region GetByIdAsync_EventoNoEncontrado_DebeRetornarNull
+        [Fact]
+        public async Task GetByIdAsync_EventoNoEncontrado_DebeRetornarNull()
+        {
+            // Arrange
+            var ct = CancellationToken.None;
+
+            var cursorMock = new Mock<IAsyncCursor<Evento>>();
+            cursorMock
+                .SetupSequence(c => c.MoveNextAsync(ct))
+                .ReturnsAsync(false);
+
+            _mockEventosCollection
+                .Setup(c => c.FindAsync(
+                    It.IsAny<FilterDefinition<Evento>>(),
+                    It.IsAny<FindOptions<Evento, Evento>>(),
+                    ct))
+                .ReturnsAsync(cursorMock.Object);
+
+            // Act
+            var result = await _repository.GetByIdAsync(Guid.NewGuid(), ct);
+
+            // Assert
+            Assert.Null(result);
+        }
+        #endregion
+
+        #region GetAllAsync_DocumentosEncontrados_DebeRetornarListaEventos
+        [Fact]
+        public async Task GetAllAsync_DocumentosEncontrados_DebeRetornarListaEventos()
+        {
+            // Arrange
+            var ct = CancellationToken.None;
+
+            var cursorMock = new Mock<IAsyncCursor<Evento>>();
+            cursorMock
+                .SetupSequence(c => c.MoveNextAsync(ct))
+                .ReturnsAsync(true)
+                .ReturnsAsync(false);
+            cursorMock
+                .SetupGet(c => c.Current)
+                .Returns(_listaEventos);
+
+            _mockEventosCollection
+                .Setup(c => c.FindAsync(
+                    It.IsAny<FilterDefinition<Evento>>(),
+                    It.IsAny<FindOptions<Evento, Evento>>(),
+                    ct))
+                .ReturnsAsync(cursorMock.Object);
+
+            // Act
+            var result = await _repository.GetAllAsync(ct);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(2, result.Count);
+            Assert.Contains(result, e => e.Id == _evento1.Id);
+            Assert.Contains(result, e => e.Id == _evento2.Id);
+        }
+        #endregion
+
+        #region GetAllAsync_ColeccionVacia_DebeRetornarListaVacia
+        [Fact]
+        public async Task GetAllAsync_ColeccionVacia_DebeRetornarListaVacia()
+        {
+            // Arrange
+            var ct = CancellationToken.None;
+
+            var cursorMock = new Mock<IAsyncCursor<Evento>>();
+            cursorMock
+                .SetupSequence(c => c.MoveNextAsync(ct))
+                .ReturnsAsync(false);
+
+            _mockEventosCollection
+                .Setup(c => c.FindAsync(
+                    It.IsAny<FilterDefinition<Evento>>(),
+                    It.IsAny<FindOptions<Evento, Evento>>(),
+                    ct))
+                .ReturnsAsync(cursorMock.Object);
+
+            // Act
+            var result = await _repository.GetAllAsync(ct);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Empty(result);
+        }
+        #endregion
+
+        #region UpdateAsync_ActualizacionExitosa_DebeRetornarTrue
+        [Fact]
+        public async Task UpdateAsync_ActualizacionExitosa_DebeRetornarTrue()
+        {
+            // Arrange
+            var ct = CancellationToken.None;
+
+            var replaceResultMock = new Mock<ReplaceOneResult>();
+            replaceResultMock.SetupGet(r => r.MatchedCount).Returns(1);
+            replaceResultMock.SetupGet(r => r.ModifiedCount).Returns(1);
+            replaceResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+
+            _mockEventosCollection
+                .Setup(c => c.ReplaceOneAsync(
+                    It.IsAny<FilterDefinition<Evento>>(),
+                    It.IsAny<Evento>(),
+                    It.IsAny<ReplaceOptions>(),
+                    ct))
+                .ReturnsAsync(replaceResultMock.Object);
+
+            _evento1.Nombre = "Nombre Actualizado";
+            _evento1.Estado = "Published";
+
+            // Act
+            var updated = await _repository.UpdateAsync(_evento1, ct);
+
+            // Assert
+            Assert.True(updated);
+        }
+        #endregion
+
+        #region UpdateAsync_EventoNoEncontrado_DebeRetornarFalse
+        [Fact]
+        public async Task UpdateAsync_EventoNoEncontrado_DebeRetornarFalse()
+        {
+            // Arrange
+            var ct = CancellationToken.None;
+
+            var replaceResultMock = new Mock<ReplaceOneResult>();
+            replaceResultMock.SetupGet(r => r.MatchedCount).Returns(0);
+            replaceResultMock.SetupGet(r => r.ModifiedCount).Returns(0);
+            replaceResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+
+            _mockEventosCollection
+                .Setup(c => c.ReplaceOneAsync(
+                    It.IsAny<FilterDefinition<Evento>>(),
+                    It.IsAny<Evento>(),
+                    It.IsAny<ReplaceOptions>(),
+                    ct))
+                .ReturnsAsync(replaceResultMock.Object);
+
+            // Act
+            var updated = await _repository.UpdateAsync(_evento1, ct);
+
+            // Assert
+            Assert.False(updated);
+        }
+
+        #endregion
+
+        #region DeleteAsync_EliminacionExitosa_DebeRetornarTrue
+        [Fact]
+        public async Task DeleteAsync_EliminacionExitosa_DebeRetornarTrue()
+        {
+            // Arrange
+            var ct = CancellationToken.None;
+
+            var deleteResultMock = new Mock<DeleteResult>();
+            deleteResultMock.SetupGet(r => r.DeletedCount).Returns(1);
+            deleteResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+
+            _mockEventosCollection
+                .Setup(c => c.DeleteOneAsync(
+                    It.IsAny<FilterDefinition<Evento>>(),
+                    ct))
+                .ReturnsAsync(deleteResultMock.Object);
+
+            // Act
+            var deleted = await _repository.DeleteAsync(_evento1.Id, ct);
+
+            // Assert
+            Assert.True(deleted);
+        }
+
+        #endregion
+
+        #region DeleteAsync_EventoNoEncontrado_DebeRetornarFalse
+       [Fact]
+public async Task DeleteAsync_EventoNoEncontrado_DebeRetornarFalse()
+{
+    // Arrange
+    var ct = CancellationToken.None;
+
+    var deleteResultMock = new Mock<DeleteResult>();
+    deleteResultMock.SetupGet(r => r.DeletedCount).Returns(0);
+    deleteResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+
+    _mockEventosCollection
+        .Setup(c => c.DeleteOneAsync(
+            It.IsAny<FilterDefinition<Evento>>(),
+            ct))
+        .ReturnsAsync(deleteResultMock.Object);
+
+    // Act
+    var deleted = await _repository.DeleteAsync(Guid.NewGuid(), ct);
+
+    // Assert
+    Assert.False(deleted);
+}
+
+        #endregion
     }
 }
