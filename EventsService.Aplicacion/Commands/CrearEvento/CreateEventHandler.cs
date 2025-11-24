@@ -37,7 +37,8 @@ namespace EventsService.Aplicacion.Commands.CrearEvento
                 AforoMaximo = r.AforoMaximo,
                 Tipo = r.Tipo,
                 Lugar = r.Lugar,
-                Descripcion = r.Descripcion
+                Descripcion = r.Descripcion,
+                OrganizadorId = r.OrganizadorId
             };
 
             await _events.InsertAsync(e, ct);

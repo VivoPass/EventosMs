@@ -16,7 +16,8 @@ namespace EventsService.Aplicacion.Commands.CrearEvento
         int AforoMaximo,
         string? Tipo,
         string? Lugar,
-        string? Descripcion
+        string? Descripcion,
+        Guid OrganizadorId
     ) : IRequest<Guid>;
 
 }

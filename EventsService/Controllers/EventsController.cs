@@ -18,8 +18,7 @@ namespace EventsService.Api.Controllers;
 public class EventsController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly IRestClient _restClient;
-    public EventsController(IMediator mediator, IRestClient restClient) => (_mediator, _restClient) = (mediator, restClient);
+    public EventsController(IMediator mediator) => (_mediator) = (mediator);
 
     /// <summary>Crea un evento.</summary>
     /// <param name="req">Datos del evento a crear.</param>
@@ -42,7 +41,8 @@ public class EventsController : ControllerBase
             req.AforoMaximo,
             req.Tipo,
             req.Lugar,
-            req.Descripcion
+            req.Descripcion,
+            req.OrganizadorId
         ), ct);
 
         return CreatedAtAction(nameof(GetEventById), new { id }, new { id });
