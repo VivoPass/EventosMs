@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EventsService.Dominio")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+224f7ac12e4fc033a6437d43c42dd52ed2f9ca5b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b0b23ec1a7a8daa98fb8e17be1b2a00511948cb5")]
 [assembly: System.Reflection.AssemblyProductAttribute("EventsService.Dominio")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EventsService.Dominio")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

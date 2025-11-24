@@ -17,7 +17,7 @@ namespace EventsService.Infrastructura.Repositorios
 
         public AsientoRepository(IMongoDatabase db)
         {
-            _col = db.GetCollection<Asiento>("asiento");
+            _col = db.GetCollection<Asiento>("asientos");
         }
 
 

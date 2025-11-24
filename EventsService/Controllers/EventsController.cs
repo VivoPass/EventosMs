@@ -7,6 +7,7 @@ using EventsService.Aplicacion.Queries.ObtenerEvento;
 using EventsService.Aplicacion.Queries.ObtenerTodosEventos;
 using EventsService.Dominio.Excepciones;
 using MediatR;
+using RestSharp;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventsService.Api.Controllers;
@@ -17,7 +18,8 @@ namespace EventsService.Api.Controllers;
 public class EventsController : ControllerBase
 {
     private readonly IMediator _mediator;
-    public EventsController(IMediator mediator) => _mediator = mediator;
+    private readonly IRestClient _restClient;
+    public EventsController(IMediator mediator, IRestClient restClient) => (_mediator, _restClient) = (mediator, restClient);
 
     /// <summary>Crea un evento.</summary>
     /// <param name="req">Datos del evento a crear.</param>
