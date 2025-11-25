@@ -1,22 +1,33 @@
-﻿using EventsService.Aplicacion.Commands.CrearEvento;   // CreateEventCommand
+﻿using Api.Controllers;
+using EventsService.Api.Controllers;
+using EventsService.Aplicacion.Commands.CrearEvento;   // CreateEventCommand
+using EventsService.Aplicacion.Commands.Zonas.CrearZonaEvento;
 using EventsService.Dominio.Interfaces;                 // IEventRepository, ICategoryRepository, IScenarioRepository
 //using EventsService.Infraestructura.Mongo;              // EventCollections
 using EventsService.Infraestructura.Repositories;       // EventRepositoryMongo, etc.
+using EventsService.Infrastructura.Cloudinary;
 using EventsService.Infrastructura.mongo;
+using EventsService.Infrastructura.Repositorios;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using log4net;
+using log4net.Config;
 using MediatR;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Serializers;
-using MongoDB.Bson.Serialization;
-using MongoDB.Driver;
-using EventsService.Aplicacion.Commands.Zonas.CrearZonaEvento;
-using EventsService.Infrastructura.Repositorios;
-using System.Reflection;
 using Microsoft.OpenApi.Models;
-using EventsService.Infrastructura.Cloudinary;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Driver;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configurar log4net
+XmlConfigurator.Configure(new FileInfo("log4net.config"));
+builder.Services.AddSingleton<ILog>(provider => LogManager.GetLogger(typeof(EventsController)));
+builder.Services.AddSingleton<ILog>(provider => LogManager.GetLogger(typeof(AsientosController)));
+builder.Services.AddSingleton<ILog>(provider => LogManager.GetLogger(typeof(EscenariosController)));
+builder.Services.AddSingleton<ILog>(provider => LogManager.GetLogger(typeof(ZonasEventoController)));
 
 // ---------------- Swagger ----------------
 builder.Services.AddControllers();
@@ -36,9 +47,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // ---------------- Mongo (desde appsettings) ----------------
-// Sugerencia: en appsettings.json -> "Mongo": { "ConnectionString": "mongodb://127.0.0.1:27017", "Database": "events" }
-var conn = builder.Configuration["Mongo:ConnectionString"] ?? "mongodb://127.0.0.1:27017";
-var dbName = builder.Configuration["Mongo:Database"] ?? "Events";
+var conn = builder.Configuration["Mongo:ConnectionString"];
+var dbName = builder.Configuration["Mongo:Database"];
 
 builder.Services.AddSingleton<IMongoClient>(_ => new MongoClient(conn));
 builder.Services.AddSingleton<IMongoDatabase>(sp =>
@@ -68,6 +78,17 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Creat
 builder.Services.AddInfrastructure(builder.Configuration);   // ← AQUÍ LO REGISTRAS
 
 BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
+
+builder.Services.AddHttpClient("UsuariosClient", client =>
+{
+    var baseUrl = builder.Configuration["UsersService:BaseUrl"];
+
+    if (string.IsNullOrWhiteSpace(baseUrl))
+        throw new InvalidOperationException("Falta la configuración 'UsersService:BaseUrl' en appsettings.");
+
+    client.BaseAddress = new Uri(baseUrl);
+});
+
 var app = builder.Build();
 
 // ---------------- Crear índices mínimos (sin depender de tus clases) ----------------
@@ -96,7 +117,6 @@ if (app.Environment.IsDevelopment())
         c.DocumentTitle = "EventsService API";
     });
 }
-
 
 app.UseMiddleware<MiddlewareExceptions>();
 

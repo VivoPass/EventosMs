@@ -11,3 +11,16 @@ C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Domini
 C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Dominio\obj\Debug\net8.0\ref\EventsService.Dominio.dll
 C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Dominio\obj\Debug\net8.0\EventsService.Dominio.csproj.AssemblyReference.cache
 C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Dominio\obj\Debug\net8.0\EventsService.Dominio.sourcelink.json
+C:\Users\anale\OneDrive\Documentos\UCAB\DESA 2\Proyecto\VivoPass\EventosMs\EventsService.Dominio\bin\Debug\net8.0\EventsService.Dominio.deps.json
+C:\Users\anale\OneDrive\Documentos\UCAB\DESA 2\Proyecto\VivoPass\EventosMs\EventsService.Dominio\bin\Debug\net8.0\EventsService.Dominio.dll
+C:\Users\anale\OneDrive\Documentos\UCAB\DESA 2\Proyecto\VivoPass\EventosMs\EventsService.Dominio\bin\Debug\net8.0\EventsService.Dominio.pdb
+C:\Users\anale\OneDrive\Documentos\UCAB\DESA 2\Proyecto\VivoPass\EventosMs\EventsService.Dominio\obj\Debug\net8.0\EventsService.Dominio.csproj.AssemblyReference.cache
+C:\Users\anale\OneDrive\Documentos\UCAB\DESA 2\Proyecto\VivoPass\EventosMs\EventsService.Dominio\obj\Debug\net8.0\EventsService.Dominio.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\anale\OneDrive\Documentos\UCAB\DESA 2\Proyecto\VivoPass\EventosMs\EventsService.Dominio\obj\Debug\net8.0\EventsService.Dominio.AssemblyInfoInputs.cache
+C:\Users\anale\OneDrive\Documentos\UCAB\DESA 2\Proyecto\VivoPass\EventosMs\EventsService.Dominio\obj\Debug\net8.0\EventsService.Dominio.AssemblyInfo.cs
+C:\Users\anale\OneDrive\Documentos\UCAB\DESA 2\Proyecto\VivoPass\EventosMs\EventsService.Dominio\obj\Debug\net8.0\EventsService.Dominio.csproj.CoreCompileInputs.cache
+C:\Users\anale\OneDrive\Documentos\UCAB\DESA 2\Proyecto\VivoPass\EventosMs\EventsService.Dominio\obj\Debug\net8.0\EventsService.Dominio.sourcelink.json
+C:\Users\anale\OneDrive\Documentos\UCAB\DESA 2\Proyecto\VivoPass\EventosMs\EventsService.Dominio\obj\Debug\net8.0\EventsService.Dominio.dll
+C:\Users\anale\OneDrive\Documentos\UCAB\DESA 2\Proyecto\VivoPass\EventosMs\EventsService.Dominio\obj\Debug\net8.0\refint\EventsService.Dominio.dll
+C:\Users\anale\OneDrive\Documentos\UCAB\DESA 2\Proyecto\VivoPass\EventosMs\EventsService.Dominio\obj\Debug\net8.0\EventsService.Dominio.pdb
+C:\Users\anale\OneDrive\Documentos\UCAB\DESA 2\Proyecto\VivoPass\EventosMs\EventsService.Dominio\obj\Debug\net8.0\ref\EventsService.Dominio.dll

@@ -1,4 +1,5 @@
-﻿using EventsService.Api.DTOs;
+﻿using EventsService.Api.Contracs;
+using EventsService.Api.DTOs;
 using EventsService.Aplicacion.Commands.CrearEvento;
 using EventsService.Aplicacion.Commands.EliminarEvento;
 using EventsService.Aplicacion.Commands.Evento;
@@ -7,8 +8,9 @@ using EventsService.Aplicacion.Queries.ObtenerEvento;
 using EventsService.Aplicacion.Queries.ObtenerTodosEventos;
 using EventsService.Dominio.Excepciones;
 using MediatR;
-using RestSharp;
 using Microsoft.AspNetCore.Mvc;
+using RestSharp;
+using System.Net.Http;
 
 namespace EventsService.Api.Controllers;
 
@@ -18,7 +20,8 @@ namespace EventsService.Api.Controllers;
 public class EventsController : ControllerBase
 {
     private readonly IMediator _mediator;
-    public EventsController(IMediator mediator) => (_mediator) = (mediator);
+    private readonly IHttpClientFactory _httpClientFactory;
+    public EventsController(IMediator mediator, IHttpClientFactory httpClientFactory) => (_mediator, _httpClientFactory) = (mediator, httpClientFactory);
 
     /// <summary>Crea un evento.</summary>
     /// <param name="req">Datos del evento a crear.</param>
@@ -44,6 +47,19 @@ public class EventsController : ControllerBase
             req.Descripcion,
             req.OrganizadorId
         ), ct);
+
+        //Conexion con el MS de Usuarios para la publicacion de la actividad
+        var client = _httpClientFactory.CreateClient("UsuariosClient");
+        var activityBody = new PublishActivityRequest
+        {
+            idUsuario = req.OrganizadorId.ToString(),
+            accion = $"Evento '{req.Nombre}' creado."
+        };
+        const string endpoint = "/api/Usuarios/publishActivity";
+        var httpResponse = await client.PostAsJsonAsync(endpoint, activityBody, ct);
+        if (!httpResponse.IsSuccessStatusCode)
+            Console.WriteLine($"[ADVERTENCIA] Falló la publicación de actividad para" +
+                              $" usuario {req.OrganizadorId}. Status: {httpResponse.StatusCode}");
 
         return CreatedAtAction(nameof(GetEventById), new { id }, new { id });
     }
@@ -106,6 +122,20 @@ public class EventsController : ControllerBase
         // Puente temporal si tu handler devuelve bool:
         if (!ok) throw new NotFoundException("Evento", id);
 
+        //Conexion con el MS de Usuarios para la publicacion de la actividad
+        var result = await _mediator.Send(new GetEventByIdQuery(id), ct);
+        var client = _httpClientFactory.CreateClient("UsuariosClient");
+        var activityBody = new PublishActivityRequest
+        {
+            idUsuario = result.OrganizadorId.ToString(),
+            accion = $"Evento con ID '{result.Id}' modificado."
+        };
+        const string endpoint = "/api/Usuarios/publishActivity";
+        var httpResponse = await client.PostAsJsonAsync(endpoint, activityBody, ct);
+        if (!httpResponse.IsSuccessStatusCode)
+            Console.WriteLine($"[ADVERTENCIA] Falló la publicación de actividad para" +
+                              $" usuario {result.OrganizadorId}. Status: {httpResponse.StatusCode}");
+
         return NoContent();
     }
 
@@ -118,10 +148,25 @@ public class EventsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
     {
+        var result = await _mediator.Send(new GetEventByIdQuery(id), ct);
+
         var ok = await _mediator.Send(new DeleteEventCommand(id), ct);
 
         // Puente temporal si tu handler devuelve bool:
         if (!ok) throw new NotFoundException("Evento", id);
+
+        //Conexion con el MS de Usuarios para la publicacion de la actividad
+        var client = _httpClientFactory.CreateClient("UsuariosClient");
+        var activityBody = new PublishActivityRequest
+        {
+            idUsuario = result.OrganizadorId.ToString(),
+            accion = $"Evento '{result.Nombre}' con ID '{result.Id}' eliminado."
+        };
+        const string endpoint = "/api/Usuarios/publishActivity";
+        var httpResponse = await client.PostAsJsonAsync(endpoint, activityBody, ct);
+        if (!httpResponse.IsSuccessStatusCode)
+            Console.WriteLine($"[ADVERTENCIA] Falló la publicación de actividad para" +
+                              $" usuario {result.OrganizadorId}. Status: {httpResponse.StatusCode}");
 
         return NoContent();
     }
