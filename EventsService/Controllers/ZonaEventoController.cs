@@ -10,16 +10,24 @@ using EventsService.Aplicacion.Commands.Zonas.ModificarZonaEvento;
 using EventsService.Aplicacion.Queries.Zona.ListarZonasEvento;
 using EventsService.Aplicacion.Queries.Zona.ObtenerZonaEvento;
 using EventsService.Dominio.Excepciones;
+using EventsService.Dominio.Excepciones.Infraestructura;
+using log4net;
 
 namespace EventsService.Api.Controllers
 {
     [ApiController]
-    [Route("api/eventos/{eventId:guid}/zonas")]
+    [Route("api/events/{eventId:guid}/zonas")]
     [Produces("application/json")]
     public class ZonasEventoController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public ZonasEventoController(IMediator mediator) => _mediator = mediator;
+        private readonly ILog _log;
+
+        public ZonasEventoController(IMediator mediator, ILog log)
+        {
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _log = log ?? throw new LoggerNullException();
+        }
 
         /// <summary>Crea una zona dentro de un evento y, si aplica, genera asientos.</summary>
         /// <param name="eventId">Id del evento.</param>
@@ -34,10 +42,14 @@ namespace EventsService.Api.Controllers
             [FromBody] CreateZonaEventoCommand body,
             CancellationToken ct)
         {
+            _log.Info($"[ZonasEventoController] POST - Crear zona. EventId='{eventId}', Nombre='{body.Nombre}', Tipo='{body.Tipo}'.");
+
             // Enforce route id
             body.EventId = eventId;
 
             var zonaId = await _mediator.Send(body, ct);
+
+            _log.Info($"[ZonasEventoController] Zona creada correctamente. EventId='{eventId}', ZonaId='{zonaId}'.");
             return CreatedAtAction(nameof(ObtenerZona), new { eventId, zonaId }, new { zonaId });
         }
 
@@ -56,6 +68,8 @@ namespace EventsService.Api.Controllers
             [FromQuery] bool includeSeats = false,
             CancellationToken ct = default)
         {
+            _log.Info($"[ZonasEventoController] GET - Obtener zona. EventId='{eventId}', ZonaId='{zonaId}', IncludeSeats={includeSeats}.");
+
             var result = await _mediator.Send(new ObtenerZonaEventoQuery
             {
                 EventId = eventId,
@@ -63,9 +77,13 @@ namespace EventsService.Api.Controllers
                 IncludeSeats = includeSeats
             }, ct);
 
-            // Puente temporal si la query puede devolver null
-            if (result is null) throw new NotFoundException("ZonaEvento", zonaId);
+            if (result is null)
+            {
+                _log.Warn($"[ZonasEventoController] Zona no encontrada. EventId='{eventId}', ZonaId='{zonaId}'. Lanzando NotFoundException.");
+                throw new NotFoundException("ZonaEvento", zonaId);
+            }
 
+            _log.Debug($"[ZonasEventoController] Zona encontrada. EventId='{eventId}', ZonaId='{zonaId}'.");
             return Ok(result);
         }
 
@@ -86,6 +104,8 @@ namespace EventsService.Api.Controllers
             [FromQuery] bool includeSeats = false,
             CancellationToken ct = default)
         {
+            _log.Info($"[ZonasEventoController] GET - Listar zonas. EventId='{eventId}', Tipo='{tipo}', Estado='{estado}', Search='{search}', IncludeSeats={includeSeats}.");
+
             var result = await _mediator.Send(new ListarZonasEventoQuery
             {
                 EventId = eventId,
@@ -95,6 +115,7 @@ namespace EventsService.Api.Controllers
                 IncludeSeats = includeSeats
             }, ct);
 
+            _log.Debug($"[ZonasEventoController] ListarZonas retornó {result?.Count ?? 0} zonas. EventId='{eventId}'.");
             return Ok(result);
         }
 
@@ -112,17 +133,23 @@ namespace EventsService.Api.Controllers
         public async Task<IActionResult> ModificarZona(
             Guid eventId,
             Guid zonaId,
-            [FromBody] ModificarZonaEventoCommnand body, // si tu tipo tiene el typo, déjalo igual
+            [FromBody] ModificarZonaEventoCommnand body, // respetamos el typo del tipo si ya existe así
             CancellationToken ct)
         {
+            _log.Info($"[ZonasEventoController] PATCH - Modificar zona. EventId='{eventId}', ZonaId='{zonaId}'.");
+
             body.EventId = eventId;
             body.ZonaId = zonaId;
 
             var ok = await _mediator.Send(body, ct);
 
-            // Puente temporal si el handler devuelve bool
-            if (!ok) throw new NotFoundException("ZonaEvento", zonaId);
+            if (!ok)
+            {
+                _log.Warn($"[ZonasEventoController] ModificarZona: Zona no encontrada. EventId='{eventId}', ZonaId='{zonaId}'.");
+                throw new NotFoundException("ZonaEvento", zonaId);
+            }
 
+            _log.Info($"[ZonasEventoController] Zona modificada correctamente. EventId='{eventId}', ZonaId='{zonaId}'.");
             return NoContent();
         }
 
@@ -139,15 +166,21 @@ namespace EventsService.Api.Controllers
             Guid zonaId,
             CancellationToken ct)
         {
+            _log.Info($"[ZonasEventoController] DELETE - Eliminar zona. EventId='{eventId}', ZonaId='{zonaId}'.");
+
             var ok = await _mediator.Send(new EliminarZonaEventoCommand
             {
                 EventId = eventId,
                 ZonaId = zonaId
             }, ct);
 
-            // Puente temporal si el handler devuelve bool
-            if (!ok) throw new NotFoundException("ZonaEvento", zonaId);
+            if (!ok)
+            {
+                _log.Warn($"[ZonasEventoController] EliminarZona: Zona no encontrada. EventId='{eventId}', ZonaId='{zonaId}'.");
+                throw new NotFoundException("ZonaEvento", zonaId);
+            }
 
+            _log.Info($"[ZonasEventoController] Zona eliminada correctamente. EventId='{eventId}', ZonaId='{zonaId}'.");
             return NoContent();
         }
     }

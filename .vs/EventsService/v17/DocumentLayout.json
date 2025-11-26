@@ -1,7 +1,424 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\anale\\OneDrive\\Documentos\\UCAB\\DESA 2\\Proyecto\\VivoPass\\EventosMs\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\escenariocontroller\\escenarioscontroller_search_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\escenariocontroller\\escenarioscontroller_search_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\escenariocontroller\\escenarioscontroller_getbyid_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\escenariocontroller\\escenarioscontroller_getbyid_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\escenariocontroller\\escenarioscontroller_delete_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\escenariocontroller\\escenarioscontroller_delete_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\asientocontroller\\asientoscontroller_crear_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\asientocontroller\\asientoscontroller_crear_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\asiento\\crearasiento\\crearasientocommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\asiento\\crearasiento\\crearasientocommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\asientocontroller\\asientoscontroller_eliminar_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\asientocontroller\\asientoscontroller_eliminar_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\asientocontroller\\asientoscontroller_actualizar_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\asientocontroller\\asientoscontroller_actualizar_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\asientocontroller\\asientoscontroller_listar_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\asientocontroller\\asientoscontroller_listar_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\asientocontroller\\asientoscontroller_obtenerporid_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\asientocontroller\\asientoscontroller_obtenerporid_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92D62984-117D-4B44-8737-CCDE427CCDDD}|EventsService\\EventsService.Api.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice\\controllers\\asientocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{92D62984-117D-4B44-8737-CCDE427CCDDD}|EventsService\\EventsService.Api.csproj|solutionrelative:eventsservice\\controllers\\asientocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\zonaeventocontroller\\zonaseventocontroller_listarzonas_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\zonaeventocontroller\\zonaseventocontroller_listarzonas_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\zonaeventocontroller\\zonaseventocontroller_obtenerzona_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\zonaeventocontroller\\zonaseventocontroller_obtenerzona_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\dtos\\zonas\\zonaeventodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\dtos\\zonas\\zonaeventodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\zonaeventocontroller\\zonaseventocontroller_modificarzona_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\zonaeventocontroller\\zonaseventocontroller_modificarzona_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\zonaeventocontroller\\zonaseventocontroller_eliminarzona_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\zonaeventocontroller\\zonaseventocontroller_eliminarzona_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\zonaeventocontroller\\zonaseventocontroller_crearzona_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\zonaeventocontroller\\zonaseventocontroller_crearzona_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92D62984-117D-4B44-8737-CCDE427CCDDD}|EventsService\\EventsService.Api.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice\\controllers\\zonaeventocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{92D62984-117D-4B44-8737-CCDE427CCDDD}|EventsService\\EventsService.Api.csproj|solutionrelative:eventsservice\\controllers\\zonaeventocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\newfolder\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\newfolder\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\escenariocontroller\\escenarioscontroller_update_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\escenariocontroller\\escenarioscontroller_update_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\queries\\obtenerescenario\\obtenerescenarioquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\queries\\obtenerescenario\\obtenerescenarioquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\dtos\\escenario\\escenariodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\dtos\\escenario\\escenariodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\escenariocontroller\\escenarioscontroller_create_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\escenariocontroller\\escenarioscontroller_create_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92D62984-117D-4B44-8737-CCDE427CCDDD}|EventsService\\EventsService.Api.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice\\controllers\\escenariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{92D62984-117D-4B44-8737-CCDE427CCDDD}|EventsService\\EventsService.Api.csproj|solutionrelative:eventsservice\\controllers\\escenariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\eventscontroller\\eventscontroller_subirfolleto_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\eventscontroller\\eventscontroller_subirfolleto_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\eventscontroller\\eventscontroller_getall_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\eventscontroller\\eventscontroller_getall_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\eventscontroller\\eventscontroller_subirimagen_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\eventscontroller\\eventscontroller_subirimagen_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\eventscontroller\\eventscontroller_geteventbyid_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\eventscontroller\\eventscontroller_geteventbyid_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\eventscontroller\\eventscontroller_delete_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\eventscontroller\\eventscontroller_delete_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\eventscontroller\\eventscontroller_update_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\eventscontroller\\eventscontroller_update_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\asientocontrollertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\asientocontrollertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\eventscontroller\\eventscontroller_createevent_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\eventscontroller\\eventscontroller_createevent_tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\entidades\\evento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\entidades\\evento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\queries\\obtenerevento\\geteventbyidquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\queries\\obtenerevento\\geteventbyidquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92D62984-117D-4B44-8737-CCDE427CCDDD}|EventsService\\EventsService.Api.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice\\controllers\\eventscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{92D62984-117D-4B44-8737-CCDE427CCDDD}|EventsService\\EventsService.Api.csproj|solutionrelative:eventsservice\\controllers\\eventscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\infraestructura\\repositorios\\zonaeventorepositorytests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\infraestructura\\repositorios\\zonaeventorepositorytests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\infraestructura\\repositorios\\scenariorepositorymongotests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\infraestructura\\repositorios\\scenariorepositorymongotests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\infraestructura\\repositorios\\eventrepositorymongotests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\infraestructura\\repositorios\\eventrepositorymongotests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\infraestructura\\repositorios\\escenariozonarepositorytests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\infraestructura\\repositorios\\escenariozonarepositorytests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\infraestructura\\repositorios\\asientorepositorytests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\infraestructura\\repositorios\\asientorepositorytests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92D62984-117D-4B44-8737-CCDE427CCDDD}|EventsService\\EventsService.Api.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice\\contracs\\createeventrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{92D62984-117D-4B44-8737-CCDE427CCDDD}|EventsService\\EventsService.Api.csproj|solutionrelative:eventsservice\\contracs\\createeventrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\zonaeventocontrollertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\zonaeventocontrollertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\escenariocontrollertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\escenariocontrollertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\api\\controllers\\eventscontrollertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\api\\controllers\\eventscontrollertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\aplication\\commands\\zonas\\modificarzonaeventohandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\aplication\\commands\\zonas\\modificarzonaeventohandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\aplication\\commands\\zonas\\eliminarzonaeventohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\aplication\\commands\\zonas\\eliminarzonaeventohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\aplication\\commands\\zonas\\createzonaeventohandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\aplication\\commands\\zonas\\createzonaeventohandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\aplication\\commands\\evento\\updateeventhandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\aplication\\commands\\evento\\updateeventhandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\aplication\\commands\\evento\\deleteeventhandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\aplication\\commands\\evento\\deleteeventhandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\aplication\\commands\\evento\\createeventhandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\aplication\\commands\\evento\\createeventhandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\aplication\\commands\\escenario\\modificarescenariohandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\aplication\\commands\\escenario\\modificarescenariohandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\aplication\\commands\\escenario\\eliminarescenariohandlertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\aplication\\commands\\escenario\\eliminarescenariohandlertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\aplication\\commands\\escenario\\createescenariohandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\aplication\\commands\\escenario\\createescenariohandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\aplication\\commands\\asiento\\eliminarasientohandlertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\aplication\\commands\\asiento\\eliminarasientohandlertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\aplication\\commands\\asiento\\crearasientohandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\aplication\\commands\\asiento\\crearasientohandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.test\\aplication\\commands\\asiento\\actualizarasientohandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47B198A9-F231-43FE-B892-E746B335918A}|EventsService.Test\\EventsService.Test.csproj|solutionrelative:eventsservice.test\\aplication\\commands\\asiento\\actualizarasientohandlertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\crearescenario\\createescenariohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\crearescenario\\createescenariohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\zonas\\modificarzonaevento\\modificarzonaeventohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\zonas\\modificarzonaevento\\modificarzonaeventohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\aplicacion\\modificarzonaeventohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\aplicacion\\modificarzonaeventohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\zonas\\eliminarzonaevento\\eliminarzonaeventohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\zonas\\eliminarzonaevento\\eliminarzonaeventohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\aplicacion\\eliminarzonaeventohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\aplicacion\\eliminarzonaeventohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\zonas\\crearzonaevento\\crearzonaeventohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\zonas\\crearzonaevento\\crearzonaeventohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\zonas\\crearzonaevento\\crearzonaeventocommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\zonas\\crearzonaevento\\crearzonaeventocommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\eliminarescenario\\eliminarescenariohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\eliminarescenario\\eliminarescenariohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\asiento\\actualizarasiento\\actualizarasientohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\asiento\\actualizarasiento\\actualizarasientohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\modificarescenario\\modificarescenariohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\modificarescenario\\modificarescenariohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\aplicacion\\createzonaeventohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\aplicacion\\createzonaeventohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\asiento\\eliminarasiento\\eliminarasientohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\asiento\\eliminarasiento\\eliminarasientohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\aplicacion\\eliminarasientohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\aplicacion\\eliminarasientohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\aplicacion\\actualizarasientohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\aplicacion\\actualizarasientohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\asiento\\crearasiento\\crearasientohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\asiento\\crearasiento\\crearasientohandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\aplicacion\\crearasientohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\aplicacion\\crearasientohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\aplicacion\\modificarescenariohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\aplicacion\\modificarescenariohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\aplicacion\\eliminarescenariohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\aplicacion\\eliminarescenariohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\aplicacion\\createescenariohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\aplicacion\\createescenariohandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\modificarevento\\updateeventhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\modificarevento\\updateeventhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\aplicacion\\updateeventhandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\aplicacion\\updateeventhandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\eliminarevento\\deleteeventhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\eliminarevento\\deleteeventhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\aplicacion\\deleteeventhandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\aplicacion\\deleteeventhandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\eliminarevento\\deleteeventcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\eliminarevento\\deleteeventcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.aplicacion\\commands\\crearevento\\createeventhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F301C763-63BE-412A-994F-D1E7ECD86DAB}|EventsService.Aplicacion\\EventsService.Aplicacion.csproj|solutionrelative:eventsservice.aplicacion\\commands\\crearevento\\createeventhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\aplicacion\\createeventhandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\aplicacion\\createeventhandlerexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.infrastructura\\repositorios\\asientorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|solutionrelative:eventsservice.infrastructura\\repositorios\\asientorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.infrastructura\\repositorios\\escenariozonarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|solutionrelative:eventsservice.infrastructura\\repositorios\\escenariozonarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.infrastructura\\repositorios\\zonaeventorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|solutionrelative:eventsservice.infrastructura\\repositorios\\zonaeventorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.infrastructura\\repositorios\\scenariorepositorymongo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|solutionrelative:eventsservice.infrastructura\\repositorios\\scenariorepositorymongo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.infrastructura\\repositorios\\eventrepositorymongo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|solutionrelative:eventsservice.infrastructura\\repositorios\\eventrepositorymongo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92D62984-117D-4B44-8737-CCDE427CCDDD}|EventsService\\EventsService.Api.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{92D62984-117D-4B44-8737-CCDE427CCDDD}|EventsService\\EventsService.Api.csproj|solutionrelative:eventsservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.infrastructura\\settings\\auditoriadbconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|solutionrelative:eventsservice.infrastructura\\settings\\auditoriadbconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.infrastructura\\repositorios\\auditoriarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|solutionrelative:eventsservice.infrastructura\\repositorios\\auditoriarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.infrastructura\\settings\\eventosdbconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|solutionrelative:eventsservice.infrastructura\\settings\\eventosdbconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.infrastructura\\eventsservice.infrastructura.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|solutionrelative:eventsservice.infrastructura\\eventsservice.infrastructura.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92D62984-117D-4B44-8737-CCDE427CCDDD}|EventsService\\EventsService.Api.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{92D62984-117D-4B44-8737-CCDE427CCDDD}|EventsService\\EventsService.Api.csproj|solutionrelative:eventsservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.infrastructura\\settings\\mongosettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|solutionrelative:eventsservice.infrastructura\\settings\\mongosettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.infrastructura\\interfaces\\iauditoriarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|solutionrelative:eventsservice.infrastructura\\interfaces\\iauditoriarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.infrastructura\\mongo\\eventcollections.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|solutionrelative:eventsservice.infrastructura\\mongo\\eventcollections.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.infrastructura\\repositorios\\categoryrepositorymongo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|solutionrelative:eventsservice.infrastructura\\repositorios\\categoryrepositorymongo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.infrastructura\\mongo\\mongomappings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D8C76CB-C633-4E08-AFCE-F1ECFC607E80}|EventsService.Infrastructura\\EventsService.Infrastructura.csproj|solutionrelative:eventsservice.infrastructura\\mongo\\mongomappings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\infraestructura\\mongodbconnectionexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\infraestructura\\mongodbconnectionexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\infraestructura\\auditoriarepositoryexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\infraestructura\\auditoriarepositoryexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\infraestructura\\loggernullexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\infraestructura\\loggernullexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\infraestructura\\mongodbunnexpectedexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\infraestructura\\mongodbunnexpectedexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\infraestructura\\nombrebdinvalido.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\infraestructura\\nombrebdinvalido.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\excepciones\\infraestructura\\conexionbdinvalida.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\excepciones\\infraestructura\\conexionbdinvalida.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|c:\\users\\ejic2\\onedrive\\escritorio\\api prueba\\eventsservice\\eventsservice.dominio\\valueobjects\\numeracion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE376CB8-A3C5-44FC-91BE-FB4ECDE8F816}|EventsService.Dominio\\EventsService.Dominio.csproj|solutionrelative:eventsservice.dominio\\valueobjects\\numeracion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,8 +426,12 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 7,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
@@ -18,6 +439,1301 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CrearAsientoCommand.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Asiento\\CrearAsiento\\CrearAsientoCommand.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\Asiento\\CrearAsiento\\CrearAsientoCommand.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Asiento\\CrearAsiento\\CrearAsientoCommand.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\Asiento\\CrearAsiento\\CrearAsientoCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T10:24:39.667Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AsientosController_Eliminar_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Eliminar_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Eliminar_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Eliminar_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Eliminar_Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T10:24:08.465Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AsientosController_Crear_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Crear_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Crear_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Crear_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Crear_Tests.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T10:21:13.626Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EscenariosController_Search_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Search_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Search_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Search_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Search_Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:50:33.133Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "EscenariosController_Delete_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Delete_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Delete_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Delete_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Delete_Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:48:27.809Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "EscenariosController_GetById_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_GetById_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_GetById_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_GetById_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_GetById_Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:49:14.725Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AsientosController_Actualizar_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Actualizar_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Actualizar_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Actualizar_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Actualizar_Tests.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAACAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T10:23:05.591Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AsientosController_Listar_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Listar_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Listar_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Listar_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_Listar_Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T10:22:33.866Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AsientosController_ObtenerPorId_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_ObtenerPorId_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_ObtenerPorId_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_ObtenerPorId_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\AsientoController\\AsientosController_ObtenerPorId_Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T10:21:52.023Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ZonasEventoController_EliminarZona_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_EliminarZona_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_EliminarZona_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_EliminarZona_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_EliminarZona_Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T10:12:28.284Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ZonasEventoController_ModificarZona_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_ModificarZona_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_ModificarZona_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_ModificarZona_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_ModificarZona_Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC8AAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T10:11:56.904Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ZonasEventoController_ListarZonas_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_ListarZonas_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_ListarZonas_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_ListarZonas_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_ListarZonas_Tests.cs",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAIwG4AAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T10:11:26.096Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ZonaEventoDto.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\DTOs\\Zonas\\ZonaEventoDto.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\DTOs\\Zonas\\ZonaEventoDto.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\DTOs\\Zonas\\ZonaEventoDto.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\DTOs\\Zonas\\ZonaEventoDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T10:11:05.615Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ZonasEventoController_ObtenerZona_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_ObtenerZona_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_ObtenerZona_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_ObtenerZona_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_ObtenerZona_Tests.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAwwEEAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T10:10:55.338Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AsientoController.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\Controllers\\AsientoController.cs",
+              "RelativeDocumentMoniker": "EventsService\\Controllers\\AsientoController.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\Controllers\\AsientoController.cs",
+              "RelativeToolTip": "EventsService\\Controllers\\AsientoController.cs",
+              "ViewState": "AgIAAHcAAAAAAAAAAAAwwLQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:09:50.33Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ZonasEventoController_CrearZona_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_CrearZona_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_CrearZona_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_CrearZona_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\ZonaEventoController\\ZonasEventoController_CrearZona_Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAIwBgAAABdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T10:08:54.853Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "PagedResult.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\NewFolder\\PagedResult.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\NewFolder\\PagedResult.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\NewFolder\\PagedResult.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\NewFolder\\PagedResult.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:59:02.621Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "EscenarioDto.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\DTOs\\Escenario\\EscenarioDto.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\DTOs\\Escenario\\EscenarioDto.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\DTOs\\Escenario\\EscenarioDto.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\DTOs\\Escenario\\EscenarioDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:55:06.153Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ObtenerEscenarioQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Queries\\ObtenerEscenario\\ObtenerEscenarioQuery.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Queries\\ObtenerEscenario\\ObtenerEscenarioQuery.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Queries\\ObtenerEscenario\\ObtenerEscenarioQuery.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Queries\\ObtenerEscenario\\ObtenerEscenarioQuery.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:53:17.144Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ZonaEventoController.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\Controllers\\ZonaEventoController.cs",
+              "RelativeDocumentMoniker": "EventsService\\Controllers\\ZonaEventoController.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\Controllers\\ZonaEventoController.cs",
+              "RelativeToolTip": "EventsService\\Controllers\\ZonaEventoController.cs",
+              "ViewState": "AgIAAH4AAAAAAAAAAAAwwLsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:57:57.002Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "EscenariosController_Update_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Update_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Update_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Update_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Update_Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:47:26.071Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "EscenariosController_Create_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Create_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Create_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Create_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\EscenarioController\\EscenariosController_Create_Tests.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwDsAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:45:51.655Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "EventsController_SubirFolleto_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_SubirFolleto_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_SubirFolleto_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_SubirFolleto_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_SubirFolleto_Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:39:20.87Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "EventsController_SubirImagen_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_SubirImagen_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_SubirImagen_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_SubirImagen_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_SubirImagen_Tests.cs",
+              "ViewState": "AgIAAHAAAAAAAAAAAAAkwBsAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:36:06.869Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "EventsController_GetAll_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_GetAll_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_GetAll_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_GetAll_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_GetAll_Tests.cs",
+              "ViewState": "AgIAADkAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:33:29.511Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "EventsController_GetEventById_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_GetEventById_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_GetEventById_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_GetEventById_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_GetEventById_Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:29:49.558Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "EventsController_Delete_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_Delete_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_Delete_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_Delete_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_Delete_Tests.cs",
+              "ViewState": "AgIAAHcAAAAAAAAAAAAswJUAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:19:23.197Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "EscenarioController.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\Controllers\\EscenarioController.cs",
+              "RelativeDocumentMoniker": "EventsService\\Controllers\\EscenarioController.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\Controllers\\EscenarioController.cs",
+              "RelativeToolTip": "EventsService\\Controllers\\EscenarioController.cs",
+              "ViewState": "AgIAAGQAAAAAAAAAAAAwwKEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:52:17.393Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "GetEventByIdQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Queries\\ObtenerEvento\\GetEventByIdQuery.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Queries\\ObtenerEvento\\GetEventByIdQuery.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Queries\\ObtenerEvento\\GetEventByIdQuery.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Queries\\ObtenerEvento\\GetEventByIdQuery.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:03:53.807Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "EventsController_Update_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_Update_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_Update_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_Update_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_Update_Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T08:59:33.671Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "Evento.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Entidades\\Evento.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Entidades\\Evento.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Entidades\\Evento.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Entidades\\Evento.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T05:40:48.927Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "EventsController_CreateEvent_Tests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_CreateEvent_Tests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_CreateEvent_Tests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_CreateEvent_Tests.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\EventsController\\EventsController_CreateEvent_Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T08:32:40.031Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "AsientoControllerTest.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\AsientoControllerTest.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\AsientoControllerTest.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\AsientoControllerTest.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\AsientoControllerTest.cs",
+              "ViewState": "AgIAAGQAAAAAAAAAAAAswJ8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:44:20.068Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "ZonaEventoRepositoryTests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Infraestructura\\Repositorios\\ZonaEventoRepositoryTests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Infraestructura\\Repositorios\\ZonaEventoRepositoryTests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Infraestructura\\Repositorios\\ZonaEventoRepositoryTests.cs",
+              "RelativeToolTip": "EventsService.Test\\Infraestructura\\Repositorios\\ZonaEventoRepositoryTests.cs",
+              "ViewState": "AgIAAMwAAAAAAAAAAAAswOEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T08:40:23.806Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "ScenarioRepositoryMongoTests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Infraestructura\\Repositorios\\ScenarioRepositoryMongoTests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Infraestructura\\Repositorios\\ScenarioRepositoryMongoTests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Infraestructura\\Repositorios\\ScenarioRepositoryMongoTests.cs",
+              "RelativeToolTip": "EventsService.Test\\Infraestructura\\Repositorios\\ScenarioRepositoryMongoTests.cs",
+              "ViewState": "AgIAAG8BAAAAAAAAAADwv6sBAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T08:40:17.556Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "EventRepositoryMongoTests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Infraestructura\\Repositorios\\EventRepositoryMongoTests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Infraestructura\\Repositorios\\EventRepositoryMongoTests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Infraestructura\\Repositorios\\EventRepositoryMongoTests.cs",
+              "RelativeToolTip": "EventsService.Test\\Infraestructura\\Repositorios\\EventRepositoryMongoTests.cs",
+              "ViewState": "AgIAAAgBAAAAAAAAAAAwwEQBAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T08:40:11.798Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "EscenarioZonaRepositoryTests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Infraestructura\\Repositorios\\EscenarioZonaRepositoryTests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Infraestructura\\Repositorios\\EscenarioZonaRepositoryTests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Infraestructura\\Repositorios\\EscenarioZonaRepositoryTests.cs",
+              "RelativeToolTip": "EventsService.Test\\Infraestructura\\Repositorios\\EscenarioZonaRepositoryTests.cs",
+              "ViewState": "AgIAANMAAAAAAAAAAAAwwA8BAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T08:39:59.519Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "EventsController.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\Controllers\\EventsController.cs",
+              "RelativeDocumentMoniker": "EventsService\\Controllers\\EventsController.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\Controllers\\EventsController.cs",
+              "RelativeToolTip": "EventsService\\Controllers\\EventsController.cs",
+              "ViewState": "AgIAAHwAAAAAAAAAAAD4v6EAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T05:21:37.6Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "AsientoRepositoryTests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Infraestructura\\Repositorios\\AsientoRepositoryTests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Infraestructura\\Repositorios\\AsientoRepositoryTests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Infraestructura\\Repositorios\\AsientoRepositoryTests.cs",
+              "RelativeToolTip": "EventsService.Test\\Infraestructura\\Repositorios\\AsientoRepositoryTests.cs",
+              "ViewState": "AgIAAEcBAAAAAAAAAAAwwIMBAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T08:39:47.023Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "CreateEventRequest.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\Contracs\\CreateEventRequest.cs",
+              "RelativeDocumentMoniker": "EventsService\\Contracs\\CreateEventRequest.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\Contracs\\CreateEventRequest.cs",
+              "RelativeToolTip": "EventsService\\Contracs\\CreateEventRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T08:34:47.4Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "EscenarioControllerTest.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EscenarioControllerTest.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\EscenarioControllerTest.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EscenarioControllerTest.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\EscenarioControllerTest.cs",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAowHMAAABSAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:38:37.343Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "ZonaEventoControllerTest.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\ZonaEventoControllerTest.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\ZonaEventoControllerTest.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\ZonaEventoControllerTest.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\ZonaEventoControllerTest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:38:42.384Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "CreateZonaEventoHandlerTest.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Zonas\\CreateZonaEventoHandlerTest.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Aplication\\Commands\\Zonas\\CreateZonaEventoHandlerTest.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Zonas\\CreateZonaEventoHandlerTest.cs",
+              "RelativeToolTip": "EventsService.Test\\Aplication\\Commands\\Zonas\\CreateZonaEventoHandlerTest.cs",
+              "ViewState": "AgIAANwAAAAAAAAAAAAwwBgBAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:37:53.1Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "EliminarZonaEventoHandler.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Zonas\\EliminarZonaEventoHandler.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Aplication\\Commands\\Zonas\\EliminarZonaEventoHandler.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Zonas\\EliminarZonaEventoHandler.cs",
+              "RelativeToolTip": "EventsService.Test\\Aplication\\Commands\\Zonas\\EliminarZonaEventoHandler.cs",
+              "ViewState": "AgIAAFsAAAAAAAAAAAAwwJcAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:37:58.676Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "ModificarZonaEventoHandlerTest.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Zonas\\ModificarZonaEventoHandlerTest.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Aplication\\Commands\\Zonas\\ModificarZonaEventoHandlerTest.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Zonas\\ModificarZonaEventoHandlerTest.cs",
+              "RelativeToolTip": "EventsService.Test\\Aplication\\Commands\\Zonas\\ModificarZonaEventoHandlerTest.cs",
+              "ViewState": "AgIAAKgAAAAAAAAAAAAwwNAAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:37:58.33Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "UpdateEventHandlerTest.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Evento\\UpdateEventHandlerTest.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Aplication\\Commands\\Evento\\UpdateEventHandlerTest.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Evento\\UpdateEventHandlerTest.cs",
+              "RelativeToolTip": "EventsService.Test\\Aplication\\Commands\\Evento\\UpdateEventHandlerTest.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAADwv1sAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:37:23.404Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "EventsControllerTest.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsControllerTest.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Api\\Controllers\\EventsControllerTest.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Api\\Controllers\\EventsControllerTest.cs",
+              "RelativeToolTip": "EventsService.Test\\Api\\Controllers\\EventsControllerTest.cs",
+              "ViewState": "AgIAAFYBAAAAAAAAAADwv5IBAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:17:25.454Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "DeleteEventHandlerTest.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Evento\\DeleteEventHandlerTest.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Aplication\\Commands\\Evento\\DeleteEventHandlerTest.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Evento\\DeleteEventHandlerTest.cs",
+              "RelativeToolTip": "EventsService.Test\\Aplication\\Commands\\Evento\\DeleteEventHandlerTest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:37:23.853Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "CreateEventHandlerTest.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Evento\\CreateEventHandlerTest.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Aplication\\Commands\\Evento\\CreateEventHandlerTest.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Evento\\CreateEventHandlerTest.cs",
+              "RelativeToolTip": "EventsService.Test\\Aplication\\Commands\\Evento\\CreateEventHandlerTest.cs",
+              "ViewState": "AgIAADkAAAAAAAAAAAAowHMAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:37:12.589Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "ModificarEscenarioHandlerTest.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Escenario\\ModificarEscenarioHandlerTest.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Aplication\\Commands\\Escenario\\ModificarEscenarioHandlerTest.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Escenario\\ModificarEscenarioHandlerTest.cs",
+              "RelativeToolTip": "EventsService.Test\\Aplication\\Commands\\Escenario\\ModificarEscenarioHandlerTest.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAAAwwHEAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:37:03.49Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "EliminarEscenarioHandlerTests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Escenario\\EliminarEscenarioHandlerTests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Aplication\\Commands\\Escenario\\EliminarEscenarioHandlerTests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Escenario\\EliminarEscenarioHandlerTests.cs",
+              "RelativeToolTip": "EventsService.Test\\Aplication\\Commands\\Escenario\\EliminarEscenarioHandlerTests.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAowEAAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:36:51.322Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "CreateEscenarioHandlerTest.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Escenario\\CreateEscenarioHandlerTest.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Aplication\\Commands\\Escenario\\CreateEscenarioHandlerTest.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Escenario\\CreateEscenarioHandlerTest.cs",
+              "RelativeToolTip": "EventsService.Test\\Aplication\\Commands\\Escenario\\CreateEscenarioHandlerTest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:36:41.691Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "EliminarAsientoHandlerTests.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Asiento\\EliminarAsientoHandlerTests.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Aplication\\Commands\\Asiento\\EliminarAsientoHandlerTests.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Asiento\\EliminarAsientoHandlerTests.cs",
+              "RelativeToolTip": "EventsService.Test\\Aplication\\Commands\\Asiento\\EliminarAsientoHandlerTests.cs",
+              "ViewState": "AgIAAGgAAAAAAAAAAAAwwKQAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:36:35.071Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "CrearAsientoHandlerTest.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Asiento\\CrearAsientoHandlerTest.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Aplication\\Commands\\Asiento\\CrearAsientoHandlerTest.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Asiento\\CrearAsientoHandlerTest.cs",
+              "RelativeToolTip": "EventsService.Test\\Aplication\\Commands\\Asiento\\CrearAsientoHandlerTest.cs",
+              "ViewState": "AgIAAHUAAAAAAAAAAAAwwJIAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:36:24.074Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "ActualizarAsientoHandlerTest.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Asiento\\ActualizarAsientoHandlerTest.cs",
+              "RelativeDocumentMoniker": "EventsService.Test\\Aplication\\Commands\\Asiento\\ActualizarAsientoHandlerTest.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Test\\Aplication\\Commands\\Asiento\\ActualizarAsientoHandlerTest.cs",
+              "RelativeToolTip": "EventsService.Test\\Aplication\\Commands\\Asiento\\ActualizarAsientoHandlerTest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAANIAAABPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T07:34:38.396Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "ModificarZonaEventoHandler.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Zonas\\ModificarZonaEvento\\ModificarZonaEventoHandler.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\Zonas\\ModificarZonaEvento\\ModificarZonaEventoHandler.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Zonas\\ModificarZonaEvento\\ModificarZonaEventoHandler.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\Zonas\\ModificarZonaEvento\\ModificarZonaEventoHandler.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAkwF4AAAB5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:38:19.443Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 59,
+              "Title": "EliminarZonaEventoHandlerException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\EliminarZonaEventoHandlerException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Aplicacion\\EliminarZonaEventoHandlerException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\EliminarZonaEventoHandlerException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Aplicacion\\EliminarZonaEventoHandlerException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:38:00.589Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "EliminarZonaEventoHandler.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Zonas\\EliminarZonaEvento\\EliminarZonaEventoHandler.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\Zonas\\EliminarZonaEvento\\EliminarZonaEventoHandler.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Zonas\\EliminarZonaEvento\\EliminarZonaEventoHandler.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\Zonas\\EliminarZonaEvento\\EliminarZonaEventoHandler.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAywDIAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:36:26.612Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "CreateEscenarioHandler.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\CrearEscenario\\CreateEscenarioHandler.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\CrearEscenario\\CreateEscenarioHandler.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\CrearEscenario\\CreateEscenarioHandler.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\CrearEscenario\\CreateEscenarioHandler.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAkwCEAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:07:56.788Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "ModificarZonaEventoHandlerException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\ModificarZonaEventoHandlerException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Aplicacion\\ModificarZonaEventoHandlerException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\ModificarZonaEventoHandlerException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Aplicacion\\ModificarZonaEventoHandlerException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:41:59.434Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 61,
+              "Title": "CrearZonaEventoCommand.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Zonas\\CrearZonaEvento\\CrearZonaEventoCommand.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\Zonas\\CrearZonaEvento\\CrearZonaEventoCommand.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Zonas\\CrearZonaEvento\\CrearZonaEventoCommand.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\Zonas\\CrearZonaEvento\\CrearZonaEventoCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:35:30.621Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 65,
+              "Title": "CreateZonaEventoHandlerException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\CreateZonaEventoHandlerException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Aplicacion\\CreateZonaEventoHandlerException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\CreateZonaEventoHandlerException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Aplicacion\\CreateZonaEventoHandlerException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:33:09.879Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "CrearZonaEventoHandler.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Zonas\\CrearZonaEvento\\CrearZonaEventoHandler.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\Zonas\\CrearZonaEvento\\CrearZonaEventoHandler.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Zonas\\CrearZonaEvento\\CrearZonaEventoHandler.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\Zonas\\CrearZonaEvento\\CrearZonaEventoHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:28:50.432Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 66,
+              "Title": "EliminarAsientoHandler.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Asiento\\EliminarAsiento\\EliminarAsientoHandler.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\Asiento\\EliminarAsiento\\EliminarAsientoHandler.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Asiento\\EliminarAsiento\\EliminarAsientoHandler.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\Asiento\\EliminarAsiento\\EliminarAsientoHandler.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAYwEYAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:24:14.313Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 64,
+              "Title": "ModificarEscenarioHandler.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\ModificarEscenario\\ModificarEscenarioHandler.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\ModificarEscenario\\ModificarEscenarioHandler.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\ModificarEscenario\\ModificarEscenarioHandler.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\ModificarEscenario\\ModificarEscenarioHandler.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAkwEIAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:13:18.578Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 63,
+              "Title": "ActualizarAsientoHandler.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Asiento\\ActualizarAsiento\\ActualizarAsientoHandler.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\Asiento\\ActualizarAsiento\\ActualizarAsientoHandler.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Asiento\\ActualizarAsiento\\ActualizarAsientoHandler.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\Asiento\\ActualizarAsiento\\ActualizarAsientoHandler.cs",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAkwGYAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:21:16.501Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 62,
+              "Title": "EliminarEscenarioHandler.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\EliminarEscenario\\EliminarEscenarioHandler.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\EliminarEscenario\\EliminarEscenarioHandler.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\EliminarEscenario\\EliminarEscenarioHandler.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\EliminarEscenario\\EliminarEscenarioHandler.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwCUAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:11:02.056Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 67,
+              "Title": "EliminarAsientoHandlerException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\EliminarAsientoHandlerException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Aplicacion\\EliminarAsientoHandlerException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\EliminarAsientoHandlerException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Aplicacion\\EliminarAsientoHandlerException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:26:40.536Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 68,
+              "Title": "ActualizarAsientoHandlerException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\ActualizarAsientoHandlerException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Aplicacion\\ActualizarAsientoHandlerException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\ActualizarAsientoHandlerException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Aplicacion\\ActualizarAsientoHandlerException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:23:52.435Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 70,
+              "Title": "CrearAsientoHandlerException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\CrearAsientoHandlerException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Aplicacion\\CrearAsientoHandlerException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\CrearAsientoHandlerException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Aplicacion\\CrearAsientoHandlerException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:20:09.804Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 69,
+              "Title": "CrearAsientoHandler.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Asiento\\CrearAsiento\\CrearAsientoHandler.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\Asiento\\CrearAsiento\\CrearAsientoHandler.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\Asiento\\CrearAsiento\\CrearAsientoHandler.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\Asiento\\CrearAsiento\\CrearAsientoHandler.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAIwEUAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:16:17.132Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 71,
+              "Title": "ModificarEscenarioHandlerException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\ModificarEscenarioHandlerException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Aplicacion\\ModificarEscenarioHandlerException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\ModificarEscenarioHandlerException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Aplicacion\\ModificarEscenarioHandlerException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:15:48.586Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 72,
+              "Title": "EliminarEscenarioHandlerException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\EliminarEscenarioHandlerException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Aplicacion\\EliminarEscenarioHandlerException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\EliminarEscenarioHandlerException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Aplicacion\\EliminarEscenarioHandlerException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:12:47.95Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 73,
+              "Title": "CreateEscenarioHandlerException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\CreateEscenarioHandlerException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Aplicacion\\CreateEscenarioHandlerException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\CreateEscenarioHandlerException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Aplicacion\\CreateEscenarioHandlerException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T06:09:39.761Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 75,
+              "Title": "UpdateEventHandlerException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\UpdateEventHandlerException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Aplicacion\\UpdateEventHandlerException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\UpdateEventHandlerException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Aplicacion\\UpdateEventHandlerException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T05:59:50.147Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 74,
+              "Title": "UpdateEventHandler.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\ModificarEvento\\UpdateEventHandler.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\ModificarEvento\\UpdateEventHandler.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\ModificarEvento\\UpdateEventHandler.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\ModificarEvento\\UpdateEventHandler.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAADwvygAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T05:58:10.799Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 77,
+              "Title": "DeleteEventHandlerException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\DeleteEventHandlerException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Aplicacion\\DeleteEventHandlerException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\DeleteEventHandlerException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Aplicacion\\DeleteEventHandlerException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T05:57:32.708Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 76,
+              "Title": "DeleteEventHandler.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\EliminarEvento\\DeleteEventHandler.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\EliminarEvento\\DeleteEventHandler.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\EliminarEvento\\DeleteEventHandler.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\EliminarEvento\\DeleteEventHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T05:54:40.342Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 78,
+              "Title": "DeleteEventCommand.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\EliminarEvento\\DeleteEventCommand.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\EliminarEvento\\DeleteEventCommand.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\EliminarEvento\\DeleteEventCommand.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\EliminarEvento\\DeleteEventCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T05:54:39.748Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 80,
+              "Title": "CreateEventHandlerException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\CreateEventHandlerException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Aplicacion\\CreateEventHandlerException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Aplicacion\\CreateEventHandlerException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Aplicacion\\CreateEventHandlerException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T05:51:58.594Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 79,
+              "Title": "CreateEventHandler.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\CrearEvento\\CreateEventHandler.cs",
+              "RelativeDocumentMoniker": "EventsService.Aplicacion\\Commands\\CrearEvento\\CreateEventHandler.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\Commands\\CrearEvento\\CreateEventHandler.cs",
+              "RelativeToolTip": "EventsService.Aplicacion\\Commands\\CrearEvento\\CreateEventHandler.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAwEAAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T05:45:50.981Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 83,
+              "Title": "ZonaEventoRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Repositorios\\ZonaEventoRepository.cs",
+              "RelativeDocumentMoniker": "EventsService.Infrastructura\\Repositorios\\ZonaEventoRepository.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Repositorios\\ZonaEventoRepository.cs",
+              "RelativeToolTip": "EventsService.Infrastructura\\Repositorios\\ZonaEventoRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAABVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T05:19:11.929Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 81,
+              "Title": "AsientoRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Repositorios\\AsientoRepository.cs",
+              "RelativeDocumentMoniker": "EventsService.Infrastructura\\Repositorios\\AsientoRepository.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Repositorios\\AsientoRepository.cs",
+              "RelativeToolTip": "EventsService.Infrastructura\\Repositorios\\AsientoRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T05:19:00.02Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 82,
+              "Title": "EscenarioZonaRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Repositorios\\EscenarioZonaRepository.cs",
+              "RelativeDocumentMoniker": "EventsService.Infrastructura\\Repositorios\\EscenarioZonaRepository.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Repositorios\\EscenarioZonaRepository.cs",
+              "RelativeToolTip": "EventsService.Infrastructura\\Repositorios\\EscenarioZonaRepository.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAiwBMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T05:14:00.42Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 84,
+              "Title": "ScenarioRepositoryMongo.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Repositorios\\ScenarioRepositoryMongo.cs",
+              "RelativeDocumentMoniker": "EventsService.Infrastructura\\Repositorios\\ScenarioRepositoryMongo.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Repositorios\\ScenarioRepositoryMongo.cs",
+              "RelativeToolTip": "EventsService.Infrastructura\\Repositorios\\ScenarioRepositoryMongo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T05:11:31.665Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 90,
+              "Title": "EventsService.Infrastructura.csproj",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\EventsService.Infrastructura.csproj",
+              "RelativeDocumentMoniker": "EventsService.Infrastructura\\EventsService.Infrastructura.csproj",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\EventsService.Infrastructura.csproj",
+              "RelativeToolTip": "EventsService.Infrastructura\\EventsService.Infrastructura.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-11-26T04:51:01.923Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 91,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\Program.cs",
+              "RelativeDocumentMoniker": "EventsService\\Program.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\Program.cs",
+              "RelativeToolTip": "EventsService\\Program.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAIwDgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:44:47.609Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 89,
+              "Title": "EventosDbConfig.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Settings\\EventosDbConfig.cs",
+              "RelativeDocumentMoniker": "EventsService.Infrastructura\\Settings\\EventosDbConfig.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Settings\\EventosDbConfig.cs",
+              "RelativeToolTip": "EventsService.Infrastructura\\Settings\\EventosDbConfig.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:44:11.688Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 85,
+              "Title": "EventRepositoryMongo.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Repositorios\\EventRepositoryMongo.cs",
+              "RelativeDocumentMoniker": "EventsService.Infrastructura\\Repositorios\\EventRepositoryMongo.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Repositorios\\EventRepositoryMongo.cs",
+              "RelativeToolTip": "EventsService.Infrastructura\\Repositorios\\EventRepositoryMongo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:40:10.623Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 93,
+              "Title": "IAuditoriaRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Interfaces\\IAuditoriaRepository.cs",
+              "RelativeDocumentMoniker": "EventsService.Infrastructura\\Interfaces\\IAuditoriaRepository.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Interfaces\\IAuditoriaRepository.cs",
+              "RelativeToolTip": "EventsService.Infrastructura\\Interfaces\\IAuditoriaRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:24:30.178Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 87,
+              "Title": "AuditoriaDbConfig.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Settings\\AuditoriaDbConfig.cs",
+              "RelativeDocumentMoniker": "EventsService.Infrastructura\\Settings\\AuditoriaDbConfig.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Settings\\AuditoriaDbConfig.cs",
+              "RelativeToolTip": "EventsService.Infrastructura\\Settings\\AuditoriaDbConfig.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:23:47.902Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 86,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\appsettings.json",
+              "RelativeDocumentMoniker": "EventsService\\appsettings.json",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\appsettings.json",
+              "RelativeToolTip": "EventsService\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-26T04:35:14.617Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 88,
+              "Title": "AuditoriaRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Repositorios\\AuditoriaRepository.cs",
+              "RelativeDocumentMoniker": "EventsService.Infrastructura\\Repositorios\\AuditoriaRepository.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Repositorios\\AuditoriaRepository.cs",
+              "RelativeToolTip": "EventsService.Infrastructura\\Repositorios\\AuditoriaRepository.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAYwDoAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:25:30.696Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 94,
+              "Title": "EventCollections.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\mongo\\EventCollections.cs",
+              "RelativeDocumentMoniker": "EventsService.Infrastructura\\mongo\\EventCollections.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\mongo\\EventCollections.cs",
+              "RelativeToolTip": "EventsService.Infrastructura\\mongo\\EventCollections.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:36:01.157Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 95,
+              "Title": "CategoryRepositoryMongo.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Repositorios\\CategoryRepositoryMongo.cs",
+              "RelativeDocumentMoniker": "EventsService.Infrastructura\\Repositorios\\CategoryRepositoryMongo.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Repositorios\\CategoryRepositoryMongo.cs",
+              "RelativeToolTip": "EventsService.Infrastructura\\Repositorios\\CategoryRepositoryMongo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:38:38.763Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 92,
+              "Title": "MongoSettings.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Settings\\MongoSettings.cs",
+              "RelativeDocumentMoniker": "EventsService.Infrastructura\\Settings\\MongoSettings.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\Settings\\MongoSettings.cs",
+              "RelativeToolTip": "EventsService.Infrastructura\\Settings\\MongoSettings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:23:18.955Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 96,
+              "Title": "MongoMappings.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\mongo\\MongoMappings.cs",
+              "RelativeDocumentMoniker": "EventsService.Infrastructura\\mongo\\MongoMappings.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\mongo\\MongoMappings.cs",
+              "RelativeToolTip": "EventsService.Infrastructura\\mongo\\MongoMappings.cs",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:36:00.124Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 97,
+              "Title": "MongoDBConnectionException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Infraestructura\\MongoDBConnectionException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Infraestructura\\MongoDBConnectionException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Infraestructura\\MongoDBConnectionException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Infraestructura\\MongoDBConnectionException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:33:15.582Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 98,
+              "Title": "AuditoriaRepositoryException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Infraestructura\\AuditoriaRepositoryException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Infraestructura\\AuditoriaRepositoryException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Infraestructura\\AuditoriaRepositoryException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Infraestructura\\AuditoriaRepositoryException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:31:44.681Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 99,
+              "Title": "LoggerNullException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Infraestructura\\LoggerNullException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Infraestructura\\LoggerNullException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Infraestructura\\LoggerNullException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Infraestructura\\LoggerNullException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:31:13.991Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 100,
+              "Title": "MongoDBUnnexpectedException.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Infraestructura\\MongoDBUnnexpectedException.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Infraestructura\\MongoDBUnnexpectedException.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Infraestructura\\MongoDBUnnexpectedException.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Infraestructura\\MongoDBUnnexpectedException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:30:45.173Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 101,
+              "Title": "NombreBdInvalido.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Infraestructura\\NombreBdInvalido.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Infraestructura\\NombreBdInvalido.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Infraestructura\\NombreBdInvalido.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Infraestructura\\NombreBdInvalido.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:30:16.512Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 102,
+              "Title": "ConexionBdInvalida.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Infraestructura\\ConexionBdInvalida.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\Excepciones\\Infraestructura\\ConexionBdInvalida.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\Excepciones\\Infraestructura\\ConexionBdInvalida.cs",
+              "RelativeToolTip": "EventsService.Dominio\\Excepciones\\Infraestructura\\ConexionBdInvalida.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:29:46.652Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 103,
+              "Title": "Numeracion.cs",
+              "DocumentMoniker": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\ValueObjects\\Numeracion.cs",
+              "RelativeDocumentMoniker": "EventsService.Dominio\\ValueObjects\\Numeracion.cs",
+              "ToolTip": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\ValueObjects\\Numeracion.cs",
+              "RelativeToolTip": "EventsService.Dominio\\ValueObjects\\Numeracion.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T04:10:49.689Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{269a02dc-6af8-11d3-bdc4-00c04f688e50}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 396,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
             }
           ]
         }

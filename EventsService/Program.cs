@@ -6,8 +6,10 @@ using EventsService.Dominio.Interfaces;                 // IEventRepository, ICa
 //using EventsService.Infraestructura.Mongo;              // EventCollections
 using EventsService.Infraestructura.Repositories;       // EventRepositoryMongo, etc.
 using EventsService.Infrastructura.Cloudinary;
+using EventsService.Infrastructura.Interfaces;
 using EventsService.Infrastructura.mongo;
 using EventsService.Infrastructura.Repositorios;
+using EventsService.Infrastructura.Settings;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using log4net;
@@ -58,6 +60,8 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
 });
 builder.Services.AddSingleton<EventCollections>();
 
+builder.Services.AddSingleton<AuditoriaDbConfig>();
+
 // ---------------- Repositorios ----------------
 builder.Services.AddScoped<IEventRepository, EventRepositoryMongo>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepositoryMongo>();
@@ -65,6 +69,10 @@ builder.Services.AddScoped<IScenarioRepository, ScenarioRepositoryMongo>();
 builder.Services.AddScoped<IAsientoRepository, AsientoRepository>();
 builder.Services.AddScoped<IZonaEventoRepository, ZonaEventoRepository>();
 builder.Services.AddScoped<IEscenarioZonaRepository, EscenarioZonaRepository>();
+builder.Services.AddScoped<IAuditoriaRepository, AuditoriaRepository>();
+
+// Logger
+builder.Services.AddSingleton<ILog>(LogManager.GetLogger(typeof(Program)));
 
 // ---------------- MediatR (v12+) ----------------
 builder.Services.AddMediatR(cfg =>

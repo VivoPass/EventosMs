@@ -845,7 +845,8 @@
       "EventsService.Aplicacion/1.0.0": {
         "dependencies": {
           "EventsService.Dominio": "1.0.0",
-          "MediatR": "13.1.0"
+          "MediatR": "13.1.0",
+          "log4net": "3.2.0"
         },
         "runtime": {
           "EventsService.Aplicacion.dll": {
@@ -870,7 +871,8 @@
           "CloudinaryDotNet": "1.27.8",
           "EventsService.Dominio": "1.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "10.0.0",
-          "MongoDB.Driver": "3.5.0"
+          "MongoDB.Driver": "3.5.0",
+          "log4net": "3.2.0"
         },
         "runtime": {
           "EventsService.Infrastructura.dll": {

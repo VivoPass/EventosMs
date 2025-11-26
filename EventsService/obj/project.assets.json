@@ -1583,7 +1583,8 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "EventsService.Dominio": "1.0.0",
-          "MediatR": "13.1.0"
+          "MediatR": "13.1.0",
+          "log4net": "3.2.0"
         },
         "compile": {
           "bin/placeholder/EventsService.Aplicacion.dll": {}
@@ -1612,7 +1613,8 @@
           "CloudinaryDotNet": "1.27.8",
           "EventsService.Dominio": "1.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "10.0.0",
-          "MongoDB.Driver": "3.5.0"
+          "MongoDB.Driver": "3.5.0",
+          "log4net": "3.2.0"
         },
         "compile": {
           "bin/placeholder/EventsService.Infrastructura.dll": {}
@@ -5305,23 +5307,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\anale\\.nuget\\packages\\": {},
+    "C:\\Users\\ejic2\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\anale\\OneDrive\\Documentos\\UCAB\\DESA 2\\Proyecto\\VivoPass\\EventosMs\\EventsService\\EventsService.Api.csproj",
+      "projectUniqueName": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\EventsService.Api.csproj",
       "projectName": "EventsService.Api",
-      "projectPath": "C:\\Users\\anale\\OneDrive\\Documentos\\UCAB\\DESA 2\\Proyecto\\VivoPass\\EventosMs\\EventsService\\EventsService.Api.csproj",
-      "packagesPath": "C:\\Users\\anale\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\anale\\OneDrive\\Documentos\\UCAB\\DESA 2\\Proyecto\\VivoPass\\EventosMs\\EventsService\\obj\\",
+      "projectPath": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\EventsService.Api.csproj",
+      "packagesPath": "C:\\Users\\ejic2\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\anale\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ejic2\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -5336,14 +5338,14 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\anale\\OneDrive\\Documentos\\UCAB\\DESA 2\\Proyecto\\VivoPass\\EventosMs\\EventsService.Aplicacion\\EventsService.Aplicacion.csproj": {
-              "projectPath": "C:\\Users\\anale\\OneDrive\\Documentos\\UCAB\\DESA 2\\Proyecto\\VivoPass\\EventosMs\\EventsService.Aplicacion\\EventsService.Aplicacion.csproj"
+            "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\EventsService.Aplicacion.csproj": {
+              "projectPath": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Aplicacion\\EventsService.Aplicacion.csproj"
             },
-            "C:\\Users\\anale\\OneDrive\\Documentos\\UCAB\\DESA 2\\Proyecto\\VivoPass\\EventosMs\\EventsService.Dominio\\EventsService.Dominio.csproj": {
-              "projectPath": "C:\\Users\\anale\\OneDrive\\Documentos\\UCAB\\DESA 2\\Proyecto\\VivoPass\\EventosMs\\EventsService.Dominio\\EventsService.Dominio.csproj"
+            "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\EventsService.Dominio.csproj": {
+              "projectPath": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Dominio\\EventsService.Dominio.csproj"
             },
-            "C:\\Users\\anale\\OneDrive\\Documentos\\UCAB\\DESA 2\\Proyecto\\VivoPass\\EventosMs\\EventsService.Infrastructura\\EventsService.Infrastructura.csproj": {
-              "projectPath": "C:\\Users\\anale\\OneDrive\\Documentos\\UCAB\\DESA 2\\Proyecto\\VivoPass\\EventosMs\\EventsService.Infrastructura\\EventsService.Infrastructura.csproj"
+            "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\EventsService.Infrastructura.csproj": {
+              "projectPath": "C:\\Users\\ejic2\\OneDrive\\Escritorio\\API prueba\\EventsService\\EventsService.Infrastructura\\EventsService.Infrastructura.csproj"
             }
           }
         }
@@ -5358,7 +5360,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -5412,7 +5414,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

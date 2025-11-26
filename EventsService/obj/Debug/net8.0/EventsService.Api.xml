@@ -89,14 +89,10 @@
             <response code="404">No existe.</response>
         </member>
         <member name="M:EventsService.Api.Controllers.EventsController.SubirImagen(System.Guid,Microsoft.AspNetCore.Http.IFormFile,System.Threading.CancellationToken)">
-            <summary>
-            Sube una imagen para un evento y guarda la URL en el evento.
-            </summary>
+            <summary>Sube una imagen para un evento y guarda la URL en el evento.</summary>
         </member>
         <member name="M:EventsService.Api.Controllers.EventsController.SubirFolleto(System.Guid,Microsoft.AspNetCore.Http.IFormFile,System.Threading.CancellationToken)">
-            <summary>
-            Sube un folleto (PDF u otro archivo) para un evento y guarda la URL en el evento.
-            </summary>
+            <summary>Sube un folleto (PDF u otro archivo) para un evento y guarda la URL en el evento.</summary>
         </member>
         <member name="M:EventsService.Api.Controllers.ZonasEventoController.CrearZona(System.Guid,EventsService.Aplicacion.Commands.Zonas.CrearZonaEvento.CreateZonaEventoCommand,System.Threading.CancellationToken)">
             <summary>Crea una zona dentro de un evento y, si aplica, genera asientos.</summary>
