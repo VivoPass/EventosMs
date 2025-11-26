@@ -57,6 +57,10 @@
             "MediatR": {
               "target": "Package",
               "version": "[13.1.0, )"
+            },
+            "log4net": {
+              "target": "Package",
+              "version": "[3.2.0, )"
             }
           },
           "imports": [
@@ -211,6 +215,10 @@
             "MongoDB.Driver": {
               "target": "Package",
               "version": "[3.5.0, )"
+            },
+            "log4net": {
+              "target": "Package",
+              "version": "[3.2.0, )"
             }
           },
           "imports": [
@@ -401,9 +409,21 @@
               "target": "Package",
               "version": "[3.5.0, )"
             },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[112.1.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"
+            },
+            "log4net": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
+            "log4net.Appender.MongoDbAppender": {
+              "target": "Package",
+              "version": "[1.1.0, )"
             }
           },
           "imports": [

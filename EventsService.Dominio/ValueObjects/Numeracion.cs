@@ -10,7 +10,7 @@ namespace EventsService.Dominio.ValueObjects
     public class Numeracion
     {
         [BsonElement("modo")]
-        public string Modo { get; set; } = "filas-columnas"; // sin-asientos | filas-columnas | lista-manual
+        public string Modo { get; set; } = "filas-columnas";
 
         [BsonElement("filas")]
         public int? Filas { get; set; }
@@ -19,9 +19,9 @@ namespace EventsService.Dominio.ValueObjects
         public int? Columnas { get; set; }
 
         [BsonElement("prefijoFila")]
-        public string? PrefijoFila { get; set; } // "A" => A,B,...,Z,AA,...
+        public string? PrefijoFila { get; set; } 
 
         [BsonElement("prefijoAsiento")]
-        public string? PrefijoAsiento { get; set; } // ej. "S-"
+        public string? PrefijoAsiento { get; set; } 
     }
 }

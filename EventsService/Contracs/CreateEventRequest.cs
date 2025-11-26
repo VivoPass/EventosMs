@@ -9,5 +9,6 @@ public record CreateEventRequest(
     int AforoMaximo,
     string? Tipo,
     string? Lugar,
-    string? Descripcion
+    string? Descripcion,
+    Guid OrganizadorId
 );

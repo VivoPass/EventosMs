@@ -18,9 +18,10 @@ public class MiddlewareExceptions
         {
             await Write(ctx, 422, "Unprocessable Entity", ex.Message);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            await Write(ctx, 500, "Internal Server Error", "Unexpected error.");
+            Console.WriteLine(ex);
+            await Write(ctx, 500, "Internal Server Error", ex.ToString() );
         }
     }
 

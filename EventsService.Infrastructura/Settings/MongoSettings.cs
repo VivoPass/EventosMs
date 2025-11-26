@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace EventsService.Infrastructura.Settings
 {
-    public sealed class MongoSettings
+    public class MongoDbSettings
     {
-        public string ConnectionString { get; init; } = "mongodb://localhost:27017";
-        public string Database { get; init; } = "Events";
+        public string ConnectionString { get; set; } = string.Empty;
+        public string Database { get; set; } = string.Empty;
+        public string AuditoriasDatabaseName { get; set; } = string.Empty;
     }
 }

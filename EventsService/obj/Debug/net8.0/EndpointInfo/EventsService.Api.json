@@ -6,7 +6,7 @@
     "version": "v1"
   },
   "paths": {
-    "/api/eventos/{eventId}/zonas/{zonaId}/asientos": {
+    "/api/events/{eventId}/zonas/{zonaId}/asientos": {
       "post": {
         "tags": [
           "Asientos"
@@ -140,7 +140,7 @@
         }
       }
     },
-    "/api/eventos/{eventId}/zonas/{zonaId}/asientos/{asientoId}": {
+    "/api/events/{eventId}/zonas/{zonaId}/asientos/{asientoId}": {
       "get": {
         "tags": [
           "Asientos"
@@ -339,7 +339,7 @@
         }
       }
     },
-    "/api/escenarios": {
+    "/api/events/escenarios": {
       "post": {
         "tags": [
           "Escenarios"
@@ -368,17 +368,7 @@
           "201": {
             "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "string"
                 }
@@ -388,17 +378,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
@@ -457,17 +437,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/EscenarioResponsePagedResult"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EscenarioResponsePagedResult"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/EscenarioResponsePagedResult"
                 }
@@ -477,7 +447,7 @@
         }
       }
     },
-    "/api/escenarios/{id}": {
+    "/api/events/escenarios/{id}": {
       "put": {
         "tags": [
           "Escenarios"
@@ -519,17 +489,7 @@
           "404": {
             "description": "Not Found",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
@@ -539,17 +499,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
@@ -580,17 +530,7 @@
           "404": {
             "description": "Not Found",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
@@ -618,17 +558,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/EscenarioResponse"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EscenarioResponse"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/EscenarioResponse"
                 }
@@ -638,17 +568,7 @@
           "404": {
             "description": "Not Found",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
@@ -951,46 +871,7 @@
         }
       }
     },
-    "/WeatherForecast": {
-      "get": {
-        "tags": [
-          "WeatherForecast"
-        ],
-        "operationId": "GetWeatherForecast",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/eventos/{eventId}/zonas": {
+    "/api/events/{eventId}/zonas": {
       "post": {
         "tags": [
           "ZonasEvento"
@@ -1111,7 +992,7 @@
         }
       }
     },
-    "/api/eventos/{eventId}/zonas/{zonaId}": {
+    "/api/events/{eventId}/zonas/{zonaId}": {
       "get": {
         "tags": [
           "ZonasEvento"
@@ -1407,6 +1288,10 @@
           "descripcion": {
             "type": "string",
             "nullable": true
+          },
+          "organizadorId": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "additionalProperties": false
@@ -1729,29 +1614,6 @@
             "nullable": true
           },
           "descripcion": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "WeatherForecast": {
-        "type": "object",
-        "properties": {
-          "date": {
-            "type": "string",
-            "format": "date"
-          },
-          "temperatureC": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "temperatureF": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "summary": {
             "type": "string",
             "nullable": true
           }
