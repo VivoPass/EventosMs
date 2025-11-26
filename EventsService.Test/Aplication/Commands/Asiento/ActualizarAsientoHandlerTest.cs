@@ -1,238 +1,377 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using EventsService.Aplicacion.Commands.Asiento.ActualizarAsiento;
-//using EventsService.Dominio.Entidades;
-//using EventsService.Dominio.Excepciones;
-//using EventsService.Dominio.Interfaces;
-//using Moq;
-//using Xunit;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using EventsService.Aplicacion.Commands.Asiento.ActualizarAsiento;
+using EventsService.Dominio.Entidades;
+using EventsService.Dominio.Excepciones;
+using EventsService.Dominio.Excepciones.Aplicacion;
+using EventsService.Dominio.Interfaces;
+using log4net;
+using Moq;
+using Xunit;
 
-//namespace EventsService.Test.Aplication.Commands.Asiento
-//{
-//    public class ActualizarAsientoHandlerTests
-//    {
-//        private readonly Mock<IAsientoRepository> _asientosMock;
-//        private readonly Mock<IZonaEventoRepository> _zonasMock;
-//        private readonly ActualizarAsientoHandler _handler;
+namespace EventsService.Test.Aplicacion.CommandHandlers.Asiento
+{
+    public class ActualizarAsientoHandler_Tests
+    {
+        private readonly Mock<IAsientoRepository> _mockAsientoRepo;
+        private readonly Mock<IZonaEventoRepository> _mockZonaRepo;
+        private readonly Mock<ILog> _mockLog;
+        private readonly ActualizarAsientoHandler _handler;
 
-//        // datos fake
-//        private readonly Guid _eventId;
-//        private readonly Guid _zonaId;
-//        private readonly Guid _asientoId;
-//        private ZonaEvento _zonaExistente;
-//        private Dominio.Entidades.Asiento _asientoExistente;
+        // --- DATOS ---
+        private readonly Guid _eventId;
+        private readonly Guid _zonaId;
+        private readonly Guid _asientoId;
 
-//        public ActualizarAsientoHandlerTests()
-//        {
-//            _asientosMock = new Mock<IAsientoRepository>();
-//            _zonasMock = new Mock<IZonaEventoRepository>();
+        public ActualizarAsientoHandler_Tests()
+        {
+            _mockAsientoRepo = new Mock<IAsientoRepository>();
+            _mockZonaRepo = new Mock<IZonaEventoRepository>();
+            _mockLog = new Mock<ILog>();
 
-//            _handler = new ActualizarAsientoHandler(_asientosMock.Object, _zonasMock.Object);
+            _handler = new ActualizarAsientoHandler(
+                _mockAsientoRepo.Object,
+                _mockZonaRepo.Object,
+                _mockLog.Object
+            );
 
-//            _eventId = Guid.NewGuid();
-//            _zonaId = Guid.NewGuid();
-//            _asientoId = Guid.NewGuid();
+            _eventId = Guid.NewGuid();
+            _zonaId = Guid.NewGuid();
+            _asientoId = Guid.NewGuid();
+        }
 
-//            // Zona existente (válida)
-//            _zonaExistente = new ZonaEvento
-//            {
-//                Id = _zonaId,
-//                EventId = _eventId,
-//                Nombre = "Zona Test"
-//            };
+        private ActualizarAsientoCommand BuildCommand(
+            string? label = " A10 ",
+            string? estado = "ocupado",
+            Dictionary<string, string>? meta = null)
+            => new ActualizarAsientoCommand(
+                _eventId,
+                _zonaId,
+                _asientoId,
+                label,
+                estado,
+                meta ?? new Dictionary<string, string> { { "key", "value" } });
 
-//            // Asiento existente y consistente con zona/evento
-//            _asientoExistente = new Dominio.Entidades.Asiento
-//            {
-//                Id = _asientoId,
-//                EventId = _eventId,
-//                ZonaEventoId = _zonaId,
-//                Label = "A1",
-//                Estado = "available",
-//                Meta = null
-//            };
+        private ZonaEvento BuildZona()
+            => new ZonaEvento
+            {
+                Id = _zonaId,
+                EventId = _eventId,
+                Nombre = "Zona Principal",
+                Tipo = "sentado",
+                Capacidad = 100,
+                Estado = "activa",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
 
-//            // Por defecto la zona existe
-//            _zonasMock
-//                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(_zonaExistente);
-//        }
+        private Dominio.Entidades.Asiento BuildAsientoActual(string label = "A1")
+            => new Dominio.Entidades.Asiento
+            {
+                Id = _asientoId,
+                EventId = _eventId,
+                ZonaEventoId = _zonaId,
+                Label = label,
+                Estado = "disponible",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
 
-//        [Fact]
-//        public async Task Handle_ReturnsTrue_WhenUpdateSucceeds()
-//        {
-//            // Arrange
-//            var newLabelWithSpaces = " B2 ";
-//            var trimmedLabel = "B2";
+        #region Handle_Valido_SinCambioDeLabel_DeberiaActualizarYRetornarTrue()
+        [Fact]
+        public async Task Handle_Valido_SinCambioDeLabel_DeberiaActualizarYRetornarTrue()
+        {
+            // ARRANGE
+            var command = BuildCommand(label: "A1", estado: "ocupado");
 
-//            // asiento existe
-//            _asientosMock
-//                .Setup(r => r.GetByIdAsync(_asientoId, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(_asientoExistente);
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(BuildZona());
 
-//            // no hay duplicado
-//            _asientosMock
-//                .Setup(r => r.GetByCompositeAsync(_eventId, _zonaId, trimmedLabel, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync((Dominio.Entidades.Asiento?)null);
+            _mockAsientoRepo
+                .Setup(r => r.GetByIdAsync(_asientoId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(BuildAsientoActual(label: "A1"));
 
-//            // Preparar meta como diccionario
-//            var metaDict = new Dictionary<string, string> { { "note", "meta-x" } };
+            _mockAsientoRepo
+                .Setup(r => r.UpdateParcialAsync(
+                    _asientoId,
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<Dictionary<string, string>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
-//            bool updateCalled = false;
-//            _asientosMock
-//                .Setup(r => r.UpdateParcialAsync(
-//                    _asientoId,
-//                    trimmedLabel,
-//                    "reserved",
-//                    It.Is<Dictionary<string, string>?>(d => d != null && d.ContainsKey("note") && d["note"] == "meta-x"),
-//                    It.IsAny<CancellationToken>()))
-//                .Callback<Guid, string?, string?, Dictionary<string, string>?, CancellationToken>((id, lbl, est, meta, ct) => updateCalled = true)
-//                .ReturnsAsync(true);
+            // ACT
+            var result = await _handler.Handle(command, CancellationToken.None);
 
-//            var cmd = new ActualizarAsientoCommand(
-//                _eventId,
-//                _zonaId,
-//                _asientoId,
-//                newLabelWithSpaces,
-//                "reserved",
-//                metaDict
-//            );
+            // ASSERT
+            Assert.True(result);
 
-//            // Act
-//            var result = await _handler.Handle(cmd, CancellationToken.None);
+            _mockAsientoRepo.Verify(r => r.UpdateParcialAsync(
+                _asientoId,
+                command.Label,
+                command.Estado,
+                command.Meta,
+                It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+        #endregion
 
-//            // Assert
-//            Assert.True(result);
-//            Assert.True(updateCalled);
+        #region Handle_ZonaNoExiste_DeberiaRetornarFalse()
+        [Fact]
+        public async Task Handle_ZonaNoExiste_DeberiaRetornarFalse()
+        {
+            // ARRANGE
+            var command = BuildCommand();
 
-//            _zonasMock.Verify(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()), Times.Once);
-//            _asientosMock.Verify(r => r.GetByIdAsync(_asientoId, It.IsAny<CancellationToken>()), Times.Once);
-//            _asientosMock.Verify(r => r.GetByCompositeAsync(_eventId, _zonaId, trimmedLabel, It.IsAny<CancellationToken>()), Times.Once);
-//            _asientosMock.Verify(r => r.UpdateParcialAsync(_asientoId, trimmedLabel, "reserved", It.IsAny<Dictionary<string, string>?>(), It.IsAny<CancellationToken>()), Times.Once);
-//        }
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync((ZonaEvento)null);
 
-//        [Fact]
-//        public async Task Handle_ReturnsFalse_WhenZonaInvalid()
-//        {
-//            // Arrange: zona no encontrada
-//            _zonasMock
-//                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync((ZonaEvento?)null);
+            // ACT
+            var result = await _handler.Handle(command, CancellationToken.None);
 
-//            var cmd = new ActualizarAsientoCommand(
-//                _eventId,
-//                _zonaId,
-//                _asientoId,
-//                "X",
-//                null,
-//                null
-//            );
+            // ASSERT
+            Assert.False(result);
 
-//            // Act
-//            var result = await _handler.Handle(cmd, CancellationToken.None);
+            _mockAsientoRepo.Verify(r => r.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
+            _mockAsientoRepo.Verify(r => r.UpdateParcialAsync(
+                It.IsAny<Guid>(),
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<Dictionary<string, string>>(),
+                It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
 
-//            // Assert: devuelve false y no llama a repos de asientos
-//            Assert.False(result);
-//            _asientosMock.Verify(r => r.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
-//            _asientosMock.Verify(r => r.UpdateParcialAsync(It.IsAny<Guid>(), It.IsAny<string?>(), It.IsAny<string?>(), It.IsAny<Dictionary<string, string>?>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
+        #region Handle_ZonaDeOtroEvento_DeberiaRetornarFalse()
+        [Fact]
+        public async Task Handle_ZonaDeOtroEvento_DeberiaRetornarFalse()
+        {
+            // ARRANGE
+            var command = BuildCommand();
 
-//        [Fact]
-//        public async Task Handle_ReturnsFalse_WhenSeatInvalid()
-//        {
-//            // Arrange: zona existe, pero asiento no existe
-//            _asientosMock
-//                .Setup(r => r.GetByIdAsync(_asientoId, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync((Dominio.Entidades.Asiento?)null);
+            var zonaDeOtroEvento = new ZonaEvento
+            {
+                Id = _zonaId,
+                EventId = Guid.NewGuid(), // distinto
+                Nombre = "Otra zona"
+            };
 
-//            var cmd = new ActualizarAsientoCommand(
-//                _eventId,
-//                _zonaId,
-//                _asientoId,
-//                "X",
-//                null,
-//                null
-//            );
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(zonaDeOtroEvento);
 
-//            // Act
-//            var result = await _handler.Handle(cmd, CancellationToken.None);
+            // ACT
+            var result = await _handler.Handle(command, CancellationToken.None);
 
-//            // Assert
-//            Assert.False(result);
-//            _asientosMock.Verify(r => r.GetByIdAsync(_asientoId, It.IsAny<CancellationToken>()), Times.Once);
-//            _asientosMock.Verify(r => r.UpdateParcialAsync(It.IsAny<Guid>(), It.IsAny<string?>(), It.IsAny<string?>(), It.IsAny<Dictionary<string, string>?>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
+            // ASSERT
+            Assert.False(result);
 
-//        [Fact]
-//        public async Task Handle_ThrowsEventoException_WhenDuplicateLabelFound()
-//        {
-//            // Arrange
-//            var newLabel = "C3";
+            _mockAsientoRepo.Verify(r => r.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
+            _mockAsientoRepo.Verify(r => r.UpdateParcialAsync(
+                It.IsAny<Guid>(),
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<Dictionary<string, string>>(),
+                It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
 
-//            _asientosMock
-//                .Setup(r => r.GetByIdAsync(_asientoId, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(_asientoExistente);
+        #region Handle_AsientoNoExiste_DeberiaRetornarFalse()
+        [Fact]
+        public async Task Handle_AsientoNoExiste_DeberiaRetornarFalse()
+        {
+            // ARRANGE
+            var command = BuildCommand();
 
-//            // Simulamos que hay un asiento duplicado con ese label
-//            var dup = new Dominio.Entidades.Asiento { Id = Guid.NewGuid(), EventId = _eventId, ZonaEventoId = _zonaId, Label = newLabel };
-//            _asientosMock
-//                .Setup(r => r.GetByCompositeAsync(_eventId, _zonaId, newLabel, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(dup);
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(BuildZona());
 
-//            var cmd = new ActualizarAsientoCommand(
-//                _eventId,
-//                _zonaId,
-//                _asientoId,
-//                newLabel,
-//                null,
-//                null
-//            );
+            _mockAsientoRepo
+                .Setup(r => r.GetByIdAsync(_asientoId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync((Dominio.Entidades.Asiento)null);
 
-//            // Act & Assert
-//            await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(cmd, CancellationToken.None));
+            // ACT
+            var result = await _handler.Handle(command, CancellationToken.None);
 
-//            // Verificamos que no se llamó a UpdateParcialAsync
-//            _asientosMock.Verify(r => r.UpdateParcialAsync(It.IsAny<Guid>(), It.IsAny<string?>(), It.IsAny<string?>(), It.IsAny<Dictionary<string, string>?>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
+            // ASSERT
+            Assert.False(result);
 
-//        [Fact]
-//        public async Task Handle_ReturnsFalse_WhenUpdateParcialFails()
-//        {
-//            // Arrange
-//            var newLabel = "D4";
+            _mockAsientoRepo.Verify(r => r.UpdateParcialAsync(
+                It.IsAny<Guid>(),
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<Dictionary<string, string>>(),
+                It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
 
-//            _asientosMock
-//                .Setup(r => r.GetByIdAsync(_asientoId, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(_asientoExistente);
+        #region Handle_AsientoNoCoincideConZonaOEvento_DeberiaRetornarFalse()
+        [Fact]
+        public async Task Handle_AsientoNoCoincideConZonaOEvento_DeberiaRetornarFalse()
+        {
+            // ARRANGE
+            var command = BuildCommand();
 
-//            _asientosMock
-//                .Setup(r => r.GetByCompositeAsync(_eventId, _zonaId, newLabel, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync((Dominio.Entidades.Asiento?)null);
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(BuildZona());
 
-//            // UpdateParcial devuelve false (fallo) — aquí aceptamos cualquier meta
-//            _asientosMock
-//                .Setup(r => r.UpdateParcialAsync(_asientoId, newLabel, "locked", It.IsAny<Dictionary<string, string>?>(), It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(false);
+            var asientoOtraZona = new Dominio.Entidades.Asiento
+            {
+                Id = _asientoId,
+                EventId = _eventId,
+                ZonaEventoId = Guid.NewGuid(), // otra zona
+                Label = "Z9"
+            };
 
-//            var metaDict = new Dictionary<string, string> { { "note", "meta-z" } };
+            _mockAsientoRepo
+                .Setup(r => r.GetByIdAsync(_asientoId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(asientoOtraZona);
 
-//            var cmd = new ActualizarAsientoCommand(
-//                _eventId,
-//                _zonaId,
-//                _asientoId,
-//                newLabel,
-//                "locked",
-//                metaDict
-//            );
+            // ACT
+            var result = await _handler.Handle(command, CancellationToken.None);
 
-//            // Act
-//            var result = await _handler.Handle(cmd, CancellationToken.None);
+            // ASSERT
+            Assert.False(result);
 
-//            // Assert
-//            Assert.False(result);
-//            _asientosMock.Verify(r => r.UpdateParcialAsync(_asientoId, newLabel, "locked", It.IsAny<Dictionary<string, string>?>(), It.IsAny<CancellationToken>()), Times.Once);
-//        }
-//    }
-//}
+            _mockAsientoRepo.Verify(r => r.UpdateParcialAsync(
+                It.IsAny<Guid>(),
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<Dictionary<string, string>>(),
+                It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
+
+        #region Handle_CambiaLabel_YaExisteDuplicado_DeberiaLanzarEventoException()
+        [Fact]
+        public async Task Handle_CambiaLabel_YaExisteDuplicado_DeberiaLanzarEventoException()
+        {
+            // ARRANGE
+            var command = BuildCommand(label: "B15");
+
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(BuildZona());
+
+            // Asiento actual con label "A1"
+            _mockAsientoRepo
+                .Setup(r => r.GetByIdAsync(_asientoId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(BuildAsientoActual(label: "A1"));
+
+            // Duplicado con nuevo label
+            var asientoDuplicado = new Dominio.Entidades.Asiento
+            {
+                Id = Guid.NewGuid(),
+                EventId = _eventId,
+                ZonaEventoId = _zonaId,
+                Label = "B15"
+            };
+
+            _mockAsientoRepo
+                .Setup(r => r.GetByCompositeAsync(_eventId, _zonaId, "B15", It.IsAny<CancellationToken>()))
+                .ReturnsAsync(asientoDuplicado);
+
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<EventoException>(
+                () => _handler.Handle(command, CancellationToken.None));
+
+            _mockAsientoRepo.Verify(r => r.UpdateParcialAsync(
+                It.IsAny<Guid>(),
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<Dictionary<string, string>>(),
+                It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
+
+        #region Handle_UpdateParcialAsyncRetornaFalse_DeberiaRetornarFalse()
+        [Fact]
+        public async Task Handle_UpdateParcialAsyncRetornaFalse_DeberiaRetornarFalse()
+        {
+            // ARRANGE
+            var command = BuildCommand(label: "A2");
+
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(BuildZona());
+
+            _mockAsientoRepo
+                .Setup(r => r.GetByIdAsync(_asientoId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(BuildAsientoActual(label: "A1"));
+
+            _mockAsientoRepo
+                .Setup(r => r.GetByCompositeAsync(_eventId, _zonaId, "A2", It.IsAny<CancellationToken>()))
+                .ReturnsAsync((Dominio.Entidades.Asiento)null);
+
+            _mockAsientoRepo
+                .Setup(r => r.UpdateParcialAsync(
+                    _asientoId,
+                    "A2",
+                    command.Estado,
+                    command.Meta,
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(false);
+
+            // ACT
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // ASSERT
+            Assert.False(result);
+
+            _mockAsientoRepo.Verify(r => r.UpdateParcialAsync(
+                _asientoId,
+                "A2",
+                command.Estado,
+                command.Meta,
+                It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+        #endregion
+
+        #region Handle_RepoLanzaExcepcion_DeberiaLanzarActualizarAsientoHandlerException()
+        [Fact]
+        public async Task Handle_RepoLanzaExcepcion_DeberiaLanzarActualizarAsientoHandlerException()
+        {
+            // ARRANGE
+            var command = BuildCommand(label: "A3");
+
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(BuildZona());
+
+            _mockAsientoRepo
+                .Setup(r => r.GetByIdAsync(_asientoId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(BuildAsientoActual(label: "A1"));
+
+            _mockAsientoRepo
+                .Setup(r => r.GetByCompositeAsync(_eventId, _zonaId, "A3", It.IsAny<CancellationToken>()))
+                .ReturnsAsync((Dominio.Entidades.Asiento)null);
+
+            var exDb = new InvalidOperationException("Fallo DB en UpdateParcialAsync");
+            _mockAsientoRepo
+                .Setup(r => r.UpdateParcialAsync(
+                    _asientoId,
+                    "A3",
+                    command.Estado,
+                    command.Meta,
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(exDb);
+
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<ActualizarAsientoHandlerException>(
+                () => _handler.Handle(command, CancellationToken.None));
+        }
+        #endregion
+    }
+}

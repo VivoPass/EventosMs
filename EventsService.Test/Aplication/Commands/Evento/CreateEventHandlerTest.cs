@@ -1,116 +1,164 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using EventsService.Aplicacion.Commands.CrearEvento;
-//using EventsService.Dominio.Excepciones;
-//using EventsService.Dominio.Interfaces;
-//using Microsoft.AspNetCore.Mvc;
-//using Moq;
+﻿using EventsService.Aplicacion.Commands.CrearEvento;
+using EventsService.Dominio.Entidades;
+using EventsService.Dominio.Excepciones;
+using EventsService.Dominio.Excepciones.Aplicacion;
+using EventsService.Dominio.Interfaces;
+using log4net;
+using Moq;
 
-//namespace EventsService.Test.Aplication.Commands.Evento
-//{
-//    public class CreateEventHandlerTest
-//    {
-//        private readonly Mock<IEventRepository> _eventRepository;
-//        private readonly Mock<ICategoryRepository> _categoryRepository;
-//        private readonly Mock<IScenarioRepository> _escenarioRepository;
-//        private readonly CreateEventHandler _handler;
-//        private readonly CreateEventCommand _request;
-//        private readonly Guid _idCategoria;
-//        private readonly Guid _idEscenario;
+namespace EventsService.Test.Aplicacion.CommandHandlers.Eventos
+{
+    public class CommandHandler_CreateEvent_Tests
+    {
+        private readonly Mock<IEventRepository> MockEventRepo;
+        private readonly Mock<ICategoryRepository> MockCategoryRepo;
+        private readonly Mock<IScenarioRepository> MockScenarioRepo;
+        private readonly Mock<ILog> MockLog;
+        private readonly CreateEventHandler Handler;
 
+        // --- DATOS ---
+        private readonly Guid categoriaId;
+        private readonly Guid escenarioId;
+        private readonly Guid organizadorId;
+        private readonly CreateEventCommand command;
 
-//        public CreateEventHandlerTest()
-//        {
-//            _eventRepository = new Mock<IEventRepository>();
-//            _categoryRepository = new Mock<ICategoryRepository>();
-//            _escenarioRepository = new Mock<IScenarioRepository>();
-//            _handler = new CreateEventHandler(_eventRepository.Object, _categoryRepository.Object,
-//                _escenarioRepository.Object);
+        public CommandHandler_CreateEvent_Tests()
+        {
+            MockEventRepo = new Mock<IEventRepository>();
+            MockCategoryRepo = new Mock<ICategoryRepository>();
+            MockScenarioRepo = new Mock<IScenarioRepository>();
+            MockLog = new Mock<ILog>();
 
-//            _idCategoria = Guid.NewGuid();
-//            _idEscenario = Guid.NewGuid();
+            Handler = new CreateEventHandler(
+                MockEventRepo.Object,
+                MockCategoryRepo.Object,
+                MockScenarioRepo.Object,
+                MockLog.Object
+            );
 
-//            _request = new CreateEventCommand(
-//                Nombre: "Prueba Test",
-//                AforoMaximo: 500,
-//                CategoriaId: _idCategoria,
-//                EscenarioId: _idEscenario,
-//                Inicio: DateTime.UtcNow.AddDays(10),
-//                Fin: DateTime.UtcNow.AddDays(11),
-//                Tipo: "Concierto",
-//                Lugar: "Sala Principal",
-//                Descripcion: "Descripción test"
-//            );
-//        }
+            categoriaId = Guid.NewGuid();
+            escenarioId = Guid.NewGuid();
+            organizadorId = Guid.NewGuid();
 
-//        [Fact]
-//        public async Task Handle_CommandValido_Insert()
-//        {
-//            _categoryRepository.Setup(c => c.ExistsAsync(_idCategoria, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(true);
-//            _escenarioRepository.Setup(e => e.ExistsAsync(_idEscenario, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(true);
+            command = new CreateEventCommand(
+                Nombre: "Concierto de prueba",
+                CategoriaId: categoriaId,
+                EscenarioId: escenarioId,
+                Inicio: DateTimeOffset.UtcNow.AddDays(1),
+                Fin: DateTimeOffset.UtcNow.AddDays(1).AddHours(2),
+                AforoMaximo: 500,
+                Tipo: "Concierto",
+                Lugar: "Caracas",
+                Descripcion: "Evento de integración",
+                OrganizadorId: organizadorId
+            );
+        }
 
-//            _eventRepository
-//                .Setup(ev => ev.InsertAsync(It.IsAny<Dominio.Entidades.Evento>(), It.IsAny<CancellationToken>()))
-//                .Returns(Task.CompletedTask);
+        #region Handle_ValidRequest_ShouldCreateEventAndReturnId()
+        [Fact]
+        public async Task Handle_ValidRequest_ShouldCreateEventAndReturnId()
+        {
+            // ARRANGE
+            MockCategoryRepo
+                .Setup(r => r.ExistsAsync(categoriaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
-//            var result = await _handler.Handle(_request, CancellationToken.None);
+            MockScenarioRepo
+                .Setup(r => r.ExistsAsync(escenarioId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
-//            Assert.NotEqual(Guid.Empty, result);
+            Guid capturedId = Guid.Empty;
 
+            MockEventRepo
+                .Setup(r => r.InsertAsync(It.IsAny<Evento>(), It.IsAny<CancellationToken>()))
+                .Callback<Evento, CancellationToken>((e, _) =>
+                {
+                    capturedId = e.Id;
+                })
+                .Returns(Task.CompletedTask);
 
-//        }
+            // ACT
+            var resultId = await Handler.Handle(command, CancellationToken.None);
 
-//        [Fact]
-//        public async Task Handle_CommandValido_llamadoCorrecto()
-//        {
-//            _categoryRepository.Setup(c => c.ExistsAsync(_idCategoria, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(true);
-//            _escenarioRepository.Setup(e => e.ExistsAsync(_idEscenario, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(true);
+            // ASSERT
+            Assert.NotEqual(Guid.Empty, resultId);
+            Assert.Equal(capturedId, resultId);
 
-//            _eventRepository
-//                .Setup(ev => ev.InsertAsync(It.IsAny<Dominio.Entidades.Evento>(), It.IsAny<CancellationToken>()))
-//                .Returns(Task.CompletedTask);
+            MockEventRepo.Verify(r => r.InsertAsync(
+                    It.Is<Evento>(e =>
+                        e.Nombre == command.Nombre.Trim() &&
+                        e.CategoriaId == command.CategoriaId &&
+                        e.EscenarioId == command.EscenarioId &&
+                        e.AforoMaximo == command.AforoMaximo &&
+                        e.OrganizadorId == command.OrganizadorId),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+        #endregion
 
-//            var result = await _handler.Handle(_request, CancellationToken.None);
+        #region Handle_CategoryDoesNotExist_ShouldThrowEventoException()
+        [Fact]
+        public async Task Handle_CategoryDoesNotExist_ShouldThrowEventoException()
+        {
+            // ARRANGE
+            MockCategoryRepo
+                .Setup(r => r.ExistsAsync(categoriaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(false);
 
-//            _eventRepository.Verify(x => x.InsertAsync(It.IsAny<Dominio.Entidades.Evento>(), It.IsAny<CancellationToken>()), Times.Once);
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<EventoException>(() =>
+                Handler.Handle(command, CancellationToken.None));
 
+            MockScenarioRepo.Verify(r => r.ExistsAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
+            MockEventRepo.Verify(r => r.InsertAsync(It.IsAny<Evento>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+        #endregion
 
-//        }
+        #region Handle_ScenarioDoesNotExist_ShouldThrowEventoException()
+        [Fact]
+        public async Task Handle_ScenarioDoesNotExist_ShouldThrowEventoException()
+        {
+            // ARRANGE
+            MockCategoryRepo
+                .Setup(r => r.ExistsAsync(categoriaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
-//        [Fact]
-//        public async Task Handle_CategoriaNoExiste_Fail()
-//        {
-//            _categoryRepository.Setup(c => c.ExistsAsync(_idCategoria, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(false);
+            MockScenarioRepo
+                .Setup(r => r.ExistsAsync(escenarioId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(false);
 
-//            await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(_request, CancellationToken.None));
-//        }
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<EventoException>(() =>
+                Handler.Handle(command, CancellationToken.None));
 
+            MockEventRepo.Verify(r => r.InsertAsync(It.IsAny<Evento>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+        #endregion
 
-//        [Fact]
-//        public async Task Handle_EscenarioNoExiste_Fail()
-//        {
-//            _escenarioRepository.Setup(e => e.ExistsAsync(_idEscenario, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(false);
+        #region Handle_PersistenceThrowsUnexpectedException_ShouldThrowCreateEventHandlerException()
+        [Fact]
+        public async Task Handle_PersistenceThrowsUnexpectedException_ShouldThrowCreateEventHandlerException()
+        {
+            // ARRANGE
+            MockCategoryRepo
+                .Setup(r => r.ExistsAsync(categoriaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
-//            await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(_request, CancellationToken.None));
-//        }
+            MockScenarioRepo
+                .Setup(r => r.ExistsAsync(escenarioId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
-//        [Fact]
-//        public async Task Handle_WhenCategoryMissing_ThrowsEventoExceptionWithMessage()
-//        {
-            
-//            _categoryRepository.Setup(c => c.ExistsAsync(_request.CategoriaId, It.IsAny<CancellationToken>())).ReturnsAsync(false);
+            var dbException = new InvalidOperationException("Falla simulada en BD.");
+            MockEventRepo
+                .Setup(r => r.InsertAsync(It.IsAny<Evento>(), It.IsAny<CancellationToken>()))
+                .ThrowsAsync(dbException);
 
-//            var ex = await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(_request, CancellationToken.None));
-//            Assert.Contains("categoría", ex.Message, StringComparison.OrdinalIgnoreCase);
-//        }
-//    }
-//}
+            // ACT & ASSERT
+            var ex = await Assert.ThrowsAsync<CreateEventHandlerException>(() =>
+                Handler.Handle(command, CancellationToken.None));
+
+            Assert.Equal(dbException, ex.InnerException);
+        }
+        #endregion
+    }
+}

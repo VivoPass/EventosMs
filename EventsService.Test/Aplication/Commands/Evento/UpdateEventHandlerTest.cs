@@ -1,92 +1,236 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using EventsService.Aplicacion.Commands.CrearEvento;
-//using EventsService.Aplicacion.Commands.ModificarEvento;
-//using EventsService.Dominio.Interfaces;
-//using Moq;
+﻿using EventsService.Aplicacion.Commands.ModificarEvento;
+using EventsService.Dominio.Entidades;
+using EventsService.Dominio.Excepciones;
+using EventsService.Dominio.Excepciones.Aplicacion;
+using EventsService.Dominio.Interfaces;
+using log4net;
+using Moq;
 
-//namespace EventsService.Test.Aplication.Commands.Evento
-//{
-//    public class UpdateEventHandlerTest
-//    {
-//        private readonly Mock<IEventRepository> _eventRepository;
-//        private readonly Mock<ICategoryRepository> _categoryRepository;
-//        private readonly Mock<IScenarioRepository> _escenarioRepository;
-//        private readonly UpdateEventHandler _handler;
-//        private readonly UpdateEventCommand _command;
-//        private readonly Guid _idEvento;
-//        private readonly Guid _idCategoria;
-//        private readonly Guid _idEscenario;
-//        private readonly Dominio.Entidades.Evento _existing;
+namespace EventsService.Test.Aplicacion.CommandHandlers.Eventos
+{
+    public class CommandHandler_UpdateEvent_Tests
+    {
+        private readonly Mock<IEventRepository> MockEventRepo;
+        private readonly Mock<ICategoryRepository> MockCategoryRepo;
+        private readonly Mock<IScenarioRepository> MockScenarioRepo;
+        private readonly Mock<ILog> MockLog;
+        private readonly UpdateEventHandler Handler;
 
+        // --- DATOS ---
+        private readonly Guid eventId;
+        private readonly Guid categoriaOriginalId;
+        private readonly Guid escenarioOriginalId;
+        private readonly Guid categoriaNuevaId;
+        private readonly Guid escenarioNuevoId;
 
-//        public UpdateEventHandlerTest()
-//        {
-//            _eventRepository = new Mock<IEventRepository>();
-//            _categoryRepository = new Mock<ICategoryRepository>();
-//            _escenarioRepository = new Mock<IScenarioRepository>();
+        private readonly UpdateEventCommand commandFullUpdate;
 
-//            _idEvento = Guid.NewGuid();
-//            _idCategoria = Guid.NewGuid();
-//            _idEscenario = Guid.NewGuid();
+        public CommandHandler_UpdateEvent_Tests()
+        {
+            MockEventRepo = new Mock<IEventRepository>();
+            MockCategoryRepo = new Mock<ICategoryRepository>();
+            MockScenarioRepo = new Mock<IScenarioRepository>();
+            MockLog = new Mock<ILog>();
 
+            Handler = new UpdateEventHandler(
+                MockEventRepo.Object,
+                MockCategoryRepo.Object,
+                MockScenarioRepo.Object,
+                MockLog.Object
+            );
 
-//            _handler = new UpdateEventHandler(_eventRepository.Object, _categoryRepository.Object,
-//                _escenarioRepository.Object);
+            eventId = Guid.NewGuid();
+            categoriaOriginalId = Guid.NewGuid();
+            escenarioOriginalId = Guid.NewGuid();
+            categoriaNuevaId = Guid.NewGuid();
+            escenarioNuevoId = Guid.NewGuid();
 
-//            _command = new UpdateEventCommand(
-//                Id: _idEvento,
-//                Nombre: "Nuevo nombre del evento",
-//                CategoriaId: _idCategoria,
-//                EscenarioId: _idEscenario,
-//                Inicio: DateTimeOffset.UtcNow.AddDays(1),
-//                Fin: DateTimeOffset.UtcNow.AddDays(2),
-//                AforoMaximo: 5000,
-//                Tipo: "Concierto",
-//                Lugar: "Sala Principal",
-//                Descripcion: "Evento actualizado para pruebas unitarias"
-//            );
+            // Comando con todos los campos llenos para cubrir el máximo de ramas
+            commandFullUpdate = new UpdateEventCommand(
+                Id: eventId,
+                Nombre: "Nombre actualizado",
+                CategoriaId: categoriaNuevaId,
+                EscenarioId: escenarioNuevoId,
+                Inicio: DateTimeOffset.UtcNow.AddDays(2),
+                Fin: DateTimeOffset.UtcNow.AddDays(2).AddHours(3),
+                AforoMaximo: 900,
+                Tipo: "Conferencia",
+                Lugar: "Online",
+                Descripcion: "Evento actualizado"
+            );
+        }
 
+        private Evento CreateExistingEvent()
+        {
+            return new Evento
+            {
+                Id = eventId,
+                Nombre = "Nombre original",
+                CategoriaId = categoriaOriginalId,
+                EscenarioId = escenarioOriginalId,
+                Inicio = DateTimeOffset.UtcNow.AddDays(1),
+                Fin = DateTimeOffset.UtcNow.AddDays(1).AddHours(2),
+                AforoMaximo = 500,
+                Tipo = "Concierto",
+                Lugar = "Caracas",
+                Descripcion = "Descripcion original",
+                OrganizadorId = Guid.NewGuid()
+            };
+        }
 
-//            _existing = new Dominio.Entidades.Evento
-//            {
-//                Id = _command.Id,
-//                Nombre = "Nombre Antiguo",
-//                CategoriaId = Guid.NewGuid(),
-//                EscenarioId = Guid.NewGuid(),
-//                Inicio = DateTimeOffset.UtcNow,
-//                Fin = DateTimeOffset.UtcNow.AddHours(2),
-//                AforoMaximo = 100,
-//                Tipo = "Old",
-//                Lugar = "Lugar A",
-//                Descripcion = "Desc antigua"
-//            };
+        #region Handle_EventNotFound_ShouldReturnFalse()
+        [Fact]
+        public async Task Handle_EventNotFound_ShouldReturnFalse()
+        {
+            // ARRANGE
+            MockEventRepo
+                .Setup(r => r.GetByIdAsync(eventId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync((Evento?)null);
 
-//        }
+            // ACT
+            var result = await Handler.Handle(commandFullUpdate, CancellationToken.None);
 
+            // ASSERT
+            Assert.False(result);
 
-//        [Fact]
-//        public async Task ModificarEvento_RetornaTrue()
-//        {
-//            _eventRepository.Setup(r => r.GetByIdAsync(_command.Id, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(_existing);
+            MockCategoryRepo.Verify(r => r.ExistsAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
+            MockScenarioRepo.Verify(r => r.ExistsAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
+            MockEventRepo.Verify(r => r.UpdateAsync(It.IsAny<Evento>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+        #endregion
 
-//            _categoryRepository.Setup(x => x.ExistsAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(true);
-//            _escenarioRepository.Setup(s => s.ExistsAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(true);
+        #region Handle_ValidUpdate_ShouldUpdateAndReturnTrue()
+        [Fact]
+        public async Task Handle_ValidUpdate_ShouldUpdateAndReturnTrue()
+        {
+            // ARRANGE
+            var existing = CreateExistingEvent();
 
-//            _eventRepository
-//                .Setup(r => r.UpdateAsync(It.IsAny<Dominio.Entidades.Evento>(), It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(true);
+            MockEventRepo
+                .Setup(r => r.GetByIdAsync(eventId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(existing);
 
-//            var result = await _handler.Handle(_command, CancellationToken.None);
+            MockCategoryRepo
+                .Setup(r => r.ExistsAsync(categoriaNuevaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
-//            Assert.True(result);
+            MockScenarioRepo
+                .Setup(r => r.ExistsAsync(escenarioNuevoId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
-//        }
-//    }
-//}
+            MockEventRepo
+                .Setup(r => r.UpdateAsync(It.IsAny<Evento>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+            // ACT
+            var result = await Handler.Handle(commandFullUpdate, CancellationToken.None);
+
+            // ASSERT
+            Assert.True(result);
+
+            // Verificamos que el objeto en memoria fue actualizado con los datos del comando
+            Assert.Equal(commandFullUpdate.Nombre!.Trim(), existing.Nombre);
+            Assert.Equal(commandFullUpdate.CategoriaId!.Value, existing.CategoriaId);
+            Assert.Equal(commandFullUpdate.EscenarioId!.Value, existing.EscenarioId);
+            Assert.Equal(commandFullUpdate.Inicio!.Value, existing.Inicio);
+            Assert.Equal(commandFullUpdate.Fin!.Value, existing.Fin);
+            Assert.Equal(commandFullUpdate.AforoMaximo!.Value, existing.AforoMaximo);
+            Assert.Equal(commandFullUpdate.Tipo, existing.Tipo);
+            Assert.Equal(commandFullUpdate.Lugar, existing.Lugar);
+            Assert.Equal(commandFullUpdate.Descripcion, existing.Descripcion);
+
+            MockEventRepo.Verify(r => r.UpdateAsync(
+                    It.Is<Evento>(e => e.Id == eventId),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+        #endregion
+
+        #region Handle_CategoryDoesNotExist_ShouldThrowEventoException()
+        [Fact]
+        public async Task Handle_CategoryDoesNotExist_ShouldThrowEventoException()
+        {
+            // ARRANGE
+            var existing = CreateExistingEvent();
+
+            var commandWithCategoryChange = commandFullUpdate with { CategoriaId = categoriaNuevaId };
+
+            MockEventRepo
+                .Setup(r => r.GetByIdAsync(eventId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(existing);
+
+            MockCategoryRepo
+                .Setup(r => r.ExistsAsync(categoriaNuevaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(false);
+
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<EventoException>(() =>
+                Handler.Handle(commandWithCategoryChange, CancellationToken.None));
+
+            MockScenarioRepo.Verify(r => r.ExistsAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
+            MockEventRepo.Verify(r => r.UpdateAsync(It.IsAny<Evento>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+        #endregion
+
+        #region Handle_ScenarioDoesNotExist_ShouldThrowEventoException()
+        [Fact]
+        public async Task Handle_ScenarioDoesNotExist_ShouldThrowEventoException()
+        {
+            // ARRANGE
+            var existing = CreateExistingEvent();
+
+            var commandWithScenarioChange = commandFullUpdate with
+            {
+                CategoriaId = null,            // para que no pase por validación de categoría
+                EscenarioId = escenarioNuevoId
+            };
+
+            MockEventRepo
+                .Setup(r => r.GetByIdAsync(eventId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(existing);
+
+            MockScenarioRepo
+                .Setup(r => r.ExistsAsync(escenarioNuevoId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(false);
+
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<EventoException>(() =>
+                Handler.Handle(commandWithScenarioChange, CancellationToken.None));
+
+            MockEventRepo.Verify(r => r.UpdateAsync(It.IsAny<Evento>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+        #endregion
+
+        #region Handle_UpdateAsyncThrowsUnexpectedException_ShouldThrowUpdateEventHandlerException()
+        [Fact]
+        public async Task Handle_UpdateAsyncThrowsUnexpectedException_ShouldThrowUpdateEventHandlerException()
+        {
+            // ARRANGE
+            var existing = CreateExistingEvent();
+
+            MockEventRepo
+                .Setup(r => r.GetByIdAsync(eventId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(existing);
+
+            MockCategoryRepo
+                .Setup(r => r.ExistsAsync(categoriaNuevaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+            MockScenarioRepo
+                .Setup(r => r.ExistsAsync(escenarioNuevoId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+            var dbException = new InvalidOperationException("Simulated DB failure.");
+            MockEventRepo
+                .Setup(r => r.UpdateAsync(It.IsAny<Evento>(), It.IsAny<CancellationToken>()))
+                .ThrowsAsync(dbException);
+
+            // ACT & ASSERT
+            var ex = await Assert.ThrowsAsync<UpdateEventHandlerException>(() =>
+                Handler.Handle(commandFullUpdate, CancellationToken.None));
+
+            Assert.Equal(dbException, ex.InnerException);
+        }
+        #endregion
+    }
+}

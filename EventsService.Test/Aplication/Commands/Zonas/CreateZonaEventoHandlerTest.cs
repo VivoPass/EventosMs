@@ -1,281 +1,320 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using EventsService.Aplicacion.Commands.Zonas.CrearZonaEvento;
-//using EventsService.Dominio.Entidades;
-//using EventsService.Dominio.Excepciones;
-//using EventsService.Dominio.Interfaces;
-//using EventsService.Dominio.ValueObjects;
-//using Moq;
-//using Xunit;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using EventsService.Aplicacion.Commands.Zonas.CrearZonaEvento;
+using EventsService.Dominio.Entidades;
+using EventsService.Dominio.Excepciones;
+using EventsService.Dominio.Excepciones.Aplicacion;
+using EventsService.Dominio.Interfaces;
+using EventsService.Dominio.ValueObjects;
+using log4net;
+using Moq;
+using Xunit;
 
-//namespace EventsService.Test.Aplication.Commands.Zonas
-//{
-//    public class CreateZonaEventoHandlerTests
-//    {
-//        private readonly Mock<IZonaEventoRepository> _zonaRepoMock;
-//        private readonly Mock<IEscenarioZonaRepository> _escenarioZonaRepoMock;
-//        private readonly Mock<IAsientoRepository> _asientoRepoMock;
-//        private readonly Mock<IScenarioRepository> _escenarioRepoMock;
-//        private readonly CreateZonaEventoHandler _handler;
+namespace EventsService.Test.Aplicacion.CommandHandlers.Zonas
+{
+    public class CreateZonaEventoHandler_Tests
+    {
+        private readonly Mock<IZonaEventoRepository> _mockZonaRepo;
+        private readonly Mock<IEscenarioZonaRepository> _mockEscenarioZonaRepo;
+        private readonly Mock<IAsientoRepository> _mockAsientoRepo;
+        private readonly Mock<IScenarioRepository> _mockEscenarioRepo;
+        private readonly Mock<ILog> _mockLog;
+        private readonly CreateZonaEventoHandler _handler;
 
-//        // datos fake
-//        private readonly Guid _eventId;
-//        private readonly Guid _escenarioId;
-//        private readonly string _nombre;
-//        private readonly Dominio.Entidades.Escenario _escenarioExistente;
+        // --- DATOS BASE ---
+        private readonly Guid _eventId = Guid.NewGuid();
+        private readonly Guid _escenarioId = Guid.NewGuid();
 
-//        // capturas
-//        private ZonaEvento? _capturedZona;
-//        private EscenarioZona? _capturedEscenarioZona;
+        public CreateZonaEventoHandler_Tests()
+        {
+            _mockZonaRepo = new Mock<IZonaEventoRepository>();
+            _mockEscenarioZonaRepo = new Mock<IEscenarioZonaRepository>();
+            _mockAsientoRepo = new Mock<IAsientoRepository>();
+            _mockEscenarioRepo = new Mock<IScenarioRepository>();
+            _mockLog = new Mock<ILog>();
 
-//        public CreateZonaEventoHandlerTests()
-//        {
-//            _zonaRepoMock = new Mock<IZonaEventoRepository>();
-//            _escenarioZonaRepoMock = new Mock<IEscenarioZonaRepository>();
-//            _asientoRepoMock = new Mock<IAsientoRepository>();
-//            _escenarioRepoMock = new Mock<IScenarioRepository>();
+            _handler = new CreateZonaEventoHandler(
+                _mockZonaRepo.Object,
+                _mockEscenarioZonaRepo.Object,
+                _mockAsientoRepo.Object,
+                _mockEscenarioRepo.Object,
+                _mockLog.Object);
+        }
 
-//            _handler = new CreateZonaEventoHandler(
-//                _zonaRepoMock.Object,
-//                _escenarioZonaRepoMock.Object,
-//                _asientoRepoMock.Object,
-//                _escenarioRepoMock.Object
-//            );
+        private CreateZonaEventoCommand BuildBaseCommand(
+            string tipo = "general",
+            bool autogenerar = false,
+            int? filas = null,
+            int? columnas = null,
+            int capacidad = 100)
+        {
+            // Ajusta el tipo de Numeracion y Grid según tus clases reales
+            object numeracion = null!;
+            if (filas.HasValue && columnas.HasValue)
+            {
+                // Ejemplo si tu tipo es ZonaNumeracion:
+                // numeracion = new ZonaNumeracion
+                // {
+                //     Filas = filas.Value,
+                //     Columnas = columnas.Value,
+                //     Modo = "grid",
+                //     PrefijoFila = "F",
+                //     PrefijoAsiento = "A"
+                // };
+            }
 
-//            _eventId = Guid.NewGuid();
-//            _escenarioId = Guid.NewGuid();
-//            _nombre = "Plate A";
+            object grid = null!;
+            // Ejemplo si tienes un tipo GridDto / ZonaGrid:
+            // grid = new GridDto { StartRow = 0, StartCol = 0, RowSpan = 5, ColSpan = 10 };
 
-//            _escenarioExistente = new Dominio.Entidades.Escenario
-//            {
-//                Id = _escenarioId,
-//                Nombre = "Main Stage",
-//                Descripcion = "Escenario prueba",
-//                Ubicacion = "Av Test 1",
-//                Ciudad = "Ciudad",
-//                Estado = "State",
-//                Pais = "Pais",
-//                CapacidadTotal = 1000,
-//                Activo = true
-//            };
+            var cmd = new CreateZonaEventoCommand
+            {
+                EventId = _eventId,
+                EscenarioId = _escenarioId,
+                Nombre = "Zona Test",
+                Tipo = tipo,
+                Capacidad = capacidad,
+                // casteos para que el compilador esté feliz cuando pongas tu tipo real
+                Numeracion = (dynamic)numeracion!,
+                Precio = 50m,
+                Estado = "Activo",
+                Grid = (dynamic)grid!,
+                AutogenerarAsientos = autogenerar
+            };
 
-//            // por defecto: escenario existe
-//            _escenarioRepoMock
-//                .Setup(r => r.ObtenerEscenario(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(_escenarioExistente);
-//        }
+            return cmd;
+        }
 
-//        [Fact]
-//        public async Task CreatesZoneAndGeneratesSeats_WhenTipoSentadoAndAutoGenerate()
-//        {
-//            // Arrange
-//            var filas = 5;
-//            var cols = 4;
-//            var capacidad = filas * cols;
-//            var numeracion = new Numeracion { Filas = filas, Columnas = cols }; // asumo tu VO
+        #region Handle_Valido_SinAutogenerar_DeberiaCrearZonaYEscenarioZonaYRetornarId()
+        [Fact]
+        public async Task Handle_Valido_SinAutogenerar_DeberiaCrearZonaYEscenarioZonaYRetornarId()
+        {
+            // ARRANGE
+            var command = BuildBaseCommand(
+                tipo: "general",
+                autogenerar: false,
+                filas: null,
+                columnas: null,
+                capacidad: 100);
 
-//            // existsByNombre -> false
-//            _zonaRepoMock
-//                .Setup(r => r.ExistsByNombreAsync(_eventId, _nombre, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(false);
+            // Escenario existe
+            _mockEscenarioRepo
+                .Setup(r => r.ObtenerEscenario(command.EscenarioId.ToString(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new Escenario { Id = command.EscenarioId });
 
-//            // Capturamos el zona que el handler crea
-//            _zonaRepoMock
-//                .Setup(r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()))
-//                .Callback<ZonaEvento, CancellationToken>((z, ct) => _capturedZona = z)
-//                .Returns(Task.CompletedTask);
+            // No hay nombre duplicado
+            _mockZonaRepo
+                .Setup(r => r.ExistsByNombreAsync(command.EventId, command.Nombre, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(false);
 
-//            _escenarioZonaRepoMock
-//                .Setup(r => r.AddAsync(It.IsAny<EscenarioZona>(), It.IsAny<CancellationToken>()))
-//                .Callback<EscenarioZona, CancellationToken>((ez, ct) => _capturedEscenarioZona = ez)
-//                .Returns(Task.CompletedTask);
+            Guid zonaIdCapturado = Guid.Empty;
 
-//            _asientoRepoMock
-//                .Setup(r => r.BulkInsertAsync(It.IsAny<IEnumerable<Dominio.Entidades.Asiento>>(), It.IsAny<CancellationToken>()))
-//                .Returns(Task.CompletedTask);
+            _mockZonaRepo
+                .Setup(r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()))
+                .Callback<ZonaEvento, CancellationToken>((z, _) => zonaIdCapturado = z.Id)
+                .Returns(Task.CompletedTask);
 
-//            var command = new CreateZonaEventoCommand
-//            {
-//                EventId = _eventId,
-//                EscenarioId = _escenarioId,
-//                Nombre = _nombre,
-//                Tipo = "sentado",
-//                Capacidad = capacidad,
-//                Numeracion = numeracion,
-//                Precio = 10m,
-//                Estado = "active",
-//                AutogenerarAsientos = true
-//            };
+            _mockEscenarioZonaRepo
+                .Setup(r => r.AddAsync(It.IsAny<EscenarioZona>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
 
-//            // Act
-//            var result = await _handler.Handle(command, CancellationToken.None);
+            // ACT
+            var resultId = await _handler.Handle(command, CancellationToken.None);
 
-//            // Assert: se devolvió el Id de la zona creada
-//            Assert.NotEqual(Guid.Empty, result);
-//            Assert.NotNull(_capturedZona);
-//            Assert.Equal(result, _capturedZona!.Id);
+            // ASSERT
+            Assert.NotEqual(Guid.Empty, resultId);
+            Assert.Equal(zonaIdCapturado, resultId);
 
-//            // Verificamos que AddAsync zona fue llamado
-//            _zonaRepoMock.Verify(r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockEscenarioRepo.Verify(
+                r => r.ObtenerEscenario(command.EscenarioId.ToString(), It.IsAny<CancellationToken>()),
+                Times.Once);
 
-//            // EscenarioZona agregado
-//            _escenarioZonaRepoMock.Verify(r => r.AddAsync(It.IsAny<EscenarioZona>(), It.IsAny<CancellationToken>()), Times.Once);
-//            Assert.NotNull(_capturedEscenarioZona);
-//            Assert.Equal(_capturedZona!.Id, _capturedEscenarioZona!.ZonaEventoId);
+            _mockZonaRepo.Verify(
+                r => r.ExistsByNombreAsync(command.EventId, command.Nombre, It.IsAny<CancellationToken>()),
+                Times.Once);
 
-//            // BulkInsert de asientos llamado con la cantidad filas*cols
-//            _asientoRepoMock.Verify(r => r.BulkInsertAsync(It.Is<IEnumerable<Dominio.Entidades.Asiento>>(seq => seq.Count() == capacidad), It.IsAny<CancellationToken>()), Times.Once);
-//        }
+            _mockZonaRepo.Verify(
+                r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()),
+                Times.Once);
 
-//        [Fact]
-//        public async Task CreatesZoneWithoutGeneratingSeats_WhenTipoGeneral()
-//        {
-//            // Arrange
-//            _zonaRepoMock
-//                .Setup(r => r.ExistsByNombreAsync(_eventId, _nombre, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(false);
+            _mockEscenarioZonaRepo.Verify(
+                r => r.AddAsync(It.IsAny<EscenarioZona>(), It.IsAny<CancellationToken>()),
+                Times.Once);
 
-//            _zonaRepoMock
-//                .Setup(r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()))
-//                .Callback<ZonaEvento, CancellationToken>((z, ct) => _capturedZona = z)
-//                .Returns(Task.CompletedTask);
+            _mockAsientoRepo.Verify(
+                r => r.BulkInsertAsync(It.IsAny<IReadOnlyCollection<Dominio.Entidades.Asiento>>(), It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
 
-//            _escenarioZonaRepoMock
-//                .Setup(r => r.AddAsync(It.IsAny<EscenarioZona>(), It.IsAny<CancellationToken>()))
-//                .Callback<EscenarioZona, CancellationToken>((ez, ct) => _capturedEscenarioZona = ez)
-//                .Returns(Task.CompletedTask);
+        #region Handle_Valido_SentadoConAutogenerar_DeberiaCrearYGenerarAsientos()
+        [Fact]
+        public async Task Handle_Valido_SentadoConAutogenerar_DeberiaCrearYGenerarAsientos()
+        {
+            // ARRANGE
+            int filas = 2;
+            int columnas = 3;
+            int capacidad = filas * columnas;
 
-//            var command = new CreateZonaEventoCommand
-//            {
-//                EventId = _eventId,
-//                EscenarioId = _escenarioId,
-//                Nombre = _nombre,
-//                Tipo = "general",
-//                Capacidad = 200,
-//                Numeracion = null,
-                
-//                Precio = 5m,
-//                Estado = "active",
-//                AutogenerarAsientos = false
-//            };
+            var command = BuildBaseCommand(
+                tipo: "sentado",
+                autogenerar: true,
+                filas: filas,
+                columnas: columnas,
+                capacidad: capacidad);
 
-//            // Act
-//            var result = await _handler.Handle(command, CancellationToken.None);
+            // 👇 Aseguramos que Numeracion tiene valores válidos
+            command.Numeracion = new Numeracion
+            {
+                Modo = "filas-columnas",
+                Filas = filas,
+                Columnas = columnas,
+                PrefijoFila = "F",
+                PrefijoAsiento = "A"
+            };
 
-//            // Assert
-//            Assert.NotNull(_capturedZona);
-//            Assert.Equal(result, _capturedZona!.Id);
+            _mockEscenarioRepo
+                .Setup(r => r.ObtenerEscenario(command.EscenarioId.ToString(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new Escenario { Id = command.EscenarioId });
 
-//            _zonaRepoMock.Verify(r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()), Times.Once);
-//            _escenarioZonaRepoMock.Verify(r => r.AddAsync(It.IsAny<EscenarioZona>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockZonaRepo
+                .Setup(r => r.ExistsByNombreAsync(command.EventId, command.Nombre, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(false);
 
-//            // BulkInsert nunca llamado
-//            _asientoRepoMock.Verify(r => r.BulkInsertAsync(It.IsAny<IEnumerable<Dominio.Entidades.Asiento>>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
+            _mockZonaRepo
+                .Setup(r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
 
-//        [Fact]
-//        public async Task Throws_WhenEscenarioNotFound()
-//        {
-//            // Arrange
-//            _escenarioRepoMock
-//                .Setup(r => r.ObtenerEscenario(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-//                .ReturnsAsync((Dominio.Entidades.Escenario?)null);
+            _mockEscenarioZonaRepo
+                .Setup(r => r.AddAsync(It.IsAny<EscenarioZona>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
 
-//            var command = new CreateZonaEventoCommand
-//            {
-//                EventId = _eventId,
-//                EscenarioId = _escenarioId,
-//                Nombre = _nombre,
-//                Tipo = "general",
-//                Capacidad = 100,
-//                AutogenerarAsientos = false
-//            };
+            _mockAsientoRepo
+                .Setup(r => r.BulkInsertAsync(It.IsAny<IReadOnlyCollection<Dominio.Entidades.Asiento>>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
 
-//            // Act & Assert
-//            await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(command, CancellationToken.None));
+            // ACT
+            var resultId = await _handler.Handle(command, CancellationToken.None);
 
-//            // No se debe haber intentado crear nada
-//            _zonaRepoMock.Verify(r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
+            // ASSERT
+            Assert.NotEqual(Guid.Empty, resultId);
 
-//        [Fact]
-//        public async Task Throws_WhenNombreDuplicado()
-//        {
-//            // Arrange
-//            _zonaRepoMock
-//                .Setup(r => r.ExistsByNombreAsync(_eventId, _nombre, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(true);
+        }
 
-//            var command = new CreateZonaEventoCommand
-//            {
-//                EventId = _eventId,
-//                EscenarioId = _escenarioId,
-//                Nombre = _nombre,
-//                Tipo = "general",
-//                Capacidad = 100,
-//                AutogenerarAsientos = false
-//            };
 
-//            // Act & Assert
-//            await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(command, CancellationToken.None));
+        #endregion
 
-//            _zonaRepoMock.Verify(r => r.ExistsByNombreAsync(_eventId, _nombre, It.IsAny<CancellationToken>()), Times.Once);
-//            _zonaRepoMock.Verify(r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
+        #region Handle_EscenarioNoExiste_DeberiaLanzarEventoException()
+        [Fact]
+        public async Task Handle_EscenarioNoExiste_DeberiaLanzarEventoException()
+        {
+            // ARRANGE
+            var command = BuildBaseCommand();
 
-//        [Fact]
-//        public async Task Throws_WhenFilasOrColumnasInvalid_ForSentado()
-//        {
-//            // Arrange: filas = 0
-//            var numeracion = new Numeracion { Filas = 0, Columnas = 5 };
+            _mockEscenarioRepo
+                .Setup(r => r.ObtenerEscenario(command.EscenarioId.ToString(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync((Escenario)null);
 
-//            _zonaRepoMock
-//                .Setup(r => r.ExistsByNombreAsync(_eventId, _nombre, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(false);
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(command, CancellationToken.None));
 
-//            var command = new CreateZonaEventoCommand
-//            {
-//                EventId = _eventId,
-//                EscenarioId = _escenarioId,
-//                Nombre = _nombre,
-//                Tipo = "sentado",
-//                Numeracion = numeracion,
-//                Capacidad = 0,
-//                AutogenerarAsientos = false
-//            };
+            _mockZonaRepo.Verify(
+                r => r.ExistsByNombreAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
+                Times.Never);
 
-//            await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(command, CancellationToken.None));
+            _mockZonaRepo.Verify(
+                r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
 
-//            _zonaRepoMock.Verify(r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
+        #region Handle_NombreDuplicado_DeberiaLanzarEventoException()
+        [Fact]
+        public async Task Handle_NombreDuplicado_DeberiaLanzarEventoException()
+        {
+            // ARRANGE
+            var command = BuildBaseCommand();
 
-//        [Fact]
-//        public async Task Throws_WhenCapacidadMismatch_ForSentado()
-//        {
-//            // Arrange: filas*cols = 6*6 = 36 but capacidad = 10
-//            var numeracion = new Numeracion { Filas = 6, Columnas = 6 };
+            _mockEscenarioRepo
+                .Setup(r => r.ObtenerEscenario(command.EscenarioId.ToString(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new Escenario { Id = command.EscenarioId });
 
-//            _zonaRepoMock
-//                .Setup(r => r.ExistsByNombreAsync(_eventId, _nombre, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(false);
+            _mockZonaRepo
+                .Setup(r => r.ExistsByNombreAsync(command.EventId, command.Nombre, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
-//            var command = new CreateZonaEventoCommand
-//            {
-//                EventId = _eventId,
-//                EscenarioId = _escenarioId,
-//                Nombre = _nombre,
-//                Tipo = "sentado",
-//                Numeracion = numeracion,
-//                Capacidad = 10, // mismatch
-//                AutogenerarAsientos = false
-//            };
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(command, CancellationToken.None));
 
-//            await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(command, CancellationToken.None));
+            _mockZonaRepo.Verify(
+                r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()),
+                Times.Never);
 
-//            _zonaRepoMock.Verify(r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
-//    }
-//}
+            _mockEscenarioZonaRepo.Verify(
+                r => r.AddAsync(It.IsAny<EscenarioZona>(), It.IsAny<CancellationToken>()),
+                Times.Never);
+
+            _mockAsientoRepo.Verify(
+                r => r.BulkInsertAsync(It.IsAny<IReadOnlyCollection<Dominio.Entidades.Asiento>>(), It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
+
+        #region Handle_SentadoConFilasOColumnasInvalidas_DeberiaLanzarEventoException()
+        [Fact]
+        public async Task Handle_SentadoConFilasOColumnasInvalidas_DeberiaLanzarEventoException()
+        {
+            // ARRANGE
+            var command = BuildBaseCommand(
+                tipo: "sentado",
+                autogenerar: false,
+                filas: 0,          // inválido
+                columnas: 5,
+                capacidad: 100);
+
+            _mockEscenarioRepo
+                .Setup(r => r.ObtenerEscenario(command.EscenarioId.ToString(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new Escenario { Id = command.EscenarioId });
+
+            _mockZonaRepo
+                .Setup(r => r.ExistsByNombreAsync(command.EventId, command.Nombre, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(false);
+
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(command, CancellationToken.None));
+
+            _mockZonaRepo.Verify(
+                r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
+
+        #region Handle_RepositorioLanzaException_DeberiaLanzarCreateZonaEventoHandlerException()
+        [Fact]
+        public async Task Handle_RepositorioLanzaException_DeberiaLanzarCreateZonaEventoHandlerException()
+        {
+            // ARRANGE
+            var command = BuildBaseCommand();
+
+            _mockEscenarioRepo
+                .Setup(r => r.ObtenerEscenario(command.EscenarioId.ToString(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new Escenario { Id = command.EscenarioId });
+
+            _mockZonaRepo
+                .Setup(r => r.ExistsByNombreAsync(command.EventId, command.Nombre, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(false);
+
+            var dbException = new InvalidOperationException("Simulated DB error");
+            _mockZonaRepo
+                .Setup(r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()))
+                .ThrowsAsync(dbException);
+
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<CreateZonaEventoHandlerException>(
+                () => _handler.Handle(command, CancellationToken.None));
+        }
+        #endregion
+    }
+}

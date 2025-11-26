@@ -1,229 +1,291 @@
-﻿//using System;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using EventsService.Aplicacion.Commands.Zonas.ModificarZonaEvento;
-//using EventsService.Dominio.Entidades;
-//using EventsService.Dominio.Excepciones;
-//using EventsService.Dominio.Interfaces;
-//using EventsService.Dominio.ValueObjects;
-//using Moq;
-//using Xunit;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using EventsService.Aplicacion.Commands.Zonas.ModificarZonaEvento;
+using EventsService.Dominio.Entidades;
+using EventsService.Dominio.Excepciones;
+using EventsService.Dominio.Excepciones.Aplicacion;
+using EventsService.Dominio.Interfaces;
+using log4net;
+using Moq;
+using Xunit;
 
-//namespace EventsService.Test.Aplication.Commands.Zonas
-//{
-//    public class ModificarZonaEventoHandlerTests
-//    {
-//        private readonly Mock<IZonaEventoRepository> _zonaRepoMock;
-//        private readonly Mock<IEscenarioZonaRepository> _escenarioZonaRepoMock;
-//        private readonly ModificarZonaEventoHandler _handler;
+namespace EventsService.Test.Aplicacion.CommandHandlers.Zonas
+{
+    public class ModificarZonaEventoHandler_Tests
+    {
+        private readonly Mock<IZonaEventoRepository> _mockZonaRepo;
+        private readonly Mock<IEscenarioZonaRepository> _mockEscenarioZonaRepo;
+        private readonly Mock<ILog> _mockLog;
+        private readonly ModificarZonaEventoHandler _handler;
 
-//        // Datos fake
-//        private readonly Guid _eventId;
-//        private readonly Guid _zonaId;
-//        private ZonaEvento? _existingZona;
-//        private EscenarioZona? _existingEscenarioZona;
+        // --- DATOS ---
+        private readonly Guid _eventId;
+        private readonly Guid _zonaId;
+        private readonly Guid _escenarioZonaId;
 
-//        // captura para inspección
-//        private ZonaEvento? _capturedUpdatedZona;
+        public ModificarZonaEventoHandler_Tests()
+        {
+            _mockZonaRepo = new Mock<IZonaEventoRepository>();
+            _mockEscenarioZonaRepo = new Mock<IEscenarioZonaRepository>();
+            _mockLog = new Mock<ILog>();
 
-//        public ModificarZonaEventoHandlerTests()
-//        {
-//            _zonaRepoMock = new Mock<IZonaEventoRepository>();
-//            _escenarioZonaRepoMock = new Mock<IEscenarioZonaRepository>();
+            _handler = new ModificarZonaEventoHandler(
+                _mockZonaRepo.Object,
+                _mockEscenarioZonaRepo.Object,
+                _mockLog.Object);
 
-//            _handler = new ModificarZonaEventoHandler(_zonaRepoMock.Object, _escenarioZonaRepoMock.Object);
+            _eventId = Guid.NewGuid();
+            _zonaId = Guid.NewGuid();
+            _escenarioZonaId = Guid.NewGuid();
+        }
 
-//            _eventId = Guid.NewGuid();
-//            _zonaId = Guid.NewGuid();
+        private ModificarZonaEventoCommnand BuildBaseCommand(bool conGrid = false)
+        {
+            var cmd = new ModificarZonaEventoCommnand
+            {
+                EventId = _eventId,
+                ZonaId = _zonaId,
+                Nombre = "Zona VIP Actualizada",
+                Precio = 150m,
+                Estado = "activa"
+            };
 
-//            _existingZona = new ZonaEvento
-//            {
-//                Id = _zonaId,
-//                EventId = _eventId,
-//                Nombre = "Original Name",
-//                Precio = 20m,
-//                Estado = "active",
-//                CreatedAt = DateTime.UtcNow.AddDays(-1),
-//                UpdatedAt = DateTime.UtcNow.AddDays(-1),
-//                Capacidad = 100
-//            };
+            if (conGrid)
+            {
+                cmd.Grid = new EventsService.Dominio.ValueObjects.GridRef
+                {
+                    StartRow = 1,
+                    StartCol = 1,
+                    RowSpan = 2,
+                    ColSpan = 3
+                };
+            }
 
-//            _existingEscenarioZona = new EscenarioZona
-//            {
-//                Id = Guid.NewGuid(),
-//                EventId = _eventId,
-//                EscenarioId = Guid.NewGuid(),
-//                ZonaEventoId = _zonaId,
-//                Grid = null, // ahora usaremos GridRef en UpdateGridAsync
-//                Color = "#000000",
-//                Visible = true,
-//                CreatedAt = DateTime.UtcNow.AddDays(-1),
-//                UpdatedAt = DateTime.UtcNow.AddDays(-1)
-//            };
+            return cmd;
+        }
 
-//            // Por defecto retornamos la zona existente
-//            _zonaRepoMock
-//                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(() => _existingZona);
-//        }
+        #region Handle_ZonaExiste_SinGrid_DeberiaActualizarYDevolverTrue()
+        [Fact]
+        public async Task Handle_ZonaExiste_SinGrid_DeberiaActualizarYDevolverTrue()
+        {
+            // ARRANGE
+            var cmd = BuildBaseCommand(conGrid: false);
 
-//        [Fact]
-//        public async Task Handle_ReturnsTrue_AndUpdatesFields_WhenZoneExists()
-//        {
-//            // Arrange
-//            _zonaRepoMock
-//                .Setup(r => r.UpdateAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()))
-//                .Callback<ZonaEvento, CancellationToken>((z, ct) => _capturedUpdatedZona = z)
-//                .Returns(Task.CompletedTask);
+            var zonaExistente = new ZonaEvento
+            {
+                Id = _zonaId,
+                EventId = _eventId,
+                Nombre = "Zona Original",
+                Precio = 100m,
+                Estado = "borrador",
+                CreatedAt = DateTime.UtcNow.AddDays(-1),
+                UpdatedAt = DateTime.UtcNow.AddDays(-1)
+            };
 
-//            var cmd = new ModificarZonaEventoCommnand
-//            {
-//                EventId = _eventId,
-//                ZonaId = _zonaId,
-//                Nombre = "New Name",
-//                Precio = 35.5m,
-//                Estado = "inactive",
-//                Grid = null // no actualizamos grid en este test
-//            };
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(zonaExistente);
 
-//            // Act
-//            var result = await _handler.Handle(cmd, CancellationToken.None);
+            _mockZonaRepo
+                .Setup(r => r.UpdateAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
 
-//            // Assert
-//            Assert.True(result);
-//            _zonaRepoMock.Verify(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()), Times.Once);
-//            _zonaRepoMock.Verify(r => r.UpdateAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()), Times.Once);
+            // ACT
+            var result = await _handler.Handle(cmd, CancellationToken.None);
 
-//            Assert.NotNull(_capturedUpdatedZona);
-//            Assert.Equal("New Name", _capturedUpdatedZona!.Nombre);
-//            Assert.Equal(35.5m, _capturedUpdatedZona.Precio);
-//            Assert.Equal("inactive", _capturedUpdatedZona.Estado);
-//            Assert.True(_capturedUpdatedZona.UpdatedAt > _capturedUpdatedZona.CreatedAt);
-//        }
+            // ASSERT
+            Assert.True(result);
 
-//        [Fact]
-//        public async Task Handle_CallsUpdateGrid_WhenGridProvided_AndEscenarioZonaExists()
-//        {
-//            // Arrange
-//            // repo.GetAsync ya devuelve _existingZona por defecto desde constructor
+            _mockZonaRepo.Verify(
+                r => r.UpdateAsync(It.Is<ZonaEvento>(z =>
+                    z.Id == _zonaId &&
+                    z.Nombre == cmd.Nombre.Trim() &&
+                    z.Precio == cmd.Precio &&
+                    z.Estado == cmd.Estado), It.IsAny<CancellationToken>()),
+                Times.Once);
 
-//            _escenarioZonaRepoMock
-//                .Setup(r => r.GetByZonaAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(_existingEscenarioZona);
+            // No debería tocar EscenarioZona si no hay grid
+            _mockEscenarioZonaRepo.Verify(
+                r => r.GetByZonaAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
 
-//            // Preparamos un GridRef esperado
-//            var newGrid = new GridRef { StartRow = 1, StartCol = 1, RowSpan = 2, ColSpan = 3 };
+        #region Handle_ZonaNoExiste_DeberiaLanzarNotFoundException()
+        [Fact]
+        public async Task Handle_ZonaNoExiste_DeberiaLanzarNotFoundException()
+        {
+            // ARRANGE
+            var cmd = BuildBaseCommand(conGrid: false);
 
-//            _escenarioZonaRepoMock
-//                .Setup(r => r.UpdateGridAsync(
-//                    _existingEscenarioZona!.Id,
-//                    It.Is<GridRef>(g => g.StartRow == newGrid.StartRow && g.StartCol == newGrid.StartCol && g.RowSpan == newGrid.RowSpan && g.ColSpan == newGrid.ColSpan),
-//                    It.IsAny<string?>(),
-//                    It.IsAny<int?>(),
-//                    It.IsAny<bool>(),
-//                    It.IsAny<CancellationToken>()))
-//                .Returns(Task.CompletedTask)
-//                .Verifiable();
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync((ZonaEvento?)null);
 
-//            _zonaRepoMock
-//                .Setup(r => r.UpdateAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()))
-//                .Returns(Task.CompletedTask);
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<NotFoundException>(
+                () => _handler.Handle(cmd, CancellationToken.None));
 
-//            var cmd = new ModificarZonaEventoCommnand
-//            {
-//                EventId = _eventId,
-//                ZonaId = _zonaId,
-//                Grid = newGrid
-//            };
+            _mockZonaRepo.Verify(
+                r => r.UpdateAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
 
-//            // Act
-//            var result = await _handler.Handle(cmd, CancellationToken.None);
+        #region Handle_ZonaExiste_ConGrid_DeberiaActualizarZonaYGrid()
+        [Fact]
+        public async Task Handle_ZonaExiste_ConGrid_DeberiaActualizarZonaYGrid()
+        {
+            // ARRANGE
+            var cmd = BuildBaseCommand(conGrid: true);
 
-//            // Assert
-//            Assert.True(result);
-//            _escenarioZonaRepoMock.Verify(r => r.GetByZonaAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()), Times.Once);
-//            _escenarioZonaRepoMock.Verify(r => r.UpdateGridAsync(
-//                _existingEscenarioZona!.Id,
-//                It.Is<GridRef>(g => g.StartRow == newGrid.StartRow && g.StartCol == newGrid.StartCol && g.RowSpan == newGrid.RowSpan && g.ColSpan == newGrid.ColSpan),
-//                null,
-//                null,
-//                true,
-//                It.IsAny<CancellationToken>()), Times.Once);
-//        }
+            var zonaExistente = new ZonaEvento
+            {
+                Id = _zonaId,
+                EventId = _eventId,
+                Nombre = "Zona Original",
+                Precio = 100m,
+                Estado = "borrador",
+                CreatedAt = DateTime.UtcNow.AddDays(-1),
+                UpdatedAt = DateTime.UtcNow.AddDays(-1)
+            };
 
-//        [Fact]
-//        public async Task Handle_DoesNotCallUpdateGrid_WhenGridIsNull()
-//        {
-//            // Arrange
-//            _zonaRepoMock
-//                .Setup(r => r.UpdateAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()))
-//                .Returns(Task.CompletedTask);
+            var escenarioZona = new EscenarioZona
+            {
+                Id = _escenarioZonaId,
+                EventId = _eventId,
+                ZonaEventoId = _zonaId
+            };
 
-//            var cmd = new ModificarZonaEventoCommnand
-//            {
-//                EventId = _eventId,
-//                ZonaId = _zonaId,
-//                Grid = null // grid null
-//            };
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(zonaExistente);
 
-//            // Act
-//            var result = await _handler.Handle(cmd, CancellationToken.None);
+            _mockZonaRepo
+                .Setup(r => r.UpdateAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
 
-//            // Assert
-//            Assert.True(result);
-//            _escenarioZonaRepoMock.Verify(r => r.GetByZonaAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
-//            _escenarioZonaRepoMock.Verify(r => r.UpdateGridAsync(It.IsAny<Guid>(), It.IsAny<GridRef>(), It.IsAny<string?>(), It.IsAny<int?>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
+            _mockEscenarioZonaRepo
+                .Setup(r => r.GetByZonaAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(escenarioZona);
 
-//        [Fact]
-//        public async Task Handle_DoesNotCallUpdateGrid_WhenEscenarioZonaNotFound()
-//        {
-//            // Arrange
-//            _escenarioZonaRepoMock
-//                .Setup(r => r.GetByZonaAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync((EscenarioZona?)null);
+            _mockEscenarioZonaRepo
+                .Setup(r => r.UpdateGridAsync(
+                    _escenarioZonaId,
+                    It.IsAny<EventsService.Dominio.ValueObjects.GridRef>(),
+                    null,
+                    null,
+                    true,
+                    It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
 
-//            _zonaRepoMock
-//                .Setup(r => r.UpdateAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()))
-//                .Returns(Task.CompletedTask);
+            // ACT
+            var result = await _handler.Handle(cmd, CancellationToken.None);
 
-//            var cmd = new ModificarZonaEventoCommnand
-//            {
-//                EventId = _eventId,
-//                ZonaId = _zonaId,
-//                Grid = new GridRef { StartRow = 2, StartCol = 2, RowSpan = 1, ColSpan = 1 }
-//            };
+            // ASSERT
+            Assert.True(result);
 
-//            // Act
-//            var result = await _handler.Handle(cmd, CancellationToken.None);
+            _mockZonaRepo.Verify(
+                r => r.UpdateAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()),
+                Times.Once);
 
-//            // Assert
-//            Assert.True(result);
-//            _escenarioZonaRepoMock.Verify(r => r.GetByZonaAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()), Times.Once);
-//            _escenarioZonaRepoMock.Verify(r => r.UpdateGridAsync(It.IsAny<Guid>(), It.IsAny<GridRef>(), It.IsAny<string?>(), It.IsAny<int?>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
+            _mockEscenarioZonaRepo.Verify(
+                r => r.GetByZonaAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()),
+                Times.Once);
 
-//        [Fact]
-//        public async Task Handle_ThrowsNotFoundException_WhenZonaNotFound()
-//        {
-//            // Arrange: GetAsync devuelve null
-//            _zonaRepoMock
-//                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync((ZonaEvento?)null);
+            _mockEscenarioZonaRepo.Verify(
+                r => r.UpdateGridAsync(
+                    _escenarioZonaId,
+                    It.Is<EventsService.Dominio.ValueObjects.GridRef>(g =>
+                        g.StartRow == cmd.Grid.StartRow &&
+                        g.StartCol == cmd.Grid.StartCol &&
+                        g.RowSpan == cmd.Grid.RowSpan &&
+                        g.ColSpan == cmd.Grid.ColSpan),
+                    null,
+                    null,
+                    true,
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+        #endregion
 
-//            var cmd = new ModificarZonaEventoCommnand
-//            {
-//                EventId = _eventId,
-//                ZonaId = _zonaId,
-//                Nombre = "Whatever"
-//            };
+        #region Handle_ZonaExiste_ConGrid_PeroSinEscenarioZona_NoRevientaYDevuelveTrue()
+        [Fact]
+        public async Task Handle_ZonaExiste_ConGrid_PeroSinEscenarioZona_NoRevientaYDevuelveTrue()
+        {
+            // ARRANGE
+            var cmd = BuildBaseCommand(conGrid: true);
 
-//            // Act & Assert
-//            await Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(cmd, CancellationToken.None));
+            var zonaExistente = new ZonaEvento
+            {
+                Id = _zonaId,
+                EventId = _eventId,
+                Nombre = "Zona Original",
+                Precio = 100m,
+                Estado = "borrador"
+            };
 
-//            // Aseguramos que no intentó actualizar nada
-//            _zonaRepoMock.Verify(r => r.UpdateAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()), Times.Never);
-//            _escenarioZonaRepoMock.Verify(r => r.GetByZonaAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
-//    }
-//}
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(zonaExistente);
+
+            _mockZonaRepo
+                .Setup(r => r.UpdateAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
+
+            _mockEscenarioZonaRepo
+                .Setup(r => r.GetByZonaAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync((EscenarioZona?)null);
+
+            // ACT
+            var result = await _handler.Handle(cmd, CancellationToken.None);
+
+            // ASSERT
+            Assert.True(result);
+
+            _mockEscenarioZonaRepo.Verify(
+                r => r.UpdateGridAsync(
+                    It.IsAny<Guid>(),
+                    It.IsAny<EventsService.Dominio.ValueObjects.GridRef>(),
+                    It.IsAny<string?>(),
+                    It.IsAny<int?>(),
+                    It.IsAny<bool?>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
+
+        #region Handle_RepositorioLanzaExcepcion_DeberiaLanzarModificarZonaEventoHandlerException()
+        [Fact]
+        public async Task Handle_RepositorioLanzaExcepcion_DeberiaLanzarModificarZonaEventoHandlerException()
+        {
+            // ARRANGE
+            var cmd = BuildBaseCommand(conGrid: false);
+
+            var zonaExistente = new ZonaEvento
+            {
+                Id = _zonaId,
+                EventId = _eventId,
+                Nombre = "Zona Original",
+                Precio = 100m,
+                Estado = "borrador"
+            };
+
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(zonaExistente);
+
+            var dbEx = new InvalidOperationException("DB error simulado");
+
+            _mockZonaRepo
+                .Setup(r => r.UpdateAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()))
+                .ThrowsAsync(dbEx);
+
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<ModificarZonaEventoHandlerException>(
+                () => _handler.Handle(cmd, CancellationToken.None));
+        }
+        #endregion
+    }
+}

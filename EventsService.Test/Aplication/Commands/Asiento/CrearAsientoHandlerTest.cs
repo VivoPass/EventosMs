@@ -1,178 +1,226 @@
-﻿//using System;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using EventsService.Aplicacion.Commands.Asiento.CrearAsiento;
-//using EventsService.Dominio.Entidades;
-//using EventsService.Dominio.Excepciones;
-//using EventsService.Dominio.Interfaces;
-//using Moq;
-//using Xunit;
-//using AsientoEntity = EventsService.Dominio.Entidades.Asiento;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using EventsService.Aplicacion.Commands.Asiento.CrearAsiento;
+using EventsService.Dominio.Entidades;
+using EventsService.Dominio.Excepciones;
+using EventsService.Dominio.Excepciones.Aplicacion;
+using EventsService.Dominio.Interfaces;
+using log4net;
+using Moq;
+using Xunit;
 
-//namespace EventsService.Test.Aplication.Commands.Asiento
-//{
-//    public class CrearAsientoHandlerTests
-//    {
-//        private readonly Mock<IAsientoRepository> _asientosMock;
-//        private readonly Mock<IZonaEventoRepository> _zonasMock;
-//        private readonly CrearAsientoHandler _handler;
+namespace EventsService.Test.Aplicacion.CommandHandlers.Asiento
+{
+    public class CrearAsientoHandler_Tests
+    {
+        private readonly Mock<IAsientoRepository> _mockAsientoRepo;
+        private readonly Mock<IZonaEventoRepository> _mockZonaRepo;
+        private readonly Mock<ILog> _mockLog;
+        private readonly CrearAsientoHandler _handler;
 
-//        // datos fake
-//        private readonly Guid _eventId;
-//        private readonly Guid _zonaId;
-//        private readonly Guid _asientoId;
-//        private ZonaEvento _zonaExistente;
+        // --- DATOS ---
+        private readonly Guid _eventId;
+        private readonly Guid _zonaId;
 
-//        // captura del asiento insertado
-//        private AsientoEntity? _capturedSeat;
+        public CrearAsientoHandler_Tests()
+        {
+            _mockAsientoRepo = new Mock<IAsientoRepository>();
+            _mockZonaRepo = new Mock<IZonaEventoRepository>();
+            _mockLog = new Mock<ILog>();
 
-//        public CrearAsientoHandlerTests()
-//        {
-//            _asientosMock = new Mock<IAsientoRepository>();
-//            _zonasMock = new Mock<IZonaEventoRepository>();
+            _handler = new CrearAsientoHandler(
+                _mockAsientoRepo.Object,
+                _mockZonaRepo.Object,
+                _mockLog.Object
+            );
 
-//            _handler = new CrearAsientoHandler(_asientosMock.Object, _zonasMock.Object);
+            _eventId = Guid.NewGuid();
+            _zonaId = Guid.NewGuid();
+        }
 
-//            _eventId = Guid.NewGuid();
-//            _zonaId = Guid.NewGuid();
-//            _asientoId = Guid.NewGuid();
+        private CrearAsientoCommand BuildBaseCommand(
+            string? label = "A1",
+            string? estado = "disponible")
+        {
+            return new CrearAsientoCommand(
+                EventId: _eventId,
+                ZonaEventoId: _zonaId,
+                FilaIndex: 1,
+                ColIndex: 1,
+                Label: label!,
+                Estado: estado,
+                Meta: new Dictionary<string, string> { { "k", "v" } }
+            );
+        }
 
-//            _zonaExistente = new ZonaEvento
-//            {
-//                Id = _zonaId,
-//                EventId = _eventId,
-//                Nombre = "Zona Test"
-//            };
+        private ZonaEvento BuildZonaValida()
+        {
+            return new ZonaEvento
+            {
+                Id = _zonaId,
+                EventId = _eventId,
+                Nombre = "Zona VIP",
+                Tipo = "sentado",
+                Capacidad = 10,
+                Estado = "activa",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+        }
 
-//            // Por defecto: la zona existe
-//            _zonasMock
-//                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(_zonaExistente);
+        #region Handle_Valido_DeberiaCrearAsientoYRetornarId()
+        [Fact]
+        public async Task Handle_Valido_DeberiaCrearAsientoYRetornarId()
+        {
+            // ARRANGE
+            var command = BuildBaseCommand();
 
-//            // Por defecto: no hay duplicado
-//            _asientosMock
-//                .Setup(r => r.GetByCompositeAsync(_eventId, _zonaId, It.IsAny<string>(), It.IsAny<CancellationToken>()))
-//                .ReturnsAsync((AsientoEntity?)null);
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(BuildZonaValida());
 
-//            // InsertAsync captura el asiento y devuelve completed task
-//            _asientosMock
-//                .Setup(r => r.InsertAsync(It.IsAny<AsientoEntity>(), It.IsAny<CancellationToken>()))
-//                .Callback<AsientoEntity, CancellationToken>((s, ct) =>
-//                {
-//                    _capturedSeat = s;
-//                })
-//                .Returns(Task.CompletedTask);
-//        }
+            _mockAsientoRepo
+                .Setup(r => r.GetByCompositeAsync(_eventId, _zonaId, command.Label, It.IsAny<CancellationToken>()))
+                .ReturnsAsync((Dominio.Entidades.Asiento)null);
 
-//        [Fact]
-//        public async Task CreatesSeat_WhenInputValid()
-//        {
-//            // Arrange
-//            var label = " A-12 ";
-//            var trimmedLabel = "A-12";
-//            var cmd = new CrearAsientoCommand(
-//                EventId: _eventId,
-//                ZonaEventoId: _zonaId,
-//                FilaIndex: 1,
-//                ColIndex: 2,
-//                Label: label,
-//                Estado: null,
-//                Meta: null
-//            );
+            _mockAsientoRepo
+                .Setup(r => r.InsertAsync(It.IsAny<Dominio.Entidades.Asiento>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
 
-//            // Act
-//            var result = await _handler.Handle(cmd, CancellationToken.None);
+            // ACT
+            var result = await _handler.Handle(command, CancellationToken.None);
 
-//            // Assert
-//            Assert.NotNull(result);
-//            Assert.NotNull(_capturedSeat);
-//            //Assert.Equal(_capturedSeat!.Id, result.Id);
-//            Assert.Equal(_eventId, _capturedSeat.EventId);
-//            Assert.Equal(_zonaId, _capturedSeat.ZonaEventoId);
-//            Assert.Equal(trimmedLabel, _capturedSeat.Label);
-//            Assert.Equal("disponible", _capturedSeat.Estado); // default cuando request.Estado == null
-//        }
+            // ASSERT
+            Assert.NotEqual(Guid.Empty, result.AsientoId);
 
-//        [Fact]
-//        public async Task Throws_WhenZonaNotFound()
-//        {
-//            // Arrange
-//            _zonasMock
-//                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync((ZonaEvento?)null);
+            _mockAsientoRepo.Verify(
+                r => r.InsertAsync(It.IsAny<Dominio.Entidades.Asiento>(), It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+        #endregion
 
-//            var cmd = new CrearAsientoCommand(
-//                EventId: _eventId,
-//                ZonaEventoId: _zonaId,
-//                FilaIndex: 0,
-//                ColIndex: 0,
-//                Label: "X1",
-//                Estado: null,
-//                Meta: null
-//            );
+        #region Handle_ZonaNoExiste_DeberiaLanzarEventoException()
+        [Fact]
+        public async Task Handle_ZonaNoExiste_DeberiaLanzarEventoException()
+        {
+            // ARRANGE
+            var command = BuildBaseCommand();
 
-//            // Act & Assert
-//            await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(cmd, CancellationToken.None));
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync((ZonaEvento)null);
 
-//            // Insert no debe haberse llamado
-//            _asientosMock.Verify(r => r.InsertAsync(It.IsAny<AsientoEntity>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<EventoException>(
+                () => _handler.Handle(command, CancellationToken.None));
 
-//        [Theory]
-//        [InlineData(null)]
-//        [InlineData("")]
-//        [InlineData("   ")]
-//        public async Task Throws_WhenLabelIsNullOrWhitespace(string? badLabel)
-//        {
-//            // Arrange
-//            var cmd = new CrearAsientoCommand(
-//                EventId: _eventId,
-//                ZonaEventoId: _zonaId,
-//                FilaIndex: 0,
-//                ColIndex: 0,
-//                Label: badLabel,
-//                Estado: null,
-//                Meta: null
-//            );
+            _mockAsientoRepo.Verify(
+                r => r.InsertAsync(It.IsAny<Dominio.Entidades.Asiento>(), It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
 
-//            // Act & Assert
-//            await Assert.ThrowsAsync<ArgumentException>(() => _handler.Handle(cmd, CancellationToken.None));
+        #region Handle_ZonaNoPerteneceAlEvento_DeberiaLanzarEventoException()
+        [Fact]
+        public async Task Handle_ZonaNoPerteneceAlEvento_DeberiaLanzarEventoException()
+        {
+            // ARRANGE
+            var command = BuildBaseCommand();
 
-//            _asientosMock.Verify(r => r.InsertAsync(It.IsAny<AsientoEntity>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
+            var zonaDeOtroEvento = new ZonaEvento
+            {
+                Id = _zonaId,
+                EventId = Guid.NewGuid(), // distinto
+                Nombre = "Zona Ajena"
+            };
 
-//        [Fact]
-//        public async Task Throws_WhenDuplicateExists()
-//        {
-//            // Arrange
-//            var label = "C-1";
-//            var dup = new AsientoEntity
-//            {
-//                Id = Guid.NewGuid(),
-//                EventId = _eventId,
-//                ZonaEventoId = _zonaId,
-//                Label = label
-//            };
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(zonaDeOtroEvento);
 
-//            _asientosMock
-//                .Setup(r => r.GetByCompositeAsync(_eventId, _zonaId, label, It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(dup);
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<EventoException>(
+                () => _handler.Handle(command, CancellationToken.None));
 
-//            var cmd = new CrearAsientoCommand(
-//                EventId: _eventId,
-//                ZonaEventoId: _zonaId,
-//                FilaIndex: 1,
-//                ColIndex: 1,
-//                Label: label,
-//                Estado: null,
-//                Meta: null
-//            );
+            _mockAsientoRepo.Verify(
+                r => r.InsertAsync(It.IsAny<Dominio.Entidades.Asiento>(), It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
 
-//            // Act & Assert
-//            await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(cmd, CancellationToken.None));
+        #region Handle_LabelVacio_DeberiaLanzarArgumentException()
+        [Fact]
+        public async Task Handle_LabelVacio_DeberiaLanzarArgumentException()
+        {
+            // ARRANGE
+            var command = BuildBaseCommand(label: "  "); // label vacío/whitespace
 
-//            // No debe insertar
-//            _asientosMock.Verify(r => r.InsertAsync(It.IsAny<AsientoEntity>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
-//    }
-//}
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(BuildZonaValida());
+
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<ArgumentException>(
+                () => _handler.Handle(command, CancellationToken.None));
+
+            _mockAsientoRepo.Verify(
+                r => r.InsertAsync(It.IsAny<Dominio.Entidades.Asiento>(), It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
+
+        #region Handle_AsientoDuplicado_DeberiaLanzarEventoException()
+        [Fact]
+        public async Task Handle_AsientoDuplicado_DeberiaLanzarEventoException()
+        {
+            // ARRANGE
+            var command = BuildBaseCommand();
+
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(BuildZonaValida());
+
+            // Ya existe un asiento con ese label
+            _mockAsientoRepo
+                .Setup(r => r.GetByCompositeAsync(_eventId, _zonaId, command.Label, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new Dominio.Entidades.Asiento { Id = Guid.NewGuid() });
+
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<EventoException>(
+                () => _handler.Handle(command, CancellationToken.None));
+
+            _mockAsientoRepo.Verify(
+                r => r.InsertAsync(It.IsAny<Dominio.Entidades.Asiento>(), It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
+
+        #region Handle_InsertAsyncFalla_DeberiaLanzarCrearAsientoHandlerException()
+        [Fact]
+        public async Task Handle_InsertAsyncFalla_DeberiaLanzarCrearAsientoHandlerException()
+        {
+            // ARRANGE
+            var command = BuildBaseCommand();
+
+            _mockZonaRepo
+                .Setup(r => r.GetAsync(_eventId, _zonaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(BuildZonaValida());
+
+            _mockAsientoRepo
+                .Setup(r => r.GetByCompositeAsync(_eventId, _zonaId, command.Label, It.IsAny<CancellationToken>()))
+                .ReturnsAsync((Dominio.Entidades.Asiento)null);
+
+            var exDb = new InvalidOperationException("Error de conexión al guardar asiento.");
+            _mockAsientoRepo
+                .Setup(r => r.InsertAsync(It.IsAny<Dominio.Entidades.Asiento>(), It.IsAny<CancellationToken>()))
+                .ThrowsAsync(exDb);
+
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<CrearAsientoHandlerException>(
+                () => _handler.Handle(command, CancellationToken.None));
+        }
+        #endregion
+    }
+}
