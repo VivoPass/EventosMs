@@ -1,114 +1,147 @@
-﻿//using EventsService.Aplicacion.Commands.ModificarEscenario;
-//using EventsService.Dominio.Interfaces;
-//using Moq;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using MediatR;
-//using EventsService.Dominio.Excepciones;
+﻿using EventsService.Aplicacion.Commands.ModificarEscenario;
+using EventsService.Dominio.Entidades;
+using EventsService.Dominio.Excepciones;
+using EventsService.Dominio.Excepciones.Aplicacion;
+using EventsService.Dominio.Interfaces;
+using log4net;
+using MediatR;
+using Moq;
 
-//namespace EventsService.Test.Aplication.Commands.Escenario
-//{
-//    public class ModificarEscenarioHandlerTest
-//    {
+namespace EventsService.Test.Aplicacion.CommandHandlers.Escenarios
+{
+    public class CommandHandler_ModificarEscenario_Tests
+    {
+        private readonly Mock<IScenarioRepository> MockScenarioRepo;
+        private readonly Mock<ILog> MockLog;
+        private readonly ModificarEscenarioHandler Handler;
 
+        // --- DATOS ---
+        private readonly string escenarioId;
+        private readonly ModificarEscenarioCommand commandFullUpdate;
 
-//        private readonly Mock<IScenarioRepository> _repoMock;
-//        private readonly ModificarEscenarioHandler _handler;
+        public CommandHandler_ModificarEscenario_Tests()
+        {
+            MockScenarioRepo = new Mock<IScenarioRepository>();
+            MockLog = new Mock<ILog>();
 
-//        // Datos fake
-//        private readonly Guid _idEscenario;
-//        private readonly string _id;
-//        private readonly Dominio.Entidades.Escenario _escenarioExistente;
-//        private readonly ModificarEscenarioCommand _command;
+            Handler = new ModificarEscenarioHandler(MockScenarioRepo.Object, MockLog.Object);
 
-//        public ModificarEscenarioHandlerTest()
-//        {
-//            _idEscenario = Guid.NewGuid();
+            escenarioId = Guid.NewGuid().ToString();
 
-//            _id = _idEscenario.ToString();
-//            _escenarioExistente = new Dominio.Entidades.Escenario
-//            {
-//                Id = _idEscenario,
-//                Nombre = "Nombre existente",
-//                //Descripcion = "Desc old",
-//                Ubicacion = "Ubic old",
-//                Ciudad = "City old",
-//                Estado = "State old",
-//                Pais = "Country old"
-//            };
+            commandFullUpdate = new ModificarEscenarioCommand(
+                Id: escenarioId,
+                Nombre: "  Escenario Actualizado  ", // probamos Trim()
+                Descripcion: "Nueva descripción",
+                Ubicacion: "Av. Nueva, Calle 2",
+                Ciudad: "Valencia",
+                Estado: "Carabobo",
+                Pais: "Venezuela"
+            );
+        }
 
-//            _repoMock = new Mock<IScenarioRepository>();
+        private Escenario CreateExistingEscenario()
+        {
+            return new Escenario
+            {
+                Id = Guid.Parse(escenarioId),
+                Nombre = "Escenario Original",
+                Descripcion = "Descripcion original",
+                Ubicacion = "Av. Original",
+                Ciudad = "Caracas",
+                Estado = "Distrito Capital",
+                Pais = "Venezuela"
+            };
+        }
 
-//            _handler = new ModificarEscenarioHandler(_repoMock.Object);
+        #region Handle_ValidRequest_ShouldModifyEscenarioAndReturnUnit()
+        [Fact]
+        public async Task Handle_ValidRequest_ShouldModifyEscenarioAndReturnUnit()
+        {
+            // ARRANGE
+            var current = CreateExistingEscenario();
+            Escenario? capturado = null;
 
-//            _command = new ModificarEscenarioCommand
-//            (
-//                Id: _idEscenario.ToString(),
-//                Nombre: "   Nuevo Nombre   ",
-//                Descripcion: "Nueva desc",
-//                Ubicacion: "Nueva ubic",
-//                Ciudad: "Nueva city",
-//                Estado: "Nuevo state",
-//                Pais: "Nuevo country");
-//        }
+            MockScenarioRepo
+                .Setup(r => r.ObtenerEscenario(escenarioId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(current);
 
-//        [Fact]
-//        public async Task Handle_DebeModificarEscenario_CuandoExiste()
-//        {
-//            // Arrange
-//            _repoMock
-//                .Setup(r => r.ObtenerEscenario(_idEscenario.ToString(), It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(_escenarioExistente);
+            MockScenarioRepo
+                .Setup(r => r.ModificarEscenario(escenarioId, It.IsAny<Escenario>(), It.IsAny<CancellationToken>()))
+                .Callback<string, Escenario, CancellationToken>((id, e, _) =>
+                {
+                    capturado = e;
+                })
+                .Returns(Task.CompletedTask);
 
-//            _repoMock
-//                .Setup(r => r.ModificarEscenario(_idEscenario.ToString(), It.IsAny<Dominio.Entidades.Escenario>(), It.IsAny<CancellationToken>()))
-//                .Returns(Task.CompletedTask)
-//                .Verifiable();
+            // ACT
+            var result = await Handler.Handle(commandFullUpdate, CancellationToken.None);
 
-//            // Act
-//            var result = await _handler.Handle(_command, CancellationToken.None);
+            // ASSERT
+            Assert.Equal(Unit.Value, result);
+            Assert.NotNull(capturado);
 
-//            // Assert
-//            Assert.Equal(Unit.Value, result);
+            // Validamos merge / mapeo
+            Assert.Equal(current.Id, capturado!.Id); // mantiene el mismo Id
+            Assert.Equal(commandFullUpdate.Nombre!.Trim(), capturado.Nombre);
+            Assert.Equal(commandFullUpdate.Descripcion, capturado.Descripcion);
+            Assert.Equal(commandFullUpdate.Ubicacion, capturado.Ubicacion);
+            Assert.Equal(commandFullUpdate.Ciudad, capturado.Ciudad);
+            Assert.Equal(commandFullUpdate.Estado, capturado.Estado);
+            Assert.Equal(commandFullUpdate.Pais, capturado.Pais);
 
-//            _repoMock.Verify(r => r.ObtenerEscenario(_idEscenario.ToString(), It.IsAny<CancellationToken>()), Times.Once);
+            MockScenarioRepo.Verify(r =>
+                    r.ModificarEscenario(
+                        escenarioId,
+                        It.Is<Escenario>(e =>
+                            e.Nombre == commandFullUpdate.Nombre.Trim() &&
+                            e.Ciudad == commandFullUpdate.Ciudad &&
+                            e.Pais == commandFullUpdate.Pais),
+                        It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+        #endregion
 
-//            _repoMock.Verify(r => r.ModificarEscenario(
-//                    _id,
-//                    It.Is<Dominio.Entidades.Escenario>(e =>
-//                        e.Id == _idEscenario &&
-//                        e.Nombre == "Nuevo Nombre" &&        
-//                        e.Descripcion == _command.Descripcion &&
-//                        e.Ubicacion == _command.Ubicacion &&
-//                        e.Ciudad == _command.Ciudad &&
-//                        e.Estado == _command.Estado &&
-//                        e.Pais == _command.Pais
-//                    ),
-//                    It.IsAny<CancellationToken>()),
-//                Times.Once);
-//        }
+        #region Handle_ScenarioNotFound_ShouldThrowEventoException()
+        [Fact]
+        public async Task Handle_ScenarioNotFound_ShouldThrowEventoException()
+        {
+            // ARRANGE
+            MockScenarioRepo
+                .Setup(r => r.ObtenerEscenario(escenarioId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync((Escenario?)null);
 
-//        [Fact]
-//        public async Task Handle_DebeLanzarExcepcion_CuandoEscenarioNoExiste()
-//        {
-//            // Arrange
-//            _repoMock
-//                .Setup(r => r.ObtenerEscenario(_idEscenario.ToString(), It.IsAny<CancellationToken>()))
-//                .ReturnsAsync((Dominio.Entidades.Escenario?)null);
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<EventoException>(() =>
+                Handler.Handle(commandFullUpdate, CancellationToken.None));
 
-//            // Act + Assert
-//            await Assert.ThrowsAsync<EventoException>(() =>
-//                _handler.Handle(_command, CancellationToken.None)
-//            );
+            MockScenarioRepo.Verify(r =>
+                    r.ModificarEscenario(It.IsAny<string>(), It.IsAny<Escenario>(), It.IsAny<CancellationToken>()),
+                Times.Never);
+        }
+        #endregion
 
-//            _repoMock.Verify(r => r.ObtenerEscenario(_id, It.IsAny<CancellationToken>()), Times.Once);
-//            _repoMock.Verify(r => r.ModificarEscenario(It.IsAny<String>(), It.IsAny<Dominio.Entidades.Escenario>(), It.IsAny<CancellationToken>()), Times.Never);
-//        }
+        #region Handle_ModificarEscenarioThrows_ShouldThrowModificarEscenarioHandlerException()
+        [Fact]
+        public async Task Handle_ModificarEscenarioThrows_ShouldThrowModificarEscenarioHandlerException()
+        {
+            // ARRANGE
+            var current = CreateExistingEscenario();
+            var dbException = new InvalidOperationException("Simulated DB failure.");
 
-//    };
-        
-    
-//}
+            MockScenarioRepo
+                .Setup(r => r.ObtenerEscenario(escenarioId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(current);
+
+            MockScenarioRepo
+                .Setup(r => r.ModificarEscenario(escenarioId, It.IsAny<Escenario>(), It.IsAny<CancellationToken>()))
+                .ThrowsAsync(dbException);
+
+            // ACT & ASSERT
+            var ex = await Assert.ThrowsAsync<ModificarEscenarioHandlerException>(() =>
+                Handler.Handle(commandFullUpdate, CancellationToken.None));
+
+            Assert.Equal(dbException, ex.InnerException);
+        }
+        #endregion
+    }
+}

@@ -1,65 +1,71 @@
-﻿//using EventsService.Aplicacion.Commands.EliminarEscenario;
-//using EventsService.Dominio.Interfaces;
-//using MediatR;
-//using Moq;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿using EventsService.Aplicacion.Commands.EliminarEscenario;
+using EventsService.Dominio.Excepciones.Aplicacion;
+using EventsService.Dominio.Interfaces;
+using log4net;
+using MediatR;
+using Moq;
 
-//namespace EventsService.Test.Aplication.Commands.Escenario
-//{
-//    public class EliminarEscenarioHandlerTests
-//    {
-//        private readonly Mock<IScenarioRepository> _repoMock;
-//        private readonly EliminarEscenarioHandler _handler;
-//        private readonly Guid _idEscenario;
-//        private readonly EliminarEscenarioCommand _command;
+namespace EventsService.Test.Aplicacion.CommandHandlers.Escenarios
+{
+    public class CommandHandler_EliminarEscenario_Tests
+    {
+        private readonly Mock<IScenarioRepository> MockScenarioRepo;
+        private readonly Mock<ILog> MockLog;
+        private readonly EliminarEscenarioHandler Handler;
 
-//        public EliminarEscenarioHandlerTests()
-//        {
-//            _repoMock = new Mock<IScenarioRepository>();
-//            _handler = new EliminarEscenarioHandler(_repoMock.Object);
-//            _idEscenario = Guid.NewGuid();
-//            _command = new EliminarEscenarioCommand(_idEscenario.ToString());
+        // --- DATOS ---
+        private readonly string escenarioId;
+        private readonly EliminarEscenarioCommand command;
 
-//        }
+        public CommandHandler_EliminarEscenario_Tests()
+        {
+            MockScenarioRepo = new Mock<IScenarioRepository>();
+            MockLog = new Mock<ILog>();
 
+            Handler = new EliminarEscenarioHandler(MockScenarioRepo.Object, MockLog.Object);
 
-//        [Fact]
-//        public async Task Handle_DebeLlamarEliminarEscenario_UnaVezConIdCorrecto()
-//        {
-//            // Arrange
-//            _repoMock
-//                .Setup(r => r.EliminarEscenario(_idEscenario.ToString(), It.IsAny<CancellationToken>()))
-//                .Returns(Task.CompletedTask)
-//                .Verifiable();
+            escenarioId = Guid.NewGuid().ToString();
+            command = new EliminarEscenarioCommand(escenarioId);
+        }
 
-//            // Act
-//            var result = await _handler.Handle(_command, CancellationToken.None);
+        #region Handle_ValidRequest_ShouldCallRepositoryAndReturnUnit()
+        [Fact]
+        public async Task Handle_ValidRequest_ShouldCallRepositoryAndReturnUnit()
+        {
+            // ARRANGE
+            MockScenarioRepo
+                .Setup(r => r.EliminarEscenario(escenarioId, It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
 
-//            // Assert
-//            Assert.Equal(Unit.Value, result);
-//            _repoMock.Verify(r => r.EliminarEscenario(_idEscenario.ToString(), It.IsAny<CancellationToken>()), Times.Once);
-//        }
+            // ACT
+            var result = await Handler.Handle(command, CancellationToken.None);
 
-//        [Fact]
-//        public async Task Handle_SiRepositorioLanza_PropagaLaExcepcion()
-//        {
-//            // Arrange
-//            var ex = new InvalidOperationException("Fallo al eliminar");
-//            _repoMock
-//                .Setup(r => r.EliminarEscenario(_idEscenario.ToString(), It.IsAny<CancellationToken>()))
-//                .ThrowsAsync(ex);
+            // ASSERT
+            Assert.Equal(Unit.Value, result);
 
-//            // Act & Assert
-//            var thrown = await Assert.ThrowsAsync<InvalidOperationException>(() =>
-//                _handler.Handle(_command, CancellationToken.None)
-//            );
+            MockScenarioRepo.Verify(r =>
+                    r.EliminarEscenario(escenarioId, It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+        #endregion
 
-//            Assert.Equal("Fallo al eliminar", thrown.Message);
-//            _repoMock.Verify(r => r.EliminarEscenario(_idEscenario.ToString(), It.IsAny<CancellationToken>()), Times.Once);
-//        }
-//    }
-//}
+        #region Handle_RepositoryThrows_ShouldThrowEliminarEscenarioHandlerException()
+        [Fact]
+        public async Task Handle_RepositoryThrows_ShouldThrowEliminarEscenarioHandlerException()
+        {
+            // ARRANGE
+            var dbException = new InvalidOperationException("Simulated DB failure.");
+
+            MockScenarioRepo
+                .Setup(r => r.EliminarEscenario(escenarioId, It.IsAny<CancellationToken>()))
+                .ThrowsAsync(dbException);
+
+            // ACT & ASSERT
+            var ex = await Assert.ThrowsAsync<EliminarEscenarioHandlerException>(() =>
+                Handler.Handle(command, CancellationToken.None));
+
+            Assert.Equal(dbException, ex.InnerException);
+        }
+        #endregion
+    }
+}

@@ -115,7 +115,9 @@ namespace EventsService.Aplicacion.Commands.Zonas.CrearZonaEvento
                         $"Autogenerando asientos para ZonaEventoId='{zona.Id}', EventId='{request.EventId}'.");
                     var seats = zona.GenerarAsientos(request.EventId);   // método de la entidad
                     await _asientoRepo.BulkInsertAsync(seats, ct);
-                    _log.Info($"Se generaron automáticamente {seats.Count(Predicate)} asientos para la zona '{zona.Nombre}'.");
+                    var totalAsientos = seats.Count();   
+                    _log.Info($"Se generaron automáticamente {totalAsientos} asientos para la zona '{zona.Nombre}'.");
+
                 }
 
                 _log.Info($"ZonaEvento creada correctamente. ZonaEventoId='{zona.Id}', EventId='{zona.EventId}'.");
@@ -133,9 +135,5 @@ namespace EventsService.Aplicacion.Commands.Zonas.CrearZonaEvento
             }
         }
 
-        private bool Predicate(Dominio.Entidades.Asiento arg)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
