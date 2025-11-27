@@ -1,264 +1,422 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using EventsService.Dominio.Entidades;
-//using EventsService.Infrastructura.Repositorios;
-//using MongoDB.Driver;
-//using Moq;
-//using Xunit;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using EventsService.Dominio.Entidades;
+using EventsService.Infrastructura.Repositorios;
+using EventsService.Infrastructura.Interfaces;
+using log4net;
+using Moq;
+using MongoDB.Driver;
+using Xunit;
 
-//namespace EventsService.Tests.Infraestructura.Repositorios
-//{
-//    public class ZonaEventoRepositoryTests
-//    {
-//        private readonly Mock<IMongoDatabase> _mockDb;
-//        private readonly Mock<IMongoCollection<ZonaEvento>> _mockCollection;
-//        private readonly ZonaEventoRepository _sut;
+namespace EventsService.Test.Infraestructura.Repositories
+{
+    public class Repository_ZonaEventoRepository_Tests
+    {
+        private readonly Mock<IMongoDatabase> _mockDb;
+        private readonly Mock<IMongoCollection<ZonaEvento>> _mockZonaEventoCollection;
+        private readonly Mock<IAuditoriaRepository> _mockAuditoria;
+        private readonly Mock<ILog> _mockLogger;
 
-//        private readonly ZonaEvento _zona1;
-//        private readonly ZonaEvento _zona2;
+        private readonly ZonaEventoRepository _repository;
 
-//        public ZonaEventoRepositoryTests()
-//        {
-//            _mockDb = new Mock<IMongoDatabase>();
-//            _mockCollection = new Mock<IMongoCollection<ZonaEvento>>();
+        private readonly Guid _idZonaEventoTest = Guid.NewGuid();
+        private readonly Guid _idEventoTest = Guid.NewGuid();
 
-//            _mockDb
-//                .Setup(d => d.GetCollection<ZonaEvento>("zona_evento", It.IsAny<MongoCollectionSettings>()))
-//                .Returns(_mockCollection.Object);
+        private readonly ZonaEvento _zonaEventoTest;
 
-//            _sut = new ZonaEventoRepository(_mockDb.Object);
+        public Repository_ZonaEventoRepository_Tests()
+        {
+            _mockDb = new Mock<IMongoDatabase>();
+            _mockZonaEventoCollection = new Mock<IMongoCollection<ZonaEvento>>();
+            _mockAuditoria = new Mock<IAuditoriaRepository>();
+            _mockLogger = new Mock<ILog>();
 
-//            _zona1 = new ZonaEvento
-//            {
-//                Id = Guid.NewGuid(),
-//                EventId = Guid.NewGuid(),
-//                Nombre = "VIP",
-//                Capacidad = 100,
-//                CreatedAt = DateTime.UtcNow
-//            };
+            _mockDb.Setup(d =>
+                    d.GetCollection<ZonaEvento>("zona_evento", It.IsAny<MongoCollectionSettings>()))
+                .Returns(_mockZonaEventoCollection.Object);
 
-//            _zona2 = new ZonaEvento
-//            {
-//                Id = Guid.NewGuid(),
-//                EventId = _zona1.EventId,
-//                Nombre = "General",
-//                Capacidad = 500,
-//                CreatedAt = DateTime.UtcNow
-//            };
-//        }
+            _repository = new ZonaEventoRepository(
+                _mockDb.Object,
+                _mockAuditoria.Object,
+                _mockLogger.Object);
 
-//        private static IAsyncCursor<T> BuildCursor<T>(List<T> docs)
-//        {
-//            var cursor = new Mock<IAsyncCursor<T>>();
-//            var called = false;
+            // Instancia de prueba (ajusta según tus constructores/properties reales)
+            _zonaEventoTest = Activator.CreateInstance<ZonaEvento>();
+            typeof(ZonaEvento).GetProperty("Id")?.SetValue(_zonaEventoTest, _idZonaEventoTest);
+            typeof(ZonaEvento).GetProperty("EventId")?.SetValue(_zonaEventoTest, _idEventoTest);
+            typeof(ZonaEvento).GetProperty("Nombre")?.SetValue(_zonaEventoTest, "VIP");
+        }
 
-//            cursor
-//                .Setup(c => c.MoveNext(It.IsAny<CancellationToken>()))
-//                .Returns(() =>
-//                {
-//                    if (!called)
-//                    {
-//                        called = true;
-//                        return docs.Count > 0;
-//                    }
-//                    return false;
-//                });
+        #region AddAsync_InvocacionExitosa_DebeInsertarYRegistrarAuditoria
+        [Fact]
+        public async Task AddAsync_InvocacionExitosa_DebeInsertarYRegistrarAuditoria()
+        {
+            // Arrange
+            _mockZonaEventoCollection
+                .Setup(c => c.InsertOneAsync(
+                    It.IsAny<ZonaEvento>(),
+                    It.IsAny<InsertOneOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
 
-//            cursor
-//                .Setup(c => c.MoveNextAsync(It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(() =>
-//                {
-//                    if (!called)
-//                    {
-//                        called = true;
-//                        return docs.Count > 0;
-//                    }
-//                    return false;
-//                });
+            // Act
+            await _repository.AddAsync(_zonaEventoTest, CancellationToken.None);
 
-//            cursor.SetupGet(c => c.Current).Returns(docs);
+            // Assert
+            _mockZonaEventoCollection.Verify(c => c.InsertOneAsync(
+                    It.Is<ZonaEvento>(z => z.Id == _idZonaEventoTest),
+                    It.IsAny<InsertOneOptions>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
 
-//            return cursor.Object;
-//        }
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    _idZonaEventoTest.ToString(),
+                    "INFO",
+                    "ZONA_EVENTO_CREADA",
+                    It.Is<string>(m => m.Contains("VIP")
+                                     && m.Contains(_idEventoTest.ToString()))),
+                Times.Once);
 
-//        // ------------------------------------------------------
-//        // AddAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task AddAsync_Should_Call_InsertOneAsync()
-//        {
-//            _mockCollection
-//                .Setup(c => c.InsertOneAsync(
-//                    It.IsAny<ZonaEvento>(),
-//                    It.IsAny<InsertOneOptions>(),
-//                    It.IsAny<CancellationToken>()))
-//                .Returns(Task.CompletedTask);
+            _mockLogger.Verify(l => l.Info(
+                    It.Is<string>(s => s.Contains("ZonaEvento creada"))),
+                Times.Once);
+        }
+        #endregion
 
-//            await _sut.AddAsync(_zona1);
+        #region AddAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task AddAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var ex = new Exception("Error simulado en InsertOneAsync");
 
-//            _mockCollection.Verify(c => c.InsertOneAsync(
-//                It.Is<ZonaEvento>(z => z.Id == _zona1.Id),
-//                It.IsAny<InsertOneOptions>(),
-//                It.IsAny<CancellationToken>()),
-//                Times.Once);
-//        }
+            _mockZonaEventoCollection
+                .Setup(c => c.InsertOneAsync(
+                    It.IsAny<ZonaEvento>(),
+                    It.IsAny<InsertOneOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
 
-//        // ------------------------------------------------------
-//        // GetAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task GetAsync_Should_Return_Zona_When_Found()
-//        {
-//            var cursor = BuildCursor(new List<ZonaEvento> { _zona1 });
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.AddAsync(_zonaEventoTest, CancellationToken.None));
 
-//            _mockCollection
-//                .Setup(c => c.FindAsync(
-//                    It.IsAny<FilterDefinition<ZonaEvento>>(),
-//                    It.IsAny<FindOptions<ZonaEvento, ZonaEvento>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(cursor);
+            Assert.Equal(ex, lanzada);
 
-//            var result = await _sut.GetAsync(_zona1.EventId, _zona1.Id);
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al crear ZonaEvento")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
 
-//            Assert.NotNull(result);
-//            Assert.Equal(_zona1.Id, result!.Id);
-//        }
+        #region UpdateAsync_ActualizacionExitosa_DebeLoggearYAuditar
+        [Fact]
+        public async Task UpdateAsync_ActualizacionExitosa_DebeLoggearYAuditar()
+        {
+            // Arrange
+            var replaceResultMock = new Mock<ReplaceOneResult>();
+            replaceResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+            replaceResultMock.SetupGet(r => r.ModifiedCount).Returns(1);
 
-//        [Fact]
-//        public async Task GetAsync_Should_Return_Null_When_Not_Found()
-//        {
-//            var cursor = BuildCursor(new List<ZonaEvento>());
+            _mockZonaEventoCollection
+                .Setup(c => c.ReplaceOneAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<ZonaEvento>(),
+                    It.IsAny<ReplaceOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(replaceResultMock.Object);
 
-//            _mockCollection
-//                .Setup(c => c.FindAsync(
-//                    It.IsAny<FilterDefinition<ZonaEvento>>(),
-//                    It.IsAny<FindOptions<ZonaEvento, ZonaEvento>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(cursor);
+            // Act
+            await _repository.UpdateAsync(_zonaEventoTest, CancellationToken.None);
 
-//            var result = await _sut.GetAsync(Guid.NewGuid(), Guid.NewGuid());
+            // Assert
+            _mockZonaEventoCollection.Verify(c => c.ReplaceOneAsync(
+                    It.Is<FilterDefinition<ZonaEvento>>(f => f != null),
+                    It.Is<ZonaEvento>(z => z.Id == _idZonaEventoTest),
+                    It.IsAny<ReplaceOptions>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
 
-//            Assert.Null(result);
-//        }
+            // UpdatedAt se seteó
+            Assert.NotEqual(default, _zonaEventoTest.UpdatedAt);
 
-//        // ------------------------------------------------------
-//        // ListByEventAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task ListByEventAsync_Should_Return_List()
-//        {
-//            var cursor = BuildCursor(new List<ZonaEvento> { _zona1, _zona2 });
+            _mockLogger.Verify(l => l.Info(
+                    It.Is<string>(s => s.Contains("ZonaEvento actualizada"))),
+                Times.Once);
 
-//            _mockCollection
-//                .Setup(c => c.FindAsync(
-//                    It.IsAny<FilterDefinition<ZonaEvento>>(),
-//                    It.IsAny<FindOptions<ZonaEvento, ZonaEvento>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(cursor);
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    _idZonaEventoTest.ToString(),
+                    "INFO",
+                    "ZONA_EVENTO_MODIFICADA",
+                    It.Is<string>(m => m.Contains("VIP")
+                                     && m.Contains(_idEventoTest.ToString()))),
+                Times.Once);
+        }
+        #endregion
 
-//            var result = await _sut.ListByEventAsync(_zona1.EventId);
+        #region UpdateAsync_SinCambios_DebeLoggearWarnSinAuditoria
+        [Fact]
+        public async Task UpdateAsync_SinCambios_DebeLoggearWarnSinAuditoria()
+        {
+            // Arrange
+            var replaceResultMock = new Mock<ReplaceOneResult>();
+            replaceResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+            replaceResultMock.SetupGet(r => r.ModifiedCount).Returns(0);
 
-//            Assert.Equal(2, result.Count);
-//        }
+            _mockZonaEventoCollection
+                .Setup(c => c.ReplaceOneAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<ZonaEvento>(),
+                    It.IsAny<ReplaceOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(replaceResultMock.Object);
 
-//        // ------------------------------------------------------
-//        // UpdateAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task UpdateAsync_Should_Call_ReplaceOneAsync()
-//        {
-//            var replaceResult = new Mock<ReplaceOneResult>();
-//            replaceResult.Setup(r => r.IsAcknowledged).Returns(true);
-//            replaceResult.Setup(r => r.ModifiedCount).Returns(1);
+            // Act
+            await _repository.UpdateAsync(_zonaEventoTest, CancellationToken.None);
 
-//            _mockCollection
-//                .Setup(c => c.ReplaceOneAsync(
-//                    It.IsAny<FilterDefinition<ZonaEvento>>(),
-//                    It.IsAny<ZonaEvento>(),
-//                    It.IsAny<ReplaceOptions>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(replaceResult.Object);
+            // Assert
+            _mockLogger.Verify(l => l.Warn(
+                    It.Is<string>(s => s.Contains("Intento de actualizar ZonaEvento"))),
+                Times.Once);
 
-//            await _sut.UpdateAsync(_zona1);
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    It.IsAny<string>(), It.IsAny<string>(),
+                    It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never);
+        }
+        #endregion
 
-//            _mockCollection.Verify(c => c.ReplaceOneAsync(
-//                It.IsAny<FilterDefinition<ZonaEvento>>(),
-//                It.IsAny<ZonaEvento>(),
-//                It.IsAny<ReplaceOptions>(),
-//                It.IsAny<CancellationToken>()),
-//                Times.Once);
-//        }
+        #region UpdateAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task UpdateAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var ex = new Exception("Error simulado en ReplaceOneAsync");
 
-//        // ------------------------------------------------------
-//        // ExistsByNombreAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task ExistsByNombreAsync_Should_Return_True()
-//        {
-//            _mockCollection
-//                .Setup(c => c.CountDocumentsAsync(
-//                    It.IsAny<FilterDefinition<ZonaEvento>>(),
-//                    It.IsAny<CountOptions>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(1L);
+            _mockZonaEventoCollection
+                .Setup(c => c.ReplaceOneAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<ZonaEvento>(),
+                    It.IsAny<ReplaceOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
 
-//            var exists = await _sut.ExistsByNombreAsync(_zona1.EventId, _zona1.Nombre);
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.UpdateAsync(_zonaEventoTest, CancellationToken.None));
 
-//            Assert.True(exists);
-//        }
+            Assert.Equal(ex, lanzada);
 
-//        [Fact]
-//        public async Task ExistsByNombreAsync_Should_Return_False()
-//        {
-//            _mockCollection
-//                .Setup(c => c.CountDocumentsAsync(
-//                    It.IsAny<FilterDefinition<ZonaEvento>>(),
-//                    It.IsAny<CountOptions>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(0L);
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al actualizar ZonaEvento")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
 
-//            var exists = await _sut.ExistsByNombreAsync(_zona1.EventId, "X");
+        #region ExistsByNombreAsync_Existe_DebeRetornarTrueYLoggearDebug
+        [Fact]
+        public async Task ExistsByNombreAsync_Existe_DebeRetornarTrueYLoggearDebug()
+        {
+            // Arrange
+            _mockZonaEventoCollection
+                .Setup(c => c.CountDocumentsAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<CountOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(1L);
 
-//            Assert.False(exists);
-//        }
+            // Act
+            var existe = await _repository.ExistsByNombreAsync(
+                _idEventoTest, "VIP", CancellationToken.None);
 
-//        // ------------------------------------------------------
-//        // DeleteAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task DeleteAsync_Should_Return_True_When_Deleted()
-//        {
-//            var deleteResult = new Mock<DeleteResult>();
-//            deleteResult.Setup(r => r.DeletedCount).Returns(1);
+            // Assert
+            Assert.True(existe);
 
-//            _mockCollection
-//                .Setup(c => c.DeleteOneAsync(
-//                    It.IsAny<FilterDefinition<ZonaEvento>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(deleteResult.Object);
+            _mockLogger.Verify(l => l.Debug(
+                    It.Is<string>(s => s.Contains("ExistsByNombreAsync"))),
+                Times.Once);
+        }
+        #endregion
 
-//            var result = await _sut.DeleteAsync(_zona1.EventId, _zona1.Id);
+        #region ExistsByNombreAsync_NoExiste_DebeRetornarFalse
+        [Fact]
+        public async Task ExistsByNombreAsync_NoExiste_DebeRetornarFalse()
+        {
+            // Arrange
+            _mockZonaEventoCollection
+                .Setup(c => c.CountDocumentsAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<CountOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(0L);
 
-//            Assert.True(result);
-//        }
+            // Act
+            var existe = await _repository.ExistsByNombreAsync(
+                _idEventoTest, "VIP", CancellationToken.None);
 
-//        [Fact]
-//        public async Task DeleteAsync_Should_Return_False_When_Not_Deleted()
-//        {
-//            var deleteResult = new Mock<DeleteResult>();
-//            deleteResult.Setup(r => r.DeletedCount).Returns(0);
+            // Assert
+            Assert.False(existe);
+        }
+        #endregion
 
-//            _mockCollection
-//                .Setup(c => c.DeleteOneAsync(
-//                    It.IsAny<FilterDefinition<ZonaEvento>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(deleteResult.Object);
+        #region ExistsByNombreAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task ExistsByNombreAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var ex = new Exception("Error simulado en CountDocumentsAsync");
 
-//            var result = await _sut.DeleteAsync(_zona1.EventId, _zona1.Id);
+            _mockZonaEventoCollection
+                .Setup(c => c.CountDocumentsAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<CountOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
 
-//            Assert.False(result);
-//        }
-//    }
-//}
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.ExistsByNombreAsync(_idEventoTest, "VIP", CancellationToken.None));
+
+            Assert.Equal(ex, lanzada);
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al validar existencia de ZonaEvento por nombre")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
+
+        #region DeleteAsync_EliminacionExitosa_DebeRetornarTrueYAuditar
+        [Fact]
+        public async Task DeleteAsync_EliminacionExitosa_DebeRetornarTrueYAuditar()
+        {
+            // Arrange
+            var deleteResultMock = new Mock<DeleteResult>();
+            deleteResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+            deleteResultMock.SetupGet(r => r.DeletedCount).Returns(1);
+
+            _mockZonaEventoCollection
+                .Setup(c => c.DeleteOneAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResultMock.Object);
+
+            // Act
+            var resultado = await _repository.DeleteAsync(
+                _idEventoTest, _idZonaEventoTest, CancellationToken.None);
+
+            // Assert
+            Assert.True(resultado);
+
+            _mockLogger.Verify(l => l.Info(
+                    It.Is<string>(s => s.Contains("ZonaEvento eliminada"))),
+                Times.Once);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    _idZonaEventoTest.ToString(),
+                    "INFO",
+                    "ZONA_EVENTO_ELIMINADA",
+                    It.Is<string>(m => m.Contains(_idEventoTest.ToString())
+                                     && m.Contains(_idZonaEventoTest.ToString()))),
+                Times.Once);
+        }
+        #endregion
+
+        #region DeleteAsync_NoEncontrado_DebeRetornarFalseYLoggearWarn
+        [Fact]
+        public async Task DeleteAsync_NoEncontrado_DebeRetornarFalseYLoggearWarn()
+        {
+            // Arrange
+            var deleteResultMock = new Mock<DeleteResult>();
+            deleteResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+            deleteResultMock.SetupGet(r => r.DeletedCount).Returns(0);
+
+            _mockZonaEventoCollection
+                .Setup(c => c.DeleteOneAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResultMock.Object);
+
+            // Act
+            var resultado = await _repository.DeleteAsync(
+                _idEventoTest, _idZonaEventoTest, CancellationToken.None);
+
+            // Assert
+            Assert.False(resultado);
+
+            _mockLogger.Verify(l => l.Warn(
+                    It.Is<string>(s => s.Contains("Intento de eliminar ZonaEvento sin resultados"))),
+                Times.Once);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    It.IsAny<string>(), It.IsAny<string>(),
+                    It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never);
+        }
+        #endregion
+
+        #region DeleteAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task DeleteAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var ex = new Exception("Error simulado en DeleteOneAsync");
+
+            _mockZonaEventoCollection
+                .Setup(c => c.DeleteOneAsync(
+                    It.IsAny<FilterDefinition<ZonaEvento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
+
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.DeleteAsync(
+                    _idEventoTest, _idZonaEventoTest, CancellationToken.None));
+
+            Assert.Equal(ex, lanzada);
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al eliminar ZonaEvento")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
+
+        #region GetAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task GetAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            await Assert.ThrowsAnyAsync<Exception>(() =>
+                _repository.GetAsync(
+                    _idEventoTest,
+                    _idZonaEventoTest,
+                    CancellationToken.None));
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al obtener ZonaEvento")),
+                    It.IsAny<Exception>()),
+                Times.Once);
+        }
+        #endregion
+
+        #region ListByEventAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task ListByEventAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            await Assert.ThrowsAnyAsync<Exception>(() =>
+                _repository.ListByEventAsync(
+                    _idEventoTest,
+                    CancellationToken.None));
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al listar ZonasEvento para EventId")),
+                    It.IsAny<Exception>()),
+                Times.Once);
+        }
+        #endregion
+
+    }
+}
