@@ -1,388 +1,722 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using EventsService.Dominio.Entidades;
-//using EventsService.Infrastructura.Repositorios;
-//using MongoDB.Driver;
-//using Moq;
-//using Xunit;
-
-//namespace EventsService.Tests.Infraestructura.Repositorios
-//{
-//    public class AsientoRepositoryTests
-//    {
-//        private readonly Mock<IMongoDatabase> _mockDb;
-//        private readonly Mock<IMongoCollection<Asiento>> _mockCollection;
-//        private readonly AsientoRepository _sut;
-
-//        private readonly Asiento _seat1;
-//        private readonly Asiento _seat2;
-
-//        public AsientoRepositoryTests()
-//        {
-//            _mockDb = new Mock<IMongoDatabase>();
-//            _mockCollection = new Mock<IMongoCollection<Asiento>>();
-
-//            _mockDb
-//                .Setup(d => d.GetCollection<Asiento>("asiento", It.IsAny<MongoCollectionSettings>()))
-//                .Returns(_mockCollection.Object);
-
-//            _sut = new AsientoRepository(_mockDb.Object);
-
-//            var eventId = Guid.NewGuid();
-//            var zonaId = Guid.NewGuid();
-
-//            _seat1 = new Asiento
-//            {
-//                Id = Guid.NewGuid(),
-//                EventId = eventId,
-//                ZonaEventoId = zonaId,
-//                Label = "A1",
-//                Estado = "disponible",
-//                Meta = new Dictionary<string, string> { { "row", "A" }, { "col", "1" } },
-//                CreatedAt = DateTime.UtcNow
-//            };
-
-//            _seat2 = new Asiento
-//            {
-//                Id = Guid.NewGuid(),
-//                EventId = eventId,
-//                ZonaEventoId = zonaId,
-//                Label = "A2",
-//                Estado = "ocupado",
-//                Meta = new Dictionary<string, string> { { "row", "A" }, { "col", "2" } },
-//                CreatedAt = DateTime.UtcNow
-//            };
-//        }
-
-//        private static IAsyncCursor<T> BuildCursor<T>(List<T> docs)
-//        {
-//            var cursor = new Mock<IAsyncCursor<T>>();
-//            var called = false;
-
-//            cursor
-//                .Setup(c => c.MoveNext(It.IsAny<CancellationToken>()))
-//                .Returns(() =>
-//                {
-//                    if (!called)
-//                    {
-//                        called = true;
-//                        return docs.Count > 0;
-//                    }
-//                    return false;
-//                });
-
-//            cursor
-//                .Setup(c => c.MoveNextAsync(It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(() =>
-//                {
-//                    if (!called)
-//                    {
-//                        called = true;
-//                        return docs.Count > 0;
-//                    }
-//                    return false;
-//                });
-
-//            cursor.SetupGet(c => c.Current).Returns(docs);
-
-//            return cursor.Object;
-//        }
-
-//        // ------------------------------------------------------
-//        // InsertAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task InsertAsync_Should_Call_InsertOneAsync()
-//        {
-//            _mockCollection
-//                .Setup(c => c.InsertOneAsync(
-//                    It.IsAny<Asiento>(),
-//                    It.IsAny<InsertOneOptions>(),
-//                    It.IsAny<CancellationToken>()))
-//                .Returns(Task.CompletedTask);
-
-//            await _sut.InsertAsync(_seat1);
-
-//            _mockCollection.Verify(c => c.InsertOneAsync(
-//                    It.Is<Asiento>(s => s.Id == _seat1.Id),
-//                    It.IsAny<InsertOneOptions>(),
-//                    It.IsAny<CancellationToken>()),
-//                Times.Once);
-//        }
-
-       
-
-//        [Fact]
-//        public async Task BulkInsertAsync_Should_Not_Call_BulkWriteAsync_When_Empty()
-//        {
-//            await _sut.BulkInsertAsync(Array.Empty<Asiento>());
-
-//            _mockCollection.Verify(c => c.BulkWriteAsync(
-//                    It.IsAny<IEnumerable<WriteModel<Asiento>>>(),
-//                    It.IsAny<BulkWriteOptions>(),
-//                    It.IsAny<CancellationToken>()),
-//                Times.Never);
-//        }
-
-//        // ------------------------------------------------------
-//        // ListByZonaAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task ListByZonaAsync_Should_Return_Seats_For_Zona()
-//        {
-//            var cursor = BuildCursor(new List<Asiento> { _seat1, _seat2 });
-
-//            _mockCollection
-//                .Setup(c => c.FindAsync(
-//                    It.IsAny<FilterDefinition<Asiento>>(),
-//                    It.IsAny<FindOptions<Asiento, Asiento>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(cursor);
-
-//            var result = await _sut.ListByZonaAsync(_seat1.EventId, _seat1.ZonaEventoId);
-
-//            Assert.Equal(2, result.Count);
-//        }
-
-//        // ------------------------------------------------------
-//        // DeleteDisponiblesByZonaAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task DeleteDisponiblesByZonaAsync_Should_Return_DeletedCount()
-//        {
-//            var deleteResult = new Mock<DeleteResult>();
-//            deleteResult.SetupGet(r => r.DeletedCount).Returns(5);
-
-//            _mockCollection
-//                .Setup(c => c.DeleteManyAsync(
-//                    It.IsAny<FilterDefinition<Asiento>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(deleteResult.Object);
-
-//            var deleted = await _sut.DeleteDisponiblesByZonaAsync(_seat1.EventId, _seat1.ZonaEventoId);
-
-//            Assert.Equal(5, deleted);
-//        }
-
-//        // ------------------------------------------------------
-//        // AnyByZonaAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task AnyByZonaAsync_Should_Return_True_When_Exists()
-//        {
-//            _mockCollection
-//                .Setup(c => c.CountDocumentsAsync(
-//                    It.IsAny<FilterDefinition<Asiento>>(),
-//                    It.IsAny<CountOptions>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(3L);
-
-//            var exists = await _sut.AnyByZonaAsync(_seat1.EventId, _seat1.ZonaEventoId);
-
-//            Assert.True(exists);
-//        }
-
-//        [Fact]
-//        public async Task AnyByZonaAsync_Should_Return_False_When_Not_Exists()
-//        {
-//            _mockCollection
-//                .Setup(c => c.CountDocumentsAsync(
-//                    It.IsAny<FilterDefinition<Asiento>>(),
-//                    It.IsAny<CountOptions>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(0L);
-
-//            var exists = await _sut.AnyByZonaAsync(_seat1.EventId, _seat1.ZonaEventoId);
-
-//            Assert.False(exists);
-//        }
-
-//        // ------------------------------------------------------
-//        // DeleteByZonaAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task DeleteByZonaAsync_Should_Return_DeletedCount()
-//        {
-//            var deleteResult = new Mock<DeleteResult>();
-//            deleteResult.SetupGet(r => r.DeletedCount).Returns(7);
-
-//            _mockCollection
-//                .Setup(c => c.DeleteManyAsync(
-//                    It.IsAny<FilterDefinition<Asiento>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(deleteResult.Object);
-
-//            var deleted = await _sut.DeleteByZonaAsync(_seat1.EventId, _seat1.ZonaEventoId);
-
-//            Assert.Equal(7, deleted);
-//        }
-
-//        // ------------------------------------------------------
-//        // GetByCompositeAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task GetByCompositeAsync_Should_Return_Seat_When_Found()
-//        {
-//            var cursor = BuildCursor(new List<Asiento> { _seat1 });
-
-//            _mockCollection
-//                .Setup(c => c.FindAsync(
-//                    It.IsAny<FilterDefinition<Asiento>>(),
-//                    It.IsAny<FindOptions<Asiento, Asiento>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(cursor);
-
-//            var result = await _sut.GetByCompositeAsync(_seat1.EventId, _seat1.ZonaEventoId, _seat1.Label);
-
-//            Assert.NotNull(result);
-//            Assert.Equal(_seat1.Id, result!.Id);
-//        }
-
-//        [Fact]
-//        public async Task GetByCompositeAsync_Should_Return_Null_When_Not_Found()
-//        {
-//            var cursor = BuildCursor(new List<Asiento>());
-
-//            _mockCollection
-//                .Setup(c => c.FindAsync(
-//                    It.IsAny<FilterDefinition<Asiento>>(),
-//                    It.IsAny<FindOptions<Asiento, Asiento>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(cursor);
-
-//            var result = await _sut.GetByCompositeAsync(Guid.NewGuid(), Guid.NewGuid(), "X1");
-
-//            Assert.Null(result);
-//        }
-
-//        // ------------------------------------------------------
-//        // GetByIdAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task GetByIdAsync_Should_Return_Seat_When_Found()
-//        {
-//            var cursor = BuildCursor(new List<Asiento> { _seat1 });
-
-//            _mockCollection
-//                .Setup(c => c.FindAsync(
-//                    It.IsAny<FilterDefinition<Asiento>>(),
-//                    It.IsAny<FindOptions<Asiento, Asiento>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(cursor);
-
-//            var result = await _sut.GetByIdAsync(_seat1.Id);
-
-//            Assert.NotNull(result);
-//            Assert.Equal(_seat1.Id, result!.Id);
-//        }
-
-//        [Fact]
-//        public async Task GetByIdAsync_Should_Return_Null_When_Not_Found()
-//        {
-//            var cursor = BuildCursor(new List<Asiento>());
-
-//            _mockCollection
-//                .Setup(c => c.FindAsync(
-//                    It.IsAny<FilterDefinition<Asiento>>(),
-//                    It.IsAny<FindOptions<Asiento, Asiento>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(cursor);
-
-//            var result = await _sut.GetByIdAsync(Guid.NewGuid());
-
-//            Assert.Null(result);
-//        }
-
-//        // ------------------------------------------------------
-//        // UpdateParcialAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task UpdateParcialAsync_Should_Return_True_When_Modified()
-//        {
-//            var updateResult = new Mock<UpdateResult>();
-//            updateResult.SetupGet(r => r.IsAcknowledged).Returns(true);
-//            updateResult.SetupGet(r => r.ModifiedCount).Returns(1);
-
-//            _mockCollection
-//                .Setup(c => c.UpdateOneAsync(
-//                    It.IsAny<FilterDefinition<Asiento>>(),
-//                    It.IsAny<UpdateDefinition<Asiento>>(),
-//                    It.IsAny<UpdateOptions>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(updateResult.Object);
-
-//            var result = await _sut.UpdateParcialAsync(
-//                _seat1.Id,
-//                nuevoLabel: "B1",
-//                nuevoEstado: "reservado",
-//                nuevaMeta: new Dictionary<string, string> { { "row", "B" }, { "col", "1" } });
-
-//            Assert.True(result);
-//        }
-
-//        [Fact]
-//        public async Task UpdateParcialAsync_Should_Return_False_When_Not_Modified()
-//        {
-//            var updateResult = new Mock<UpdateResult>();
-//            updateResult.SetupGet(r => r.IsAcknowledged).Returns(true);
-//            updateResult.SetupGet(r => r.ModifiedCount).Returns(0);
-
-//            _mockCollection
-//                .Setup(c => c.UpdateOneAsync(
-//                    It.IsAny<FilterDefinition<Asiento>>(),
-//                    It.IsAny<UpdateDefinition<Asiento>>(),
-//                    It.IsAny<UpdateOptions>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(updateResult.Object);
-
-//            var result = await _sut.UpdateParcialAsync(
-//                _seat1.Id,
-//                nuevoLabel: null,
-//                nuevoEstado: null,
-//                nuevaMeta: null);
-
-//            Assert.False(result);
-//        }
-
-//        // ------------------------------------------------------
-//        // DeleteByIdAsync
-//        // ------------------------------------------------------
-//        [Fact]
-//        public async Task DeleteByIdAsync_Should_Return_True_When_Deleted()
-//        {
-//            var deleteResult = new Mock<DeleteResult>();
-//            deleteResult.SetupGet(r => r.IsAcknowledged).Returns(true);
-//            deleteResult.SetupGet(r => r.DeletedCount).Returns(1);
-
-//            _mockCollection
-//                .Setup(c => c.DeleteOneAsync(
-//                    It.IsAny<FilterDefinition<Asiento>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(deleteResult.Object);
-
-//            var result = await _sut.DeleteByIdAsync(_seat1.Id);
-
-//            Assert.True(result);
-//        }
-
-//        [Fact]
-//        public async Task DeleteByIdAsync_Should_Return_False_When_Not_Deleted()
-//        {
-//            var deleteResult = new Mock<DeleteResult>();
-//            deleteResult.SetupGet(r => r.IsAcknowledged).Returns(true);
-//            deleteResult.SetupGet(r => r.DeletedCount).Returns(0);
-
-//            _mockCollection
-//                .Setup(c => c.DeleteOneAsync(
-//                    It.IsAny<FilterDefinition<Asiento>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(deleteResult.Object);
-
-//            var result = await _sut.DeleteByIdAsync(_seat1.Id);
-
-//            Assert.False(result);
-//        }
-//    }
-//}
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using EventsService.Dominio.Entidades;
+using EventsService.Infrastructura.Repositorios;
+using EventsService.Infrastructura.Interfaces;
+using log4net;
+using Moq;
+using MongoDB.Driver;
+using Xunit;
+
+namespace EventsService.Test.Infraestructura.Repositories
+{
+    public class Repository_AsientoRepository_Tests
+    {
+        private readonly Mock<IMongoDatabase> _mockDb;
+        private readonly Mock<IMongoCollection<Asiento>> _mockAsientoCollection;
+        private readonly Mock<IAuditoriaRepository> _mockAuditoria;
+        private readonly Mock<ILog> _mockLogger;
+
+        private readonly AsientoRepository _repository;
+
+        private readonly Guid _asientoIdTest = Guid.NewGuid();
+        private readonly Guid _eventoIdTest = Guid.NewGuid();
+        private readonly Guid _zonaEventoIdTest = Guid.NewGuid();
+
+        private readonly Asiento _asientoTest;
+
+        public Repository_AsientoRepository_Tests()
+        {
+            _mockDb = new Mock<IMongoDatabase>();
+            _mockAsientoCollection = new Mock<IMongoCollection<Asiento>>();
+            _mockAuditoria = new Mock<IAuditoriaRepository>();
+            _mockLogger = new Mock<ILog>();
+
+            _mockDb.Setup(d =>
+                    d.GetCollection<Asiento>("asientos", It.IsAny<MongoCollectionSettings>()))
+                .Returns(_mockAsientoCollection.Object);
+
+            _repository = new AsientoRepository(
+                _mockDb.Object,
+                _mockAuditoria.Object,
+                _mockLogger.Object);
+
+            // Instancia de prueba (ajusta si tu entidad no tiene ctor vacío)
+            _asientoTest = Activator.CreateInstance<Asiento>();
+            typeof(Asiento).GetProperty("Id")?.SetValue(_asientoTest, _asientoIdTest);
+            typeof(Asiento).GetProperty("EventId")?.SetValue(_asientoTest, _eventoIdTest);
+            typeof(Asiento).GetProperty("ZonaEventoId")?.SetValue(_asientoTest, _zonaEventoIdTest);
+            typeof(Asiento).GetProperty("Label")?.SetValue(_asientoTest, "A-1");
+            typeof(Asiento).GetProperty("Estado")?.SetValue(_asientoTest, "disponible");
+        }
+
+        #region InsertAsync_InvocacionExitosa_DebeInsertarYRegistrarAuditoria
+        [Fact]
+        public async Task InsertAsync_InvocacionExitosa_DebeInsertarYRegistrarAuditoria()
+        {
+            // Arrange
+            _mockAsientoCollection
+                .Setup(c => c.InsertOneAsync(
+                    It.IsAny<Asiento>(),
+                    It.IsAny<InsertOneOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
+
+            // Act
+            await _repository.InsertAsync(_asientoTest, CancellationToken.None);
+
+            // Assert
+            _mockAsientoCollection.Verify(c => c.InsertOneAsync(
+                    It.Is<Asiento>(a => a.Id == _asientoIdTest),
+                    It.IsAny<InsertOneOptions>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
+
+            Assert.NotEqual(default, _asientoTest.CreatedAt);
+            Assert.NotEqual(default, _asientoTest.UpdatedAt);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    _asientoIdTest.ToString(),
+                    "INFO",
+                    "ASIENTO_CREADO",
+                    It.Is<string>(m => m.Contains("A-1")
+                                     && m.Contains(_eventoIdTest.ToString())
+                                     && m.Contains(_zonaEventoIdTest.ToString()))),
+                Times.Once);
+
+            _mockLogger.Verify(l => l.Info(
+                    It.Is<string>(s => s.Contains("Asiento creado"))),
+                Times.Once);
+        }
+        #endregion
+
+        #region InsertAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task InsertAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var ex = new Exception("Error simulado en InsertOneAsync");
+
+            _mockAsientoCollection
+                .Setup(c => c.InsertOneAsync(
+                    It.IsAny<Asiento>(),
+                    It.IsAny<InsertOneOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
+
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.InsertAsync(_asientoTest, CancellationToken.None));
+
+            Assert.Equal(ex, lanzada);
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al crear asiento")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
+
+        #region BulkInsertAsync_ListaConDatos_DebeHacerBulkWriteYAuditar
+        [Fact]
+        public async Task BulkInsertAsync_ListaConDatos_DebeHacerBulkWriteYAuditar()
+        {
+            // Arrange
+            var lista = new List<Asiento> { _asientoTest };
+
+            _mockAsientoCollection
+                .Setup(c => c.BulkWriteAsync(
+                    It.IsAny<IEnumerable<WriteModel<Asiento>>>(),
+                    It.IsAny<BulkWriteOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync((BulkWriteResult<Asiento>)null!); // el repo no inspecciona el resultado
+
+            // Act
+            await _repository.BulkInsertAsync(lista, CancellationToken.None);
+
+            // Assert
+            _mockAsientoCollection.Verify(c => c.BulkWriteAsync(
+                    It.Is<IEnumerable<WriteModel<Asiento>>>(w => w != null),
+                    It.IsAny<BulkWriteOptions>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    _eventoIdTest.ToString(),
+                    "INFO",
+                    "ASIENTOS_BULK_CREADOS",
+                    It.Is<string>(m => m.Contains(_eventoIdTest.ToString())
+                                     && m.Contains(_zonaEventoIdTest.ToString()))),
+                Times.Once);
+
+            _mockLogger.Verify(l => l.Info(
+                    It.Is<string>(s => s.Contains("BulkInsertAsync -> Insertados '1' asientos"))),
+                Times.Once);
+        }
+        #endregion
+
+        #region BulkInsertAsync_ListaVacia_NoDebeLlamarBulkWriteNiAuditoria
+        [Fact]
+        public async Task BulkInsertAsync_ListaVacia_NoDebeLlamarBulkWriteNiAuditoria()
+        {
+            // Arrange
+            var lista = new List<Asiento>();
+
+            // Act
+            await _repository.BulkInsertAsync(lista, CancellationToken.None);
+
+            // Assert
+            _mockAsientoCollection.Verify(c => c.BulkWriteAsync(
+                    It.IsAny<IEnumerable<WriteModel<Asiento>>>(),
+                    It.IsAny<BulkWriteOptions>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Never);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    It.IsAny<string>(), It.IsAny<string>(),
+                    It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never);
+
+            _mockLogger.Verify(l => l.Debug(
+                    It.Is<string>(s => s.Contains("BulkInsertAsync llamado sin asientos"))),
+                Times.Once);
+        }
+        #endregion
+
+        #region BulkInsertAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task BulkInsertAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var lista = new List<Asiento> { _asientoTest };
+            var ex = new Exception("Error simulado en BulkWriteAsync");
+
+            _mockAsientoCollection
+                .Setup(c => c.BulkWriteAsync(
+                    It.IsAny<IEnumerable<WriteModel<Asiento>>>(),
+                    It.IsAny<BulkWriteOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
+
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.BulkInsertAsync(lista, CancellationToken.None));
+
+            Assert.Equal(ex, lanzada);
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error en BulkInsertAsync de asientos")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
+
+        #region DeleteDisponiblesByZonaAsync_EliminaAlgunos_DebeRetornarCantidadYAuditar
+        [Fact]
+        public async Task DeleteDisponiblesByZonaAsync_EliminaAlgunos_DebeRetornarCantidadYAuditar()
+        {
+            // Arrange
+            var deleteResultMock = new Mock<DeleteResult>();
+            deleteResultMock.SetupGet(r => r.DeletedCount).Returns(5);
+
+            _mockAsientoCollection
+                .Setup(c => c.DeleteManyAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResultMock.Object);
+
+            // Act
+            var deleted = await _repository.DeleteDisponiblesByZonaAsync(
+                _eventoIdTest, _zonaEventoIdTest, CancellationToken.None);
+
+            // Assert
+            Assert.Equal(5, deleted);
+
+            _mockLogger.Verify(l => l.Info(
+                    It.Is<string>(s => s.Contains("DeleteDisponiblesByZonaAsync -> Eliminados '5' asientos disponibles"))),
+                Times.Once);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    _zonaEventoIdTest.ToString(),
+                    "INFO",
+                    "ASIENTOS_DISPONIBLES_ELIMINADOS",
+                    It.Is<string>(m => m.Contains("5")
+                                     && m.Contains(_eventoIdTest.ToString())
+                                     && m.Contains(_zonaEventoIdTest.ToString()))),
+                Times.Once);
+        }
+        #endregion
+
+        #region DeleteDisponiblesByZonaAsync_NoElimina_DebeRetornarCeroSinAuditoria
+        [Fact]
+        public async Task DeleteDisponiblesByZonaAsync_NoElimina_DebeRetornarCeroSinAuditoria()
+        {
+            // Arrange
+            var deleteResultMock = new Mock<DeleteResult>();
+            deleteResultMock.SetupGet(r => r.DeletedCount).Returns(0);
+
+            _mockAsientoCollection
+                .Setup(c => c.DeleteManyAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResultMock.Object);
+
+            // Act
+            var deleted = await _repository.DeleteDisponiblesByZonaAsync(
+                _eventoIdTest, _zonaEventoIdTest, CancellationToken.None);
+
+            // Assert
+            Assert.Equal(0, deleted);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    It.IsAny<string>(), It.IsAny<string>(),
+                    It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never);
+        }
+        #endregion
+
+        #region DeleteDisponiblesByZonaAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task DeleteDisponiblesByZonaAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var ex = new Exception("Error simulado en DeleteManyAsync");
+
+            _mockAsientoCollection
+                .Setup(c => c.DeleteManyAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
+
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.DeleteDisponiblesByZonaAsync(
+                    _eventoIdTest, _zonaEventoIdTest, CancellationToken.None));
+
+            Assert.Equal(ex, lanzada);
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al eliminar asientos disponibles por zona")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
+
+        #region AnyByZonaAsync_Existe_DebeRetornarTrueYLoggearDebug
+        [Fact]
+        public async Task AnyByZonaAsync_Existe_DebeRetornarTrueYLoggearDebug()
+        {
+            // Arrange
+            _mockAsientoCollection
+                .Setup(c => c.CountDocumentsAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CountOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(3L);
+
+            // Act
+            var existe = await _repository.AnyByZonaAsync(
+                _eventoIdTest, _zonaEventoIdTest, CancellationToken.None);
+
+            // Assert
+            Assert.True(existe);
+
+            _mockLogger.Verify(l => l.Debug(
+                    It.Is<string>(s => s.Contains("AnyByZonaAsync ->"))),
+                Times.Once);
+        }
+        #endregion
+
+        #region AnyByZonaAsync_NoExiste_DebeRetornarFalse
+        [Fact]
+        public async Task AnyByZonaAsync_NoExiste_DebeRetornarFalse()
+        {
+            // Arrange
+            _mockAsientoCollection
+                .Setup(c => c.CountDocumentsAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CountOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(0L);
+
+            // Act
+            var existe = await _repository.AnyByZonaAsync(
+                _eventoIdTest, _zonaEventoIdTest, CancellationToken.None);
+
+            // Assert
+            Assert.False(existe);
+        }
+        #endregion
+
+        #region AnyByZonaAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task AnyByZonaAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var ex = new Exception("Error simulado en CountDocumentsAsync");
+
+            _mockAsientoCollection
+                .Setup(c => c.CountDocumentsAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CountOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
+
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.AnyByZonaAsync(
+                    _eventoIdTest, _zonaEventoIdTest, CancellationToken.None));
+
+            Assert.Equal(ex, lanzada);
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error en AnyByZonaAsync")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
+
+        #region DeleteByZonaAsync_Elimina_DebeRetornarCantidadYAuditar
+        [Fact]
+        public async Task DeleteByZonaAsync_Elimina_DebeRetornarCantidadYAuditar()
+        {
+            // Arrange
+            var deleteResultMock = new Mock<DeleteResult>();
+            deleteResultMock.SetupGet(r => r.DeletedCount).Returns(7);
+
+            _mockAsientoCollection
+                .Setup(c => c.DeleteManyAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResultMock.Object);
+
+            // Act
+            var deleted = await _repository.DeleteByZonaAsync(
+                _eventoIdTest, _zonaEventoIdTest, CancellationToken.None);
+
+            // Assert
+            Assert.Equal(7, deleted);
+
+            _mockLogger.Verify(l => l.Info(
+                    It.Is<string>(s => s.Contains("DeleteByZonaAsync -> Eliminados '7' asientos"))),
+                Times.Once);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    _zonaEventoIdTest.ToString(),
+                    "INFO",
+                    "ASIENTOS_ELIMINADOS_POR_ZONA",
+                    It.Is<string>(m => m.Contains("7")
+                                     && m.Contains(_eventoIdTest.ToString())
+                                     && m.Contains(_zonaEventoIdTest.ToString()))),
+                Times.Once);
+        }
+        #endregion
+
+        #region DeleteByZonaAsync_NoElimina_DebeRetornarCeroSinAuditoria
+        [Fact]
+        public async Task DeleteByZonaAsync_NoElimina_DebeRetornarCeroSinAuditoria()
+        {
+            // Arrange
+            var deleteResultMock = new Mock<DeleteResult>();
+            deleteResultMock.SetupGet(r => r.DeletedCount).Returns(0);
+
+            _mockAsientoCollection
+                .Setup(c => c.DeleteManyAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResultMock.Object);
+
+            // Act
+            var deleted = await _repository.DeleteByZonaAsync(
+                _eventoIdTest, _zonaEventoIdTest, CancellationToken.None);
+
+            // Assert
+            Assert.Equal(0, deleted);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    It.IsAny<string>(), It.IsAny<string>(),
+                    It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never);
+        }
+        #endregion
+
+        #region DeleteByZonaAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task DeleteByZonaAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var ex = new Exception("Error simulado en DeleteManyAsync");
+
+            _mockAsientoCollection
+                .Setup(c => c.DeleteManyAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
+
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.DeleteByZonaAsync(
+                    _eventoIdTest, _zonaEventoIdTest, CancellationToken.None));
+
+            Assert.Equal(ex, lanzada);
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error en DeleteByZonaAsync")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
+
+        #region UpdateParcialAsync_Modifica_DebeRetornarTrueYAuditar
+        [Fact]
+        public async Task UpdateParcialAsync_Modifica_DebeRetornarTrueYAuditar()
+        {
+            // Arrange
+            var updateResultMock = new Mock<UpdateResult>();
+            updateResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+            updateResultMock.SetupGet(r => r.ModifiedCount).Returns(1);
+
+            _mockAsientoCollection
+                .Setup(c => c.UpdateOneAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<UpdateDefinition<Asiento>>(),
+                    It.IsAny<UpdateOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(updateResultMock.Object);
+
+            // Act
+            var result = await _repository.UpdateParcialAsync(
+                _asientoIdTest,
+                "A-2",
+                "ocupado",
+                new Dictionary<string, string> { { "key", "value" } },
+                CancellationToken.None);
+
+            // Assert
+            Assert.True(result);
+
+            _mockLogger.Verify(l => l.Info(
+                    It.Is<string>(s => s.Contains("Asiento actualizado parcialmente"))),
+                Times.Once);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    _asientoIdTest.ToString(),
+                    "INFO",
+                    "ASIENTO_MODIFICADO",
+                    It.Is<string>(m => m.Contains(_asientoIdTest.ToString()))),
+                Times.Once);
+        }
+        #endregion
+
+        #region UpdateParcialAsync_SinCambios_DebeRetornarFalseYLoggearWarn
+        [Fact]
+        public async Task UpdateParcialAsync_SinCambios_DebeRetornarFalseYLoggearWarn()
+        {
+            // Arrange
+            var updateResultMock = new Mock<UpdateResult>();
+            updateResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+            updateResultMock.SetupGet(r => r.ModifiedCount).Returns(0);
+
+            _mockAsientoCollection
+                .Setup(c => c.UpdateOneAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<UpdateDefinition<Asiento>>(),
+                    It.IsAny<UpdateOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(updateResultMock.Object);
+
+            // Act
+            var result = await _repository.UpdateParcialAsync(
+                _asientoIdTest,
+                null,
+                null,
+                null,
+                CancellationToken.None);
+
+            // Assert
+            Assert.False(result);
+
+            _mockLogger.Verify(l => l.Warn(
+                    It.Is<string>(s => s.Contains("Intento de actualización parcial sin cambios"))),
+                Times.Once);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    It.IsAny<string>(), It.IsAny<string>(),
+                    It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never);
+        }
+        #endregion
+
+        #region UpdateParcialAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task UpdateParcialAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var ex = new Exception("Error simulado en UpdateOneAsync");
+
+            _mockAsientoCollection
+                .Setup(c => c.UpdateOneAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<UpdateDefinition<Asiento>>(),
+                    It.IsAny<UpdateOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
+
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.UpdateParcialAsync(
+                    _asientoIdTest,
+                    "A-2",
+                    null,
+                    null,
+                    CancellationToken.None));
+
+            Assert.Equal(ex, lanzada);
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error en UpdateParcialAsync")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
+
+        #region DeleteByIdAsync_Elimina_DebeRetornarTrueYAuditar
+        [Fact]
+        public async Task DeleteByIdAsync_Elimina_DebeRetornarTrueYAuditar()
+        {
+            // Arrange
+            var deleteResultMock = new Mock<DeleteResult>();
+            deleteResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+            deleteResultMock.SetupGet(r => r.DeletedCount).Returns(1);
+
+            _mockAsientoCollection
+                .Setup(c => c.DeleteOneAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResultMock.Object);
+
+            // Act
+            var ok = await _repository.DeleteByIdAsync(
+                _asientoIdTest, CancellationToken.None);
+
+            // Assert
+            Assert.True(ok);
+
+            _mockLogger.Verify(l => l.Info(
+                    It.Is<string>(s => s.Contains("Asiento eliminado"))),
+                Times.Once);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    _asientoIdTest.ToString(),
+                    "INFO",
+                    "ASIENTO_ELIMINADO",
+                    It.Is<string>(m => m.Contains(_asientoIdTest.ToString()))),
+                Times.Once);
+        }
+        #endregion
+
+        #region DeleteByIdAsync_NoElimina_DebeRetornarFalseYLoggearWarn
+        [Fact]
+        public async Task DeleteByIdAsync_NoElimina_DebeRetornarFalseYLoggearWarn()
+        {
+            // Arrange
+            var deleteResultMock = new Mock<DeleteResult>();
+            deleteResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+            deleteResultMock.SetupGet(r => r.DeletedCount).Returns(0);
+
+            _mockAsientoCollection
+                .Setup(c => c.DeleteOneAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResultMock.Object);
+
+            // Act
+            var ok = await _repository.DeleteByIdAsync(
+                _asientoIdTest, CancellationToken.None);
+
+            // Assert
+            Assert.False(ok);
+
+            _mockLogger.Verify(l => l.Warn(
+                    It.Is<string>(s => s.Contains("Intento de eliminar asiento sin resultados"))),
+                Times.Once);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    It.IsAny<string>(), It.IsAny<string>(),
+                    It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never);
+        }
+        #endregion
+
+        #region DeleteByIdAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task DeleteByIdAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var ex = new Exception("Error simulado en DeleteOneAsync");
+
+            _mockAsientoCollection
+                .Setup(c => c.DeleteOneAsync(
+                    It.IsAny<FilterDefinition<Asiento>>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
+
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.DeleteByIdAsync(
+                    _asientoIdTest, CancellationToken.None));
+
+            Assert.Equal(ex, lanzada);
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error en DeleteByIdAsync")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
+
+                #region ListByZonaAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task ListByZonaAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            await Assert.ThrowsAnyAsync<Exception>(() =>
+                _repository.ListByZonaAsync(
+                    _eventoIdTest,
+                    _zonaEventoIdTest,
+                    CancellationToken.None));
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al listar asientos por zona")),
+                    It.IsAny<Exception>()),
+                Times.Once);
+        }
+        #endregion
+
+        #region GetByCompositeAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task GetByCompositeAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            await Assert.ThrowsAnyAsync<Exception>(() =>
+                _repository.GetByCompositeAsync(
+                    _eventoIdTest,
+                    _zonaEventoIdTest,
+                    "A-1",
+                    CancellationToken.None));
+
+            await Assert.ThrowsAnyAsync<Exception>(() =>
+                _repository.GetByIdAsync(
+                    _asientoIdTest,
+                    CancellationToken.None));
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error en GetByCompositeAsync")),
+                    It.IsAny<Exception>()),
+                Times.Once);
+        }
+        #endregion
+
+
+    }
+}

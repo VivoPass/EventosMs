@@ -55,9 +55,11 @@ namespace EventsService.Infraestructura.Repositories
             {
                 _log.Debug($"Buscando evento por ID='{id}' en MongoDB.");
 
-                var evt = await _c.Eventos
-                    .Find(x => x.Id == id)
-                    .FirstOrDefaultAsync(ct);
+                /*  var evt = await _c.Eventos
+                      .Find(x => x.Id == id)
+                      .FirstOrDefaultAsync(ct);*/
+                var cursor = await _c.Eventos.FindAsync(x => x.Id == id, cancellationToken: ct);
+                var evt = await cursor.FirstOrDefaultAsync(ct);
 
                 if (evt == null)
                     _log.Info($"No se encontró evento con ID='{id}'.");
@@ -101,10 +103,10 @@ namespace EventsService.Infraestructura.Repositories
             }
         }
 
-        public Task<List<Evento>> GetAllAsync(CancellationToken ct)
+        public async Task<List<Evento>> GetAllAsync(CancellationToken ct)
         {
-            _log.Debug("Recuperando todos los eventos desde MongoDB.");
-            return _c.Eventos.Find(FilterDefinition<Evento>.Empty).ToListAsync(ct);
+            var cursor = await _c.Eventos.FindAsync(FilterDefinition<Evento>.Empty, cancellationToken: ct);
+            return await cursor.ToListAsync(ct);
         }
 
         public async Task<bool> DeleteAsync(Guid id, CancellationToken ct)

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EventsService.Infrastructura")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a968fc2dec1eaedb08a4554e85cd9387073cf704")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2308ca4c637975ef216bdb0851e56c58c525cf15")]
 [assembly: System.Reflection.AssemblyProductAttribute("EventsService.Infrastructura")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EventsService.Infrastructura")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

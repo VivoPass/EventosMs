@@ -1,428 +1,440 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using EventsService.Dominio.Entidades;
-//using EventsService.Infraestructura.Repositories;
-//using EventsService.Infrastructura.mongo;
-//using MongoDB.Driver;
-//using Moq;
-//using Xunit;
-
-//namespace EventsService.Tests.Infraestructura.Repositories
-//{
-//    public class ScenarioRepositoryMongoTests
-//    {
-//        private readonly Mock<IMongoDatabase> _mockDb;
-//        private readonly Mock<IMongoCollection<Escenario>> _mockCollection;
-//        private readonly ScenarioRepositoryMongo _sut;
-//        private readonly Escenario _e1;
-//        private readonly Escenario _e2;
-//        private readonly Escenario _escenario1;
-
-//        public ScenarioRepositoryMongoTests()
-//        {
-//            _mockDb = new Mock<IMongoDatabase>();
-//            _mockCollection = new Mock<IMongoCollection<Escenario>>();
-
-//            // Debe coincidir con el nombre de colección que usa EventCollections
-//            _mockDb
-//                .Setup(d => d.GetCollection<Escenario>("escenarios", It.IsAny<MongoCollectionSettings>()))
-//                .Returns(_mockCollection.Object);
-
-//            var collections = new EventCollections(_mockDb.Object);
-//            _sut = new ScenarioRepositoryMongo(collections);
-//            _e1 = CrearEscenario("Teatro Municipal", "Caracas", true);
-//            _e2 = CrearEscenario("Teatro Nacional", "Caracas", false);
-//            _escenario1 = CrearEscenario("Escenario Principal", "Caracas", true);
-//        }
-
-//        private static Escenario CrearEscenario(string nombre, string ciudad, bool activo)
-//        {
-//            return new Escenario
-//            {
-//                Id = Guid.NewGuid(),
-//                Nombre = nombre,
-//                Descripcion = $"Descripción de {nombre}",
-//                Ubicacion = "Ubicación X",
-//                Ciudad = ciudad,
-//                Activo = activo
-//            };
-//        }
-
-//        // -----------------------
-//        // CrearAsync
-//        // -----------------------
-
-//        [Fact]
-//        public async Task CrearAsync_Should_Insert_Scenario_And_Return_Id()
-//        {
-//            // Arrange
-//            _mockCollection
-//                .Setup(c => c.InsertOneAsync(
-//                    It.IsAny<Escenario>(),
-//                    It.IsAny<InsertOneOptions>(),
-//                    It.IsAny<CancellationToken>()))
-//                .Returns(Task.CompletedTask);
-
-//            var ct = CancellationToken.None;
-
-//            // Act
-//            var idString = await _sut.CrearAsync(_escenario1, ct);
-
-//            // Assert
-//            Assert.Equal(_escenario1.Id.ToString(), idString);
-
-//            _mockCollection.Verify(c => c.InsertOneAsync(
-//                    It.Is<Escenario>(e => e.Id == _escenario1.Id),
-//                    It.IsAny<InsertOneOptions>(),
-//                    It.IsAny<CancellationToken>()),
-//                Times.Once);
-//        }
-
-//        // -----------------------
-//        // ExistsAsync
-//        // -----------------------
-
-//        [Fact]
-//        public async Task ExistsAsync_Should_Return_True_When_Scenario_Exists()
-//        {
-//            // Arrange
-//            var ct = CancellationToken.None;
-
-//            _mockCollection
-//                .Setup(c => c.CountDocumentsAsync(
-//                    It.IsAny<FilterDefinition<Escenario>>(),
-//                    It.IsAny<CountOptions>(),
-//                    ct))
-//                .ReturnsAsync(1L);
-
-//            // Act
-//            var exists = await _sut.ExistsAsync(_escenario1.Id, ct);
-
-//            // Assert
-//            Assert.True(exists);
-//        }
-
-//        [Fact]
-//        public async Task ExistsAsync_Should_Return_False_When_Scenario_Does_Not_Exist()
-//        {
-//            // Arrange
-//            var ct = CancellationToken.None;
-
-//            _mockCollection
-//                .Setup(c => c.CountDocumentsAsync(
-//                    It.IsAny<FilterDefinition<Escenario>>(),
-//                    It.IsAny<CountOptions>(),
-//                    ct))
-//                .ReturnsAsync(0L);
-
-//            // Act
-//            var exists = await _sut.ExistsAsync(Guid.NewGuid(), ct);
-
-//            // Assert
-//            Assert.False(exists);
-//        }
-
-//        // -----------------------
-//        // ObtenerEscenario
-//        // -----------------------
-
-//        [Fact]
-//        public async Task ObtenerEscenario_Should_Return_Scenario_When_Found()
-//        {
-//            // Arrange
-//            var ct = CancellationToken.None;
-
-//            var cursor = BuildCursor(new List<Escenario> { _escenario1 });
-
-//            _mockCollection
-//                .Setup(c => c.FindAsync(
-//                    It.IsAny<FilterDefinition<Escenario>>(),
-//                    It.IsAny<FindOptions<Escenario, Escenario>>(),
-//                    ct))
-//                .ReturnsAsync(cursor);
-
-//            // Act
-//            var result = await _sut.ObtenerEscenario(_escenario1.Id.ToString(), ct);
-
-//            // Assert
-//            Assert.NotNull(result);
-//            Assert.Equal(_escenario1.Id, result!.Id);
-//            Assert.Equal(_escenario1.Nombre, result.Nombre);
-//        }
-
-//        [Fact]
-//        public async Task ObtenerEscenario_Should_Return_Null_When_Not_Found()
-//        {
-//            // Arrange
-//            var ct = CancellationToken.None;
-
-//            var cursor = BuildCursor(new List<Escenario>()); // vacío
-
-//            _mockCollection
-//                .Setup(c => c.FindAsync(
-//                    It.IsAny<FilterDefinition<Escenario>>(),
-//                    It.IsAny<FindOptions<Escenario, Escenario>>(),
-//                    ct))
-//                .ReturnsAsync(cursor);
-
-//            // Act
-//            var result = await _sut.ObtenerEscenario(Guid.NewGuid().ToString(), ct);
-
-//            // Assert
-//            Assert.Null(result);
-//        }
-
-//        // -----------------------
-//        // ModificarEscenario
-//        // -----------------------
-
-//        [Fact]
-//        public async Task ModificarEscenario_Should_Call_UpdateOneAsync()
-//        {
-//            // Arrange
-//            var ct = CancellationToken.None;
-
-//            var updateResultMock = new Mock<UpdateResult>();
-//            updateResultMock.SetupGet(r => r.ModifiedCount).Returns(1);
-
-//            _mockCollection
-//                .Setup(c => c.UpdateOneAsync(
-//                    It.IsAny<FilterDefinition<Escenario>>(),
-//                    It.IsAny<UpdateDefinition<Escenario>>(),
-//                    It.IsAny<UpdateOptions>(),
-//                    ct))
-//                .ReturnsAsync(updateResultMock.Object);
-
-//            var cambios = new Escenario
-//            {
-//                Id = _escenario1.Id,
-//                Nombre = "Teatro Renovado",
-//                Descripcion = "Actualizado",
-//                Ubicacion = "Centro"
-//            };
-
-//            // Act
-//            await _sut.ModificarEscenario(_escenario1.Id.ToString(), cambios, ct);
-
-//            // Assert
-//            _mockCollection.Verify(c => c.UpdateOneAsync(
-//                    It.IsAny<FilterDefinition<Escenario>>(),
-//                    It.IsAny<UpdateDefinition<Escenario>>(),
-//                    It.IsAny<UpdateOptions>(),
-//                    ct),
-//                Times.Once);
-//        }
-
-//        // -----------------------
-//        // EliminarEscenario
-//        // -----------------------
-
-//        [Fact]
-//        public async Task EliminarEscenario_Should_Call_DeleteOneAsync()
-//        {
-//            // Arrange
-//            var ct = CancellationToken.None;
-
-//            var deleteResultMock = new Mock<DeleteResult>();
-//            deleteResultMock.SetupGet(r => r.DeletedCount).Returns(1);
-//            deleteResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
-
-//            _mockCollection
-//                .Setup(c => c.DeleteOneAsync(
-//                    It.IsAny<FilterDefinition<Escenario>>(),
-//                    ct))
-//                .ReturnsAsync(deleteResultMock.Object);
-
-//            // Act
-//            await _sut.EliminarEscenario(_escenario1.Id.ToString(), ct);
-
-//            // Assert
-//            _mockCollection.Verify(c => c.DeleteOneAsync(
-//                    It.IsAny<FilterDefinition<Escenario>>(),
-//                    ct),
-//                Times.Once);
-//        }
-
-//        // -----------------------
-//        // Helper para IAsyncCursor
-//        // -----------------------
-
-//        private static IAsyncCursor<Escenario> BuildCursor(List<Escenario> docs)
-//        {
-//            var cursor = new Mock<IAsyncCursor<Escenario>>();
-
-//            bool first = true;
-
-//            cursor
-//                .Setup(c => c.MoveNext(It.IsAny<CancellationToken>()))
-//                .Returns(() =>
-//                {
-//                    if (first)
-//                    {
-//                        first = false;
-//                        return docs.Count > 0;
-//                    }
-//                    return false;
-//                });
-
-//            cursor
-//                .Setup(c => c.MoveNextAsync(It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(() =>
-//                {
-//                    if (first)
-//                    {
-//                        first = false;
-//                        return docs.Count > 0;
-//                    }
-//                    return false;
-//                });
-
-//            cursor
-//                .SetupGet(c => c.Current)
-//                .Returns(docs);
-
-//            return cursor.Object;
-//        }
-
-//        // ---------------------------------------------
-//        // 1) Filtro con search + ciudad + activo
-//        // ---------------------------------------------
-//        [Fact]
-//        public async Task SearchAsync_Filtra_Por_Search_Ciudad_Y_Activo()
-//        {
-//            // Arrange
-//            var ct = CancellationToken.None;
-
-//            var listaFiltrada = new List<Escenario> { _e1 }; // lo que "Mongo" devolvería
-
-//            var cursor = BuildCursor(listaFiltrada);
-
-//            _mockCollection
-//                .Setup(c => c.CountDocumentsAsync(
-//                    It.IsAny<FilterDefinition<Escenario>>(),
-//                    It.IsAny<CountOptions>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(1L);
-
-//            _mockCollection
-//                .Setup(c => c.FindAsync(
-//                    It.IsAny<FilterDefinition<Escenario>>(),
-//                    It.IsAny<FindOptions<Escenario, Escenario>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(cursor);
-
-//            // Act
-//            var (items, total) = await _sut.SearchAsync(
-//                search: "Teatro",
-//                ciudad: "Caracas",
-//                activo: true,
-//                page: 1,
-//                pageSize: 10,
-//                ct: ct
-//            );
-
-//            // Assert
-//            Assert.Equal(1, total);
-//            Assert.Single(items);
-//            Assert.Equal("Teatro Municipal", items[0].Nombre);
-//            Assert.Equal("Caracas", items[0].Ciudad);
-//            Assert.True(items[0].Activo);
-//        }
-
-//        // ---------------------------------------------
-//        // 2) Sin resultados: debe devolver lista vacía y total 0
-//        // ---------------------------------------------
-//        [Fact]
-//        public async Task SearchAsync_Sin_Resultados_Debe_Retornar_Vacio()
-//        {
-//            // Arrange
-//            var ct = CancellationToken.None;
-
-//            var listaVacia = new List<Escenario>();
-//            var cursor = BuildCursor(listaVacia);
-
-//            _mockCollection
-//                .Setup(c => c.CountDocumentsAsync(
-//                    It.IsAny<FilterDefinition<Escenario>>(),
-//                    It.IsAny<CountOptions>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(0L);
-
-//            _mockCollection
-//                .Setup(c => c.FindAsync(
-//                    It.IsAny<FilterDefinition<Escenario>>(),
-//                    It.IsAny<FindOptions<Escenario, Escenario>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(cursor);
-
-//            // Act
-//            var (items, total) = await _sut.SearchAsync(
-//                search: "AlgoQueNoExiste",
-//                ciudad: "Narnia",
-//                activo: true,
-//                page: 1,
-//                pageSize: 10,
-//                ct: ct
-//            );
-
-//            // Assert
-//            Assert.Equal(0, total);
-//            Assert.Empty(items);
-//        }
-
-//        // ---------------------------------------------
-//        // 3) Verifica que aplique paginación (Skip/Limit) en opciones
-//        //    (probamos que calcula bien, no que Mongo recorte la lista)
-//        // ---------------------------------------------
-//        [Fact]
-//        public async Task SearchAsync_Aplica_Skip_And_Limit_En_Options()
-//        {
-//            // Arrange
-//            var ct = CancellationToken.None;
-
-//            var lista = new List<Escenario> { _e1, _e2 };
-//            var cursor = BuildCursor(lista);
-
-//            FindOptions<Escenario, Escenario>? capturedOptions = null;
-
-//            _mockCollection
-//                .Setup(c => c.CountDocumentsAsync(
-//                    It.IsAny<FilterDefinition<Escenario>>(),
-//                    It.IsAny<CountOptions>(),
-//                    It.IsAny<CancellationToken>()))
-//                .ReturnsAsync(2L);
-
-//            _mockCollection
-//                .Setup(c => c.FindAsync(
-//                    It.IsAny<FilterDefinition<Escenario>>(),
-//                    It.IsAny<FindOptions<Escenario, Escenario>>(),
-//                    It.IsAny<CancellationToken>()))
-//                .Callback<FilterDefinition<Escenario>, FindOptions<Escenario, Escenario>, CancellationToken>((f, o, token) =>
-//                {
-//                    capturedOptions = o;
-//                })
-//                .ReturnsAsync(cursor);
-
-//            var page = 2;
-//            var pageSize = 10;
-
-//            // Act
-//            var (_, total) = await _sut.SearchAsync(
-//                search: null,
-//                ciudad: null,
-//                activo: null,
-//                page: page,
-//                pageSize: pageSize,
-//                ct: ct
-//            );
-
-//            // Assert
-//            Assert.Equal(2, total);
-//            Assert.NotNull(capturedOptions);
-//            Assert.Equal((page - 1) * pageSize, capturedOptions!.Skip);
-//            Assert.Equal(pageSize, capturedOptions.Limit);
-//        }
-//    }
-//}
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using EventsService.Dominio.Entidades;
+using EventsService.Dominio.Interfaces;
+using EventsService.Infraestructura.Repositories;
+using EventsService.Infrastructura.mongo;
+using log4net;
+using Moq;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using Xunit;
+using EventsService.Infrastructura.Interfaces;
+
+namespace EventsService.Test.Infraestructura.Repositories
+{
+    public class Repository_ScenarioRepositoryMongo_Tests
+    {
+        private readonly Mock<IMongoDatabase> _mockDb;
+        private readonly Mock<IMongoCollection<Escenario>> _mockEscenariosCollection;
+        private readonly Mock<IMongoCollection<Evento>> _mockEventosCollection;
+        private readonly Mock<IMongoCollection<Categoria>> _mockCategoriasCollection;
+        private readonly Mock<IAuditoriaRepository> _mockAuditoria;
+        private readonly Mock<ILog> _mockLogger;
+
+        private readonly EventCollections _collections;
+        private readonly ScenarioRepositoryMongo _repository;
+
+        private readonly Guid _escenarioIdTest = Guid.NewGuid();
+        private readonly Escenario _escenarioTest;
+
+        public Repository_ScenarioRepositoryMongo_Tests()
+        {
+            _mockDb = new Mock<IMongoDatabase>();
+            _mockEscenariosCollection = new Mock<IMongoCollection<Escenario>>();
+            _mockEventosCollection = new Mock<IMongoCollection<Evento>>();
+            _mockCategoriasCollection = new Mock<IMongoCollection<Categoria>>();
+            _mockAuditoria = new Mock<IAuditoriaRepository>();
+            _mockLogger = new Mock<ILog>();
+
+            // Configuración de colecciones que usa EventCollections
+            _mockDb
+                .Setup(d => d.GetCollection<Escenario>("escenarios", It.IsAny<MongoCollectionSettings>()))
+                .Returns(_mockEscenariosCollection.Object);
+
+            _mockDb
+                .Setup(d => d.GetCollection<Evento>("eventos", It.IsAny<MongoCollectionSettings>()))
+                .Returns(_mockEventosCollection.Object);
+
+            _mockDb
+                .Setup(d => d.GetCollection<Categoria>("categorias", It.IsAny<MongoCollectionSettings>()))
+                .Returns(_mockCategoriasCollection.Object);
+
+            _collections = new EventCollections(_mockDb.Object);
+
+            _repository = new ScenarioRepositoryMongo(
+                _collections,
+                _mockAuditoria.Object,
+                _mockLogger.Object);
+
+            // Crear un Escenario de prueba (ajusta si tu entidad no tiene set públicos)
+            _escenarioTest = Activator.CreateInstance<Escenario>();
+
+            typeof(Escenario).GetProperty("Id")?.SetValue(_escenarioTest, _escenarioIdTest);
+            typeof(Escenario).GetProperty("Nombre")?.SetValue(_escenarioTest, "Escenario Test");
+            typeof(Escenario).GetProperty("Descripcion")?.SetValue(_escenarioTest, "Descripcion test");
+            typeof(Escenario).GetProperty("Ubicacion")?.SetValue(_escenarioTest, "Ciudad Test");
+        }
+
+        #region CrearAsync_InvocacionExitosa_DebeInsertarYRegistrarAuditoria
+        [Fact]
+        public async Task CrearAsync_InvocacionExitosa_DebeInsertarYRegistrarAuditoria()
+        {
+            // Arrange
+            _mockEscenariosCollection
+                .Setup(c => c.InsertOneAsync(
+                    It.IsAny<Escenario>(),
+                    It.IsAny<InsertOneOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
+
+            // Act
+            var resultadoId = await _repository.CrearAsync(_escenarioTest, CancellationToken.None);
+
+            // Assert
+            Assert.Equal(_escenarioIdTest.ToString(), resultadoId);
+
+            _mockEscenariosCollection.Verify(c => c.InsertOneAsync(
+                    It.Is<Escenario>(e => e.Id == _escenarioIdTest),
+                    It.IsAny<InsertOneOptions>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    _escenarioIdTest.ToString(),
+                    "INFO",
+                    "ESCENARIO_CREADO",
+                    It.Is<string>(m => m.Contains("Escenario Test"))),
+                Times.Once);
+
+            _mockLogger.Verify(l => l.Info(
+                It.Is<string>(s => s.Contains("Escenario creado"))),
+                Times.Once);
+        }
+        #endregion
+
+        #region CrearAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task CrearAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var ex = new Exception("Error simulado en InsertOneAsync");
+
+            _mockEscenariosCollection
+                .Setup(c => c.InsertOneAsync(
+                    It.IsAny<Escenario>(),
+                    It.IsAny<InsertOneOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
+
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.CrearAsync(_escenarioTest, CancellationToken.None));
+
+            Assert.Equal(ex, lanzada);
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al crear escenario")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
+
+        #region EliminarEscenario_EliminacionExitosa_DebeLoggearYAuditar
+        [Fact]
+        public async Task EliminarEscenario_EliminacionExitosa_DebeLoggearYAuditar()
+        {
+            // Arrange
+            var deleteResultMock = new Mock<DeleteResult>();
+            deleteResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+            deleteResultMock.SetupGet(r => r.DeletedCount).Returns(1);
+
+            _mockEscenariosCollection
+                .Setup(c => c.DeleteOneAsync(
+                    It.IsAny<FilterDefinition<Escenario>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResultMock.Object);
+
+            var idString = _escenarioIdTest.ToString();
+
+            // Act
+            await _repository.EliminarEscenario(idString, CancellationToken.None);
+
+            // Assert
+            _mockEscenariosCollection.Verify(c => c.DeleteOneAsync(
+                    It.Is<FilterDefinition<Escenario>>(f => f != null),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
+
+            _mockLogger.Verify(l => l.Info(
+                    It.Is<string>(s => s.Contains("Escenario eliminado"))),
+                Times.Once);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    idString,
+                    "INFO",
+                    "ESCENARIO_ELIMINADO",
+                    It.Is<string>(m => m.Contains(idString))),
+                Times.Once);
+        }
+        #endregion
+
+        #region EliminarEscenario_NoEncontrado_DebeLoggearWarnSinAuditoria
+        [Fact]
+        public async Task EliminarEscenario_NoEncontrado_DebeLoggearWarnSinAuditoria()
+        {
+            // Arrange
+            var deleteResultMock = new Mock<DeleteResult>();
+            deleteResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+            deleteResultMock.SetupGet(r => r.DeletedCount).Returns(0);
+
+            _mockEscenariosCollection
+                .Setup(c => c.DeleteOneAsync(
+                    It.IsAny<FilterDefinition<Escenario>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(deleteResultMock.Object);
+
+            var idString = _escenarioIdTest.ToString();
+
+            // Act
+            await _repository.EliminarEscenario(idString, CancellationToken.None);
+
+            // Assert
+            _mockLogger.Verify(l => l.Warn(
+                    It.Is<string>(s => s.Contains("Intento de eliminar escenario"))),
+                Times.Once);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    It.IsAny<string>(), It.IsAny<string>(),
+                    It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never);
+        }
+        #endregion
+
+        #region EliminarEscenario_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task EliminarEscenario_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var ex = new Exception("Error simulado en DeleteOneAsync");
+
+            _mockEscenariosCollection
+                .Setup(c => c.DeleteOneAsync(
+                    It.IsAny<FilterDefinition<Escenario>>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
+
+            var idString = _escenarioIdTest.ToString();
+
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.EliminarEscenario(idString, CancellationToken.None));
+
+            Assert.Equal(ex, lanzada);
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al eliminar escenario")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
+
+        #region ExistsAsync_Existe_DebeRetornarTrue
+        [Fact]
+        public async Task ExistsAsync_Existe_DebeRetornarTrue()
+        {
+            // Arrange
+            _mockEscenariosCollection
+                .Setup(c => c.CountDocumentsAsync(
+                    It.IsAny<FilterDefinition<Escenario>>(),
+                    It.IsAny<CountOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(1L);
+
+            // Act
+            var existe = await _repository.ExistsAsync(_escenarioIdTest, CancellationToken.None);
+
+            // Assert
+            Assert.True(existe);
+        }
+        #endregion
+
+        #region ExistsAsync_NoExiste_DebeRetornarFalse
+        [Fact]
+        public async Task ExistsAsync_NoExiste_DebeRetornarFalse()
+        {
+            // Arrange
+            _mockEscenariosCollection
+                .Setup(c => c.CountDocumentsAsync(
+                    It.IsAny<FilterDefinition<Escenario>>(),
+                    It.IsAny<CountOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(0L);
+
+            // Act
+            var existe = await _repository.ExistsAsync(_escenarioIdTest, CancellationToken.None);
+
+            // Assert
+            Assert.False(existe);
+        }
+        #endregion
+
+        #region ExistsAsync_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task ExistsAsync_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var ex = new Exception("Error simulado en CountDocumentsAsync");
+
+            _mockEscenariosCollection
+                .Setup(c => c.CountDocumentsAsync(
+                    It.IsAny<FilterDefinition<Escenario>>(),
+                    It.IsAny<CountOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
+
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.ExistsAsync(_escenarioIdTest, CancellationToken.None));
+
+            Assert.Equal(ex, lanzada);
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al validar existencia de escenario")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
+
+        #region ModificarEscenario_ActualizacionExitosa_DebeLoggearYAuditar
+        [Fact]
+        public async Task ModificarEscenario_ActualizacionExitosa_DebeLoggearYAuditar()
+        {
+            // Arrange
+            var updateResultMock = new Mock<UpdateResult>();
+            updateResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+            updateResultMock.SetupGet(r => r.ModifiedCount).Returns(1);
+
+            _mockEscenariosCollection
+                .Setup(c => c.UpdateOneAsync(
+                    It.IsAny<FilterDefinition<Escenario>>(),
+                    It.IsAny<UpdateDefinition<Escenario>>(),
+                    It.IsAny<UpdateOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(updateResultMock.Object);
+
+            var idString = _escenarioIdTest.ToString();
+
+            // Act
+            await _repository.ModificarEscenario(idString, _escenarioTest, CancellationToken.None);
+
+            // Assert
+            _mockLogger.Verify(l => l.Info(
+                    It.Is<string>(s => s.Contains("Escenario actualizado"))),
+                Times.Once);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    idString,
+                    "INFO",
+                    "ESCENARIO_MODIFICADO",
+                    It.Is<string>(m => m.Contains(idString))),
+                Times.Once);
+        }
+        #endregion
+
+        #region ModificarEscenario_SinCambios_DebeLoggearWarnSinAuditoria
+        [Fact]
+        public async Task ModificarEscenario_SinCambios_DebeLoggearWarnSinAuditoria()
+        {
+            // Arrange
+            var updateResultMock = new Mock<UpdateResult>();
+            updateResultMock.SetupGet(r => r.IsAcknowledged).Returns(true);
+            updateResultMock.SetupGet(r => r.ModifiedCount).Returns(0);
+
+            _mockEscenariosCollection
+                .Setup(c => c.UpdateOneAsync(
+                    It.IsAny<FilterDefinition<Escenario>>(),
+                    It.IsAny<UpdateDefinition<Escenario>>(),
+                    It.IsAny<UpdateOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(updateResultMock.Object);
+
+            var idString = _escenarioIdTest.ToString();
+
+            // Act
+            await _repository.ModificarEscenario(idString, _escenarioTest, CancellationToken.None);
+
+            // Assert
+            _mockLogger.Verify(l => l.Warn(
+                    It.Is<string>(s => s.Contains("Intento de modificar escenario"))),
+                Times.Once);
+
+            _mockAuditoria.Verify(a => a.InsertarAuditoriaEvento(
+                    It.IsAny<string>(), It.IsAny<string>(),
+                    It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never);
+        }
+        #endregion
+
+        #region ModificarEscenario_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task ModificarEscenario_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+            // Arrange
+            var ex = new Exception("Error simulado en UpdateOneAsync");
+
+            _mockEscenariosCollection
+                .Setup(c => c.UpdateOneAsync(
+                    It.IsAny<FilterDefinition<Escenario>>(),
+                    It.IsAny<UpdateDefinition<Escenario>>(),
+                    It.IsAny<UpdateOptions>(),
+                    It.IsAny<CancellationToken>()))
+                .ThrowsAsync(ex);
+
+            var idString = _escenarioIdTest.ToString();
+
+            // Act & Assert
+            var lanzada = await Assert.ThrowsAsync<Exception>(() =>
+                _repository.ModificarEscenario(idString, _escenarioTest, CancellationToken.None));
+
+            Assert.Equal(ex, lanzada);
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al modificar escenario")),
+                    ex),
+                Times.Once);
+        }
+        #endregion
+
+        #region ObtenerEscenario_FalloGeneral_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task ObtenerEscenario_FalloGeneral_DebeLoggearErrorYLanzar()
+        {
+
+
+            await Assert.ThrowsAnyAsync<Exception>(() =>
+                _repository.ObtenerEscenario(
+                    _escenarioIdTest.ToString(),
+                    CancellationToken.None));
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al obtener escenario ID")),
+                    It.IsAny<Exception>()),
+                Times.Once);
+        }
+        #endregion
+
+        #region SearchAsync_FalloGeneralConFiltros_DebeLoggearErrorYLanzar
+        [Fact]
+        public async Task SearchAsync_FalloGeneralConFiltros_DebeLoggearErrorYLanzar()
+        {
+            // Usamos search, ciudad y activo para ejecutar los tres if de filtros
+            await Assert.ThrowsAnyAsync<Exception>(() =>
+                _repository.SearchAsync(
+                    search: "rock",
+                    ciudad: "Caracas",
+                    activo: true,
+                    page: 1,
+                    pageSize: 10,
+                    ct: CancellationToken.None));
+
+            _mockLogger.Verify(l => l.Error(
+                    It.Is<string>(s => s.Contains("Error al realizar búsqueda de escenarios")),
+                    It.IsAny<Exception>()),
+                Times.Once);
+        }
+        #endregion
+    }
+}
