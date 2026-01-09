@@ -86,7 +86,7 @@ namespace EventsService.Infrastructura.mongo
             }
             if (!BsonClassMap.IsClassMapRegistered(typeof(EscenarioZona)))
             {
-                BsonClassMap.RegisterClassMap<EscenarioZona>(cm =>
+                BsonClassMap.RegisterClassMap<EscenarioZona>(cm => 
                 {
                     cm.AutoMap();
 

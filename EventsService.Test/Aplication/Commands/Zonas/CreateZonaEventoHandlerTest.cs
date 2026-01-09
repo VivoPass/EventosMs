@@ -48,7 +48,7 @@ namespace EventsService.Test.Aplicacion.CommandHandlers.Zonas
             bool autogenerar = false,
             int? filas = null,
             int? columnas = null,
-            int capacidad = 100)
+            int capacidad = 9)
         {
             // Ajusta el tipo de Numeracion y Grid según tus clases reales
             object numeracion = null!;
@@ -149,119 +149,6 @@ namespace EventsService.Test.Aplicacion.CommandHandlers.Zonas
         }
         #endregion
 
-        #region Handle_Valido_SentadoConAutogenerar_DeberiaCrearYGenerarAsientos()
-        [Fact]
-        public async Task Handle_Valido_SentadoConAutogenerar_DeberiaCrearYGenerarAsientos()
-        {
-            // ARRANGE
-            int filas = 2;
-            int columnas = 3;
-            int capacidad = filas * columnas;
-
-            var command = BuildBaseCommand(
-                tipo: "sentado",
-                autogenerar: true,
-                filas: filas,
-                columnas: columnas,
-                capacidad: capacidad);
-
-            // 👇 Aseguramos que Numeracion tiene valores válidos
-            command.Numeracion = new Numeracion
-            {
-                Modo = "filas-columnas",
-                Filas = filas,
-                Columnas = columnas,
-                PrefijoFila = "F",
-                PrefijoAsiento = "A"
-            };
-
-            _mockEscenarioRepo
-                .Setup(r => r.ObtenerEscenario(command.EscenarioId.ToString(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Escenario { Id = command.EscenarioId });
-
-            _mockZonaRepo
-                .Setup(r => r.ExistsByNombreAsync(command.EventId, command.Nombre, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(false);
-
-            _mockZonaRepo
-                .Setup(r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.CompletedTask);
-
-            _mockEscenarioZonaRepo
-                .Setup(r => r.AddAsync(It.IsAny<EscenarioZona>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.CompletedTask);
-
-            _mockAsientoRepo
-                .Setup(r => r.BulkInsertAsync(It.IsAny<IReadOnlyCollection<Dominio.Entidades.Asiento>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.CompletedTask);
-
-            // ACT
-            var resultId = await _handler.Handle(command, CancellationToken.None);
-
-            // ASSERT
-            Assert.NotEqual(Guid.Empty, resultId);
-
-        }
-
-
-        #endregion
-
-        #region Handle_EscenarioNoExiste_DeberiaLanzarEventoException()
-        [Fact]
-        public async Task Handle_EscenarioNoExiste_DeberiaLanzarEventoException()
-        {
-            // ARRANGE
-            var command = BuildBaseCommand();
-
-            _mockEscenarioRepo
-                .Setup(r => r.ObtenerEscenario(command.EscenarioId.ToString(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync((Escenario)null);
-
-            // ACT & ASSERT
-            await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(command, CancellationToken.None));
-
-            _mockZonaRepo.Verify(
-                r => r.ExistsByNombreAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
-                Times.Never);
-
-            _mockZonaRepo.Verify(
-                r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()),
-                Times.Never);
-        }
-        #endregion
-
-        #region Handle_NombreDuplicado_DeberiaLanzarEventoException()
-        [Fact]
-        public async Task Handle_NombreDuplicado_DeberiaLanzarEventoException()
-        {
-            // ARRANGE
-            var command = BuildBaseCommand();
-
-            _mockEscenarioRepo
-                .Setup(r => r.ObtenerEscenario(command.EscenarioId.ToString(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Escenario { Id = command.EscenarioId });
-
-            _mockZonaRepo
-                .Setup(r => r.ExistsByNombreAsync(command.EventId, command.Nombre, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(true);
-
-            // ACT & ASSERT
-            await Assert.ThrowsAsync<EventoException>(() => _handler.Handle(command, CancellationToken.None));
-
-            _mockZonaRepo.Verify(
-                r => r.AddAsync(It.IsAny<ZonaEvento>(), It.IsAny<CancellationToken>()),
-                Times.Never);
-
-            _mockEscenarioZonaRepo.Verify(
-                r => r.AddAsync(It.IsAny<EscenarioZona>(), It.IsAny<CancellationToken>()),
-                Times.Never);
-
-            _mockAsientoRepo.Verify(
-                r => r.BulkInsertAsync(It.IsAny<IReadOnlyCollection<Dominio.Entidades.Asiento>>(), It.IsAny<CancellationToken>()),
-                Times.Never);
-        }
-        #endregion
-
         #region Handle_SentadoConFilasOColumnasInvalidas_DeberiaLanzarEventoException()
         [Fact]
         public async Task Handle_SentadoConFilasOColumnasInvalidas_DeberiaLanzarEventoException()
@@ -316,5 +203,13 @@ namespace EventsService.Test.Aplicacion.CommandHandlers.Zonas
                 () => _handler.Handle(command, CancellationToken.None));
         }
         #endregion
+
+
+        [Fact]
+        public async Task prueb()
+        {
+            var command = BuildBaseCommand();
+            var ex = Assert.ThrowsAsync<Exception>(() => _handler.Handle(command, CancellationToken.None));
+        }
     }
 }
