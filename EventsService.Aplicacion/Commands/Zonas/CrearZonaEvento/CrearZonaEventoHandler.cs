@@ -40,6 +40,8 @@ namespace EventsService.Aplicacion.Commands.Zonas.CrearZonaEvento
 
             try
             {
+
+                if (request.Capacidad < 10) throw new Exception("No se puede");
                 // 1) Validaciones básicas
                 _log.Debug($"Verificando existencia de escenario ID='{request.EscenarioId}'.");
                 var escenario = await _escenarioRepo.ObtenerEscenario(request.EscenarioId.ToString(), ct);

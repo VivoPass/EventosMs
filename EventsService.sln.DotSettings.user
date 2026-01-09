@@ -1,12 +1,13 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\ejic2\AppData\Local\Temp\JetBrains\ReSharperPlatformVs17\vAny_9b23dbcf\CoverageData\_EventsService.1526640224\Snapshot\snapshot.utdcvr</s:String>
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5a7f884e_002Db9d7_002D45fd_002D9a82_002Da164a83e82b9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ObtenerEvento_Retorna_ok" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;And&gt;&#xD;
     &lt;Namespace&gt;EventsService.Test&lt;/Namespace&gt;&#xD;
     &lt;Project Location="C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Test" Presentation="&amp;lt;EventsService.Test&amp;gt;" /&gt;&#xD;
   &lt;/And&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c09e77b1_002D2698_002D4b66_002D94f0_002D105613665b66/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="RegistrarEscenario_Exitoso" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c09e77b1_002D2698_002D4b66_002D94f0_002D105613665b66/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="RegistrarEscenario_Exitoso" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Test" Presentation="&amp;lt;EventsService.Test&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d31c477c_002Dc147_002D43ec_002D93cd_002Db98bd2dec1b7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetAllEventsHandlerTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
@@ -15,17 +16,6 @@
     &lt;Project Location="C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Test" Presentation="&amp;lt;EventsService.Test&amp;gt;" /&gt;&#xD;
   &lt;/And&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e1ca5e0b_002D42ac_002D489b_002Db160_002D46b2c3b74be4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Or&gt;&#xD;
-    &lt;And&gt;&#xD;
-      &lt;Namespace&gt;EventsService.Test.Api.Controllers&lt;/Namespace&gt;&#xD;
-      &lt;Project Location="C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Test" Presentation="&amp;lt;EventsService.Test&amp;gt;" /&gt;&#xD;
-    &lt;/And&gt;&#xD;
-    &lt;TestAncestor&gt;&#xD;
-      &lt;TestId&gt;xUnit::47B198A9-F231-43FE-B892-E746B335918A::net8.0::EventsService.Test.Aplication.Commands.Evento.CreateEventHandlerTest.Handle_CommandValido_Insert&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::47B198A9-F231-43FE-B892-E746B335918A::net8.0::EventsService.Test.Aplication.Commands.Evento.CreateEventHandlerTest&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::47B198A9-F231-43FE-B892-E746B335918A::net8.0::EventsService.Test.Aplication.Commands.Evento.DeleteEventHandlerTest.EliminarEvento_valid_returnTrue&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::47B198A9-F231-43FE-B892-E746B335918A::net8.0::EventsService.Test.Aplication.Commands.Evento.UpdateEventHandlerTest.ModificarEvento_RetornaTrue&lt;/TestId&gt;&#xD;
-    &lt;/TestAncestor&gt;&#xD;
-  &lt;/Or&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e1ca5e0b_002D42ac_002D489b_002Db160_002D46b2c3b74be4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\ejic2\OneDrive\Escritorio\API prueba\EventsService\EventsService.Test" Presentation="&amp;lt;EventsService.Test&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

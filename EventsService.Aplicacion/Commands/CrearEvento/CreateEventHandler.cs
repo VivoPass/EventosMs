@@ -54,6 +54,8 @@ namespace EventsService.Aplicacion.Commands.CrearEvento
                     throw new EventoException("El escenario no existe.");
                 }
 
+                if (r.AforoMaximo < 10) throw new EventoException("El aforo tiene que ser mayor que 10");
+
                 // 3) Construir entidad de dominio
                 _log.Debug("Construyendo entidad Evento en memoria.");
                 var e = new Dominio.Entidades.Evento

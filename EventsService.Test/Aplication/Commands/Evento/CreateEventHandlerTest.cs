@@ -21,6 +21,7 @@ namespace EventsService.Test.Aplicacion.CommandHandlers.Eventos
         private readonly Guid escenarioId;
         private readonly Guid organizadorId;
         private readonly CreateEventCommand command;
+        private readonly CreateEventCommand commandPrueba;
 
         public CommandHandler_CreateEvent_Tests()
         {
@@ -47,6 +48,19 @@ namespace EventsService.Test.Aplicacion.CommandHandlers.Eventos
                 Inicio: DateTimeOffset.UtcNow.AddDays(1),
                 Fin: DateTimeOffset.UtcNow.AddDays(1).AddHours(2),
                 AforoMaximo: 500,
+                Tipo: "Concierto",
+                Lugar: "Caracas",
+                Descripcion: "Evento de integración",
+                OrganizadorId: organizadorId
+            );
+
+            commandPrueba = new CreateEventCommand(
+                Nombre: "Concierto de prueba",
+                CategoriaId: categoriaId,
+                EscenarioId: escenarioId,
+                Inicio: DateTimeOffset.UtcNow.AddDays(1),
+                Fin: DateTimeOffset.UtcNow.AddDays(1).AddHours(2),
+                AforoMaximo: 8,
                 Tipo: "Concierto",
                 Lugar: "Caracas",
                 Descripcion: "Evento de integración",
@@ -160,5 +174,23 @@ namespace EventsService.Test.Aplicacion.CommandHandlers.Eventos
             Assert.Equal(dbException, ex.InnerException);
         }
         #endregion
+
+
+        [Fact]
+        public async Task CrearEvento_MenosDe10Aforo_RetornaExcepcion()
+        {
+            MockCategoryRepo
+                .Setup(r => r.ExistsAsync(categoriaId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+            MockScenarioRepo
+                .Setup(r => r.ExistsAsync(escenarioId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+
+            var ex = Assert.ThrowsAsync<EventoException>(() => Handler.Handle(commandPrueba, CancellationToken.None));
+
+            Assert.Equal("El aforo tiene que ser mayor que 10", ex.Result.Message);
+        }
     }
 }
