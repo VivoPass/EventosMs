@@ -17,7 +17,8 @@ namespace EventsService.Aplicacion.Commands.CrearEvento
         string? Tipo,
         string? Lugar,
         string? Descripcion,
-        Guid OrganizadorId
+        Guid OrganizadorId,
+        string? OnlineMeetingUrl
     ) : IRequest<Guid>;
 
 }

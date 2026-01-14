@@ -53,7 +53,8 @@ namespace EventsService.Test.Api.Controllers.EventsController
                 200,
                 "Concierto",
                 "Teatro",
-                "Descripcion prueba"
+                "Descripcion prueba",
+                "https://www.youtube.com/?gl=ES&hl=es"
             );
         }
 

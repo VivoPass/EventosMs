@@ -17,6 +17,7 @@ namespace EventsService.Aplicacion.Commands.ModificarEvento
         int? AforoMaximo,
         string? Tipo,
         string? Lugar,
-        string? Descripcion
+        string? Descripcion,
+        string? OnlineMeetingUrl
     ) : IRequest<bool>;
 }

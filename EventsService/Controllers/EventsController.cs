@@ -58,7 +58,8 @@ public class EventsController : ControllerBase
             req.Tipo,
             req.Lugar,
             req.Descripcion,
-            req.OrganizadorId
+            req.OrganizadorId,
+            req.OnlineMeetingUrl    // ← Nuevo parámetro
         ), ct);
 
         // Publicar actividad en MS de Usuarios
@@ -133,7 +134,7 @@ public class EventsController : ControllerBase
     /// <response code="422">Reglas de dominio inválidas.</response>
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)] 
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateEventRequest req, CancellationToken ct)
     {
@@ -149,7 +150,8 @@ public class EventsController : ControllerBase
             req.AforoMaximo,
             req.Tipo,
             req.Lugar,
-            req.Descripcion
+            req.Descripcion,
+            req.OnlineMeetingUrl
         ), ct);
 
         if (!ok)

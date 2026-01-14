@@ -96,7 +96,8 @@ namespace EventsService.Test.Api.Controllers.EventsController
                 "Concierto",
                 "Teatro Principal",
                 "Un concierto de prueba",
-                _organizadorId
+                _organizadorId, 
+                "https://www.youtube.com/?gl=ES&hl=es"
             );
 
             _mockMediator
@@ -134,7 +135,8 @@ namespace EventsService.Test.Api.Controllers.EventsController
                 "Webinar",
                 "Online",
                 "Test de falla en actividad",
-                _organizadorId
+                _organizadorId,
+                "https://www.youtube.com/?gl=ES&hl=es"
             );
 
             _mockMediator

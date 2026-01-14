@@ -56,7 +56,8 @@ namespace EventsService.Test.Aplicacion.CommandHandlers.Eventos
                 AforoMaximo: 900,
                 Tipo: "Conferencia",
                 Lugar: "Online",
-                Descripcion: "Evento actualizado"
+                Descripcion: "Evento actualizado",
+                OnlineMeetingUrl: "https://www.youtube.com/?gl=ES&hl=es"
             );
         }
 
