@@ -78,6 +78,10 @@ namespace EventsService.Aplicacion.Commands.ModificarEvento
                 if (r.Tipo is not null) current.Tipo = r.Tipo;
                 if (r.Lugar is not null) current.Lugar = r.Lugar;
                 if (r.Descripcion is not null) current.Descripcion = r.Descripcion;
+                if (r.OnlineMeetingUrl is not null)
+                {
+                    current.AsignarOnlineMeetingUrl(r.OnlineMeetingUrl);
+                }
 
                 // 4) Persistir cambios
                 var actualizado = await _events.UpdateAsync(current, ct);

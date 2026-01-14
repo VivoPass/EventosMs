@@ -51,7 +51,8 @@ namespace EventsService.Test.Aplicacion.CommandHandlers.Eventos
                 Tipo: "Concierto",
                 Lugar: "Caracas",
                 Descripcion: "Evento de integración",
-                OrganizadorId: organizadorId
+                OrganizadorId: organizadorId,
+                OnlineMeetingUrl: "https://www.youtube.com/?gl=ES&hl=es"
             );
 
             commandPrueba = new CreateEventCommand(
@@ -64,7 +65,8 @@ namespace EventsService.Test.Aplicacion.CommandHandlers.Eventos
                 Tipo: "Concierto",
                 Lugar: "Caracas",
                 Descripcion: "Evento de integración",
-                OrganizadorId: organizadorId
+                OrganizadorId: organizadorId,
+                OnlineMeetingUrl: "https://www.youtube.com/?gl=ES&hl=es"
             );
         }
 

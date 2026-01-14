@@ -28,6 +28,8 @@ public class Evento
     public string? ImagenUrl { get; private set; }
     public string? FolletoUrl { get; private set; }
 
+    public string? OnlineMeetingUrl { get; private set; }
+
     public void AsignarImagen(string url)
     {
         ImagenUrl = url;
@@ -37,5 +39,27 @@ public class Evento
     {
         FolletoUrl = url;
     }
+
+
+    public void AsignarOnlineMeetingUrl(string? url)
+    {
+        // Si el campo se envía vacío, permites borrarlo
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            OnlineMeetingUrl = null;
+            return;
+        }
+
+        // Validación básica de URL
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uriResult))
+            throw new ArgumentException("La URL proporcionada no es válida.");
+
+        // Validación adicional (opcional): solo HTTPS
+        if (uriResult.Scheme != Uri.UriSchemeHttps)
+            throw new ArgumentException("La URL debe usar HTTPS.");
+
+        OnlineMeetingUrl = url;
+    }
+
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
 }

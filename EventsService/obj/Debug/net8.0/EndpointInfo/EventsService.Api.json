@@ -1327,6 +1327,10 @@
           "organizadorId": {
             "type": "string",
             "format": "uuid"
+          },
+          "onlineMeetingUrl": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1649,6 +1653,10 @@
             "nullable": true
           },
           "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "onlineMeetingUrl": {
             "type": "string",
             "nullable": true
           }

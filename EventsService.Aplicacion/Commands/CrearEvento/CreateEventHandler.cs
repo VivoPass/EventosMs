@@ -73,6 +73,12 @@ namespace EventsService.Aplicacion.Commands.CrearEvento
                     OrganizadorId = r.OrganizadorId
                 };
 
+                if (!string.IsNullOrWhiteSpace(r.OnlineMeetingUrl))
+                {
+                    _log.Debug("Validando y asignando OnlineMeetingUrl.");
+                    e.AsignarOnlineMeetingUrl(r.OnlineMeetingUrl);
+                }
+
                 _log.Debug($"Evento construido en memoria con ID='{e.Id}'. Persistiendo en repositorio.");
                 await _events.InsertAsync(e, ct);
 

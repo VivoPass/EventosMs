@@ -10,5 +10,6 @@ public record CreateEventRequest(
     string? Tipo,
     string? Lugar,
     string? Descripcion,
-    Guid OrganizadorId
+    Guid OrganizadorId,
+    string? OnlineMeetingUrl
 );
